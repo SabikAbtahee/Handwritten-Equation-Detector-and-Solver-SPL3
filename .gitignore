@@ -1,0 +1,46 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+Frontend/math-planet/dist
+Frontend/math-planet/tmp
+Frontend/math-planet/out-tsc
+# Only exists if Bazel was run
+/bazel-out
+
+# dependencies
+Frontend/math-planet/node_modules
+
+# profiling files
+Frontend/math-planetchrome-profiler-events.json
+Frontend/math-planetspeed-measure-plugin.json
+
+# IDEs and editors
+Frontend/math-planet/.idea
+Frontend/math-planet/.project
+Frontend/math-planet/.classpath
+Frontend/math-planet/.c9/
+Frontend/math-planet/*.launch
+Frontend/math-planet/.settings/
+Frontend/math-planet/*.sublime-workspace
+
+# IDE - VSCode
+Frontend/math-planet/.vscode/*
+Frontend/math-planet/!.vscode/settings.json
+Frontend/math-planet/!.vscode/tasks.json
+Frontend/math-planet/!.vscode/launch.json
+Frontend/math-planet/!.vscode/extensions.json
+Frontend/math-planet/.history/*
+
+# misc
+Frontend/math-planet/.sass-cache
+Frontend/math-planet/connect.lock
+Frontend/math-planet/coverage
+Frontend/math-planet/libpeerconnection.log
+Frontend/math-planet/npm-debug.log
+Frontend/math-planet/yarn-error.log
+Frontend/math-planet/testem.log
+Frontend/math-planet/typings
+
+# System Files
+Frontend/math-planet/.DS_Store
+Frontend/math-planetThumbs.db

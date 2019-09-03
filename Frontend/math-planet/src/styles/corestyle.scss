@@ -1,0 +1,388 @@
+@import './styles/color.scss';
+
+// Paddding
+
+$p: p !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$p}-#{$x1} {
+		padding-top: 0px + $x1 !important;
+		padding-bottom: 0px + $x1 !important;
+		padding-left: 0px + $x1 !important;
+		padding-right: 0px + $x1 !important;
+	}
+}
+
+$pt: pt !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$pt}-#{$x1} {
+		padding-top: 0px + $x1 !important;
+	}
+}
+
+$pb: pb !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$pb}-#{$x1} {
+		padding-bottom: 0px + $x1 !important;
+	}
+}
+
+$pl: pl !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$pl}-#{$x1} {
+		padding-left: 0px + $x1 !important;
+	}
+}
+
+$pr: pr !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$pr}-#{$x1} {
+		padding-right: 0px + $x1 !important;
+	}
+}
+
+$px: px !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$px}-#{$x1} {
+		padding-left: 0px + $x1 !important;
+		padding-right: 0px + $x1 !important;
+	}
+}
+
+$py: py !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$py}-#{$x1} {
+		padding-top: 0px + $x1 !important;
+		padding-bottom: 0px + $x1 !important;
+	}
+}
+
+// Margin
+
+$m: m !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$m}-#{$x1} {
+		margin-top: 0px + $x1 !important;
+		margin-bottom: 0px + $x1 !important;
+		margin-left: 0px + $x1 !important;
+		margin-right: 0px + $x1 !important;
+	}
+}
+
+$mt: mt !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$mt}-#{$x1} {
+		margin-top: 0px + $x1 !important;
+	}
+}
+
+$mb: mb !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$mb}-#{$x1} {
+		margin-bottom: 0px + $x1 !important;
+	}
+}
+
+$ml: ml !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$ml}-#{$x1} {
+		margin-left: 0px + $x1 !important;
+	}
+}
+
+$mr: mr !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$mr}-#{$x1} {
+		margin-right: 0px + $x1 !important;
+	}
+}
+
+$mx: mx !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$mx}-#{$x1} {
+		margin-left: 0px + $x1 !important;
+		margin-right: 0px + $x1 !important;
+	}
+}
+
+$my: my !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$my}-#{$x1} {
+		margin-top: 0px + $x1 !important;
+		margin-bottom: 0px + $x1 !important;
+	}
+}
+
+//Font size
+
+$font-size: font-size !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$font-size}-#{$x1} {
+		font-size: 0px + $x1 !important;
+	}
+}
+
+// width
+
+$w: w !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$w}-#{$x1} {
+		width: 0px + $x1 !important;
+	}
+}
+
+// height
+
+$h: h !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$h}-#{$x1} {
+		height: 0px + $x1 !important;
+	}
+}
+
+// width percentage
+$w: w !default;
+$p: p !default;
+$x1: 0;
+@while $x1 < 102 {
+	$x1: $x1 + 2;
+	.#{$w}-#{$x1}-#{$p} {
+		width: 0% + $x1 !important;
+	}
+}
+
+// height percentage
+$h: h !default;
+$p: p !default;
+$x1: 0;
+@while $x1 < 102 {
+	$x1: $x1 + 1;
+	.#{$h}-#{$x1}-#{$p} {
+		height: 0% + $x1 !important;
+	}
+}
+
+//margin-percentage
+
+$ml: ml !default;
+$p: p !default;
+$x1: 0;
+@while $x1 < 102 {
+	$x1: $x1 + 1;
+	.#{$ml}-#{$x1}-#{$p} {
+		margin-left: 0% + $x1 !important;
+	}
+}
+
+$mr: mr !default;
+$p: p !default;
+$x1: 0;
+@while $x1 < 102 {
+	$x1: $x1 + 1;
+	.#{$mr}-#{$x1}-#{$p} {
+		margin-right: 0% + $x1 !important;
+	}
+}
+
+$mt: mt !default;
+$p: p !default;
+$x1: 0;
+@while $x1 < 102 {
+	$x1: $x1 + 1;
+	.#{$mt}-#{$x1}-#{$p} {
+		margin-top: 0% + $x1 !important;
+	}
+}
+
+$mb: mb !default;
+$p: p !default;
+$x1: 0;
+@while $x1 < 102 {
+	$x1: $x1 + 1;
+	.#{$mb}-#{$x1}-#{$p} {
+		margin-bottom: 0% + $x1 !important;
+	}
+}
+
+// border radius
+
+$border-radius: border-radius !default;
+$x1: 0;
+@while $x1 < 800 {
+	$x1: $x1 + 2;
+	.#{$border-radius}-#{$x1} {
+		border-radius: 0px + $x1 !important;
+	}
+}
+
+$border-radius: border-radius !default;
+$x1: 0;
+@while $x1 < 100 {
+	$x1: $x1 + 1;
+	.#{$border-radius}-#{$x1}-p {
+		border-radius: 0% + $x1 !important;
+	}
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.primary-background {
+	background: $primary-color !important;
+}
+.primary-text-color {
+	color: $primary-color !important;
+}
+
+.secondary-background {
+	background: $secondary-color !important;
+}
+.secondary-text-color {
+	color: $secondary-color !important;
+}
+
+.third-background {
+	background: $third-color !important;
+}
+.third-text-color {
+	color: $third-color !important;
+}
+.accepted-color {
+	color: $accepted-color !important;
+}
+.rejected-color {
+	color: $rejected-color !important;
+}
+
+.white-color-background {
+	background: $white-color;
+}
+.white-color-foreground {
+	color: $white-color;
+}
+.black-color-background {
+	background: $black-color;
+}
+.black-color-foreground {
+	color: $black-color;
+}
+
+.header-1 {
+	font-size: 40px;
+	color: $primary-color;
+}
+
+.header-2 {
+	font-size: 24px;
+	color: $secondary-color;
+}
+
+.header-3 {
+	font-size: 20px;
+}
+
+.header-4 {
+	font-size: 16px;
+}
+
+.text-align-center {
+	text-align: center;
+}
+
+.margin-auto {
+	margin: auto;
+}
+
+//International phone number
+// international-phone-number {
+// 	.input-group {
+// 		border: 1px solid #ced4da;
+// 		border-radius: 6px;
+// 		height: 100%;
+// 		// max-width: 200px ;
+// 		max-width: 100% !important;
+// 		min-width: 200px ;
+// 	}
+// 	.input-group .input-group-addon .dropdown {
+// 		height: 100%;
+// 	}
+// 	.input-group .input-group-addon .dropdown .dropbtn {
+// 		padding-top: 12px;
+// 		padding-bottom: 12px;
+// 		padding-left: 12px;
+// 		padding-right: 0px;
+// 		height: 100%;
+// 	}
+// 	.input-group .input-group-addon .dropdown .dropbtn .arrow-down {
+// 		margin: 8px;
+// 	}
+// 	.form-control {
+//     border: none;
+// 	padding-left: 8px;
+// 	font-size:14px;
+// 	}
+// }
+
+// mat snackbar
+.recovery-snackbar {
+	text-align: center !important;
+	background: white !important;
+	min-width: 250px !important;
+	min-height: 64px !important;
+	font-size: 16px !important;
+	color: black !important;
+}
+
+.default-snackbar {
+	text-align: center !important;
+	background: white !important;
+	min-width: 250px !important;
+	min-height: 64px !important;
+	font-size: 16px !important;
+	color: black !important;
+}
+*:focus {
+	outline: 0 !important;
+}
+
+.profile-picture-border {
+	border: 5px solid white;
+}
+.active {
+	background: $primary-color !important;
+	color: $white-color !important;
+}

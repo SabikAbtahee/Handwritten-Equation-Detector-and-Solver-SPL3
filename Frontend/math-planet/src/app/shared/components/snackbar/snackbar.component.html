@@ -1,0 +1,23 @@
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="12px" class="h-100-p">
+  <div>
+    {{data.message}}
+
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center" [ngSwitch]="data.isAccepted">
+    <div *ngSwitchCase=true>
+        <i class="material-icons-outlined accepted-color">
+            check_circle
+          </i>
+    </div>
+    <div *ngSwitchCase=false>
+        <i class="material-icons-outlined rejected-color">
+            error_outline
+          </i>
+    </div>
+    <div *ngSwitchCase='default'>
+    </div>
+    
+  </div>
+
+
+</div>

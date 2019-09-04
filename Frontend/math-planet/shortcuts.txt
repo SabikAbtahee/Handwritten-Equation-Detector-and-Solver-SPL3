@@ -1,0 +1,127 @@
+1. Create an Angular project -
+    ng new projectname 
+
+2. Install Angular Material
+    npm install --save @angular/material @angular/cdk @angular/animations
+
+3. Add angular material
+    ng add @angular/material
+
+4. Generate module-
+    ng g m modulename
+
+5. Generate component
+    ng g c componentname
+
+6. Generate Services
+    ng g s servicename
+
+7. enum for constant objects
+
+8. default constant.ts for constant varibles all over the app
+
+9. Interface writing
+    export interface interfacename {
+    name: string,
+    url:string
+    }
+
+10. Sass loop (make sure to create project with scss otherwise it needs to be migrated)
+        $pt: pt !default;
+        $x1: 0;
+        @while $x1 < 100 {
+        $x1: $x1 + 2;
+            .#{$pt}-#{$x1} {
+                padding-top: 0px + $x1 !important;
+            }
+        }
+
+
+11. Flex layout module
+ npm install @angular/flex-layout@7.0.0-beta.24
+import { FlexLayoutModule } from '@angular/flex-layout';
+…
+@NgModule({
+ …
+ imports: [ FlexLayoutModule ],
+ …
+});
+
+12. Create a new project in firebase and select webapp to get configuration
+
+13. Go to environment.ts and environment.prod.ts file and paste the firebase configuration 
+    export const environment = {
+    production: false,
+    firebase:{
+     apiKey: "adsfasdf",
+     authDomain: "asdfasdf",
+     databaseURL: "asdfasdf",
+     projectId: "asdfasdf",
+     storageBucket: "",
+     messagingSenderId: "asdfasdf",
+     appId: "1:asdf:web:asdfasdf"
+     }
+    };
+
+11. Install angular fire and firebase
+npm install firebase @angular/fire --save
+
+12. Best to be updated see the link to get angularfire2
+https://github.com/angular/angularfire2
+
+13. In App.module import AngularFireModule
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from '../environments/environment';
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase)
+  ],
+  declarations: [ AppComponent ],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule {}
+
+14. Also import the following modules in 
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import {AngularFireDatabaseModule} from '@angular/fire/database';
+15. Adding a custom font
+@font-face {
+font-family: 'DIN-Regular';
+src: url('/assets/fonts/DIN-Regular/DIN-Regular.eot');
+src: url('/assets/fonts/DIN-Regular/DIN-Regular.eot?#iefix')
+format('embedded-opentype'),
+url('/assets/fonts/DIN-Regular/DIN-Regular.woff2') format('woff2'),
+url('/assets/fonts/DIN-Regular/DIN-Regular.woff') format('woff'),
+url('/assets/fonts/DIN-Regular/DIN-Regular.ttf') format('truetype'),
+url('/assets/fonts/DIN-Regular/DIN-Regular.svg') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+16. Install and set the fonts in the assets directory as given above then in styles.css add 
+@import '~@angular/material/theming';
+$custom-typography: mat-typography-config(
+$font-family: 'DIN-Regular'
+);
+@include mat-core($custom-typography);
+17. and in body write 
+<body class="mat-typography">
+<app-root-default></app-root-default>
+</body>
+18. Install firebase-tools for deployment
+npm install -g firebase-tools
+19 firebase login
+20. firebase init
+21. in firebase.json
+
+{
+"hosting": {
+"site": "giantsquid",
+"public": "dist",
+}
+}
+22. Remember output path in angular.json and firebase deploy dist or dist/project

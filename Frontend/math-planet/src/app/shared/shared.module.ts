@@ -8,18 +8,17 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatCardModule, MatFormFieldModule, MatInputModule, MatDividerModule, MatProgressBarModule, MatSnackBarModule } from '@angular/material';
-// import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
-// import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { SharedService } from './services/shared.service';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-
+import { DropzoneDirective } from './directives/dropzone.directive';
 @NgModule({
-  declarations: [],
+  declarations: [SnackbarComponent, DropzoneDirective],
   imports: [
-    CommonModule,
     MatToolbarModule,
     MatIconModule,
     CommonModule,
@@ -32,8 +31,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    // InternationalPhoneNumberModule,
-    // NgxIntlTelInputModule,
+    InternationalPhoneNumberModule,
+    NgxIntlTelInputModule,
     AngularFontAwesomeModule,
     MatDividerModule,
     MatProgressBarModule,
@@ -53,8 +52,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    // InternationalPhoneNumberModule,
-    // NgxIntlTelInputModule,
+    InternationalPhoneNumberModule,
+    NgxIntlTelInputModule,
     AngularFontAwesomeModule,
     MatDividerModule,
     MatProgressBarModule,
@@ -63,5 +62,6 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatButtonToggleModule
   ],
   providers:[SharedService],
+  entryComponents:[SnackbarComponent]
 })
 export class SharedModule { }

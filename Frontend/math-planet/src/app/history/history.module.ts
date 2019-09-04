@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HistoryDefaultComponent } from './components/history-default/history-default.component';
+import { RouterModule } from '@angular/router';
+import { historyRoutes } from '../config/routes/lazyloadedRoutes.routes';
 
 @NgModule({
-  declarations: [],
+  declarations: [HistoryDefaultComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule.forChild(historyRoutes)
   ]
 })
 export class HistoryModule { }

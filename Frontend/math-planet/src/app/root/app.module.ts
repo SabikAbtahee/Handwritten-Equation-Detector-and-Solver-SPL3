@@ -16,20 +16,18 @@ import { CoreModule } from '../core/core.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
-// import { AnonymousComponent } from './anonymous/anonymous.component';
+import { AnonymousComponent } from './anonymous/anonymous.component';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
-// import { AuthguardService } from '../core/security-service/authguard.service';
+import { AuthguardService } from '../core/security-service/authguard.service';
 import { RootService } from './services/root.service';
 import { SharedService } from '../shared/services/shared.service';
-// import { AdminguardGuard } from '../core/security-service/adminguard.guard';
-// import { SecurityService } from '../core/security-service/security.service';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 @NgModule({
   declarations: [
     AppComponent,
     NotFoundComponent,
     NavbarComponent,
-    // AnonymousComponent,
+    AnonymousComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,7 +36,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     SharedModule,
     ConfigModule,
     CoreModule,
-    // AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     AngularFirestoreModule,
@@ -52,7 +50,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     MatListModule
 
   ],
-  providers: [RootService,SharedService],
+  providers: [AuthguardService,RootService,SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

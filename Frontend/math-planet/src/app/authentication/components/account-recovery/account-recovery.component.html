@@ -1,3 +1,57 @@
-<p>
-  account-recovery works!
-</p>
+<form [formGroup]="recoveryForm">
+  <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="12px" class="py-124">
+    <div fxLayout="column" fxLayoutAlign="center center" class="margin-auto">
+    <div  class="pb-24 header-1">
+      Welcome to Windmart
+    </div>
+    <div  class="pb-24 header-2">
+      Account Recovery
+    </div>
+  </div>
+    <div fxLayout="column" class="margin-auto w-300" fxLayoutGap="12px">
+        <mat-progress-bar *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center" mode="indeterminate" color='primary' class="m-0"></mat-progress-bar>
+
+      <mat-card class="p-36" [class.mat-elevation-z4]="true">
+        <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="16px">
+          <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="12px">
+            <div fxLayout="row" fxFlexAlign="center" class=" header-4">
+              Type in your email to change password.
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+              <div fxLayout="column" fxLayoutAlign="center" class="mat-icon-for-input">
+                <i class="material-icons-outlined">
+                  email
+                </i>
+              </div>
+              <div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input type="email" matInput placeholder="Type in Email" formControlName="email">
+                  <mat-error *ngIf="recoveryForm.get('email').touched && recoveryForm.get('email').invalid">{{emailError()}}</mat-error>
+                  <!-- <mat-icon matPrefix>sentiment_very_satisfied</mat-icon> -->
+                </mat-form-field>
+              </div>
+            </div>
+
+          </div>
+
+          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+            <button type="submit" (click)='onSubmit()' mat-raised-button color="primary" class="w-240 h-40">Reset my
+              password</button>
+            <!-- <button (click)='routeToSignup()' mat-stroked-button color="primary" class="w-240 h-40">Create New Account</button> -->
+
+          </div>
+        </div>
+      </mat-card>
+      <div fxFlex='15' fxLayout="row" fxFlexAlign="start center">
+          <div>
+            <a (click)='routeToSignin()' class="cursor-pointer secondary-text-color"> &lt; Back to Login</a>
+          </div>
+        </div>
+    </div>
+    
+
+  </div>
+
+
+</form>

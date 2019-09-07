@@ -16,8 +16,9 @@ import { SharedService } from './services/shared.service';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { DropzoneDirective } from './directives/dropzone.directive';
+import { ImageCropperModule } from 'ngx-image-cropper';
 @NgModule({
-  declarations: [SnackbarComponent, DropzoneDirective],
+  declarations: [SnackbarComponent,DropzoneDirective],
   imports: [
     MatToolbarModule,
     MatIconModule,
@@ -38,7 +39,8 @@ import { DropzoneDirective } from './directives/dropzone.directive';
     MatProgressBarModule,
     MatSnackBarModule,
     MatDialogModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    ImageCropperModule
   ],
   exports:[
     MatToolbarModule,
@@ -59,9 +61,12 @@ import { DropzoneDirective } from './directives/dropzone.directive';
     MatProgressBarModule,
     MatSnackBarModule,
     MatDialogModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    ImageCropperModule,
+    DropzoneDirective
   ],
   providers:[SharedService],
-  entryComponents:[SnackbarComponent]
+  entryComponents:[SnackbarComponent],
+  
 })
 export class SharedModule { }

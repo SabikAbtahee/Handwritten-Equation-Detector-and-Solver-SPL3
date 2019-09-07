@@ -1,17 +1,18 @@
 import { Directive,HostListener,Output,EventEmitter, Host } from '@angular/core';
 
 @Directive({
-  selector: '[appDropzone]'
+  selector: '[dropZone]'
 })
 export class DropzoneDirective {
 
-  @Output() dropped = new EventEmitter<FileList>();
+  @Output() dropped = new EventEmitter<File>();
   @Output() hovered = new EventEmitter<boolean>();
   constructor() { }
 
   @HostListener('drop',['$event'])
   onDrop($event){
       $event.preventDefault();
+      debugger;
       this.dropped.emit($event.dataTransfer.files);
       this.hovered.emit(false);
   }

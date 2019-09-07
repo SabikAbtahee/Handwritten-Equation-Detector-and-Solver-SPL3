@@ -1,3 +1,56 @@
-<p>
-  upload works!
-</p>
+<div fxLayout="column" fxLayoutAlign="center  " class='margin-auto p-64' fxLayoutGap="16px">
+  <div>
+    <div>
+      
+      <div *ngIf='!isValid' fxLayout="column" fxLayoutAlign="center center " fxLayoutGap="12px" class='dropzone p-24 margin-auto h-200'
+      dropZone (hovered)="toggleHover($event)" (dropped)="fileChangeEvent($event)" [class.hovering]="isHovering">
+        <div class='font-size-20'>
+          Drag and Drop your picture
+        </div>
+        <div class="file">
+          <label class="file-label">
+            <input class="file-input" type="file" (change)="fileChangeEvent($event)" >
+
+            <span class="file-cta">
+              <span class="file-icon">
+                <i class="fa fa-upload"></i>
+              </span>
+              <span class="file-label">
+                or choose a file…
+              </span>
+            </span>
+          </label>
+          
+        </div>
+      </div>
+
+      <div *ngIf='isValid'  fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+        <div class='w-100-p'>
+        <image-cropper  [imageChangedEvent]="imageChangedEvent" [imageFileChanged]='imageblob' [maintainAspectRatio]="false" [aspectRatio]="1"
+           format="png" (imageCropped)="imageCropped($event)"
+          (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
+        </image-cropper>
+      </div>
+      <div>
+        <img [src]="croppedImage" />
+      </div>
+      </div>
+
+
+    </div>
+    <div></div>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <button mat-stroked-button color="primary" class='w-200'>SOLVE</button>
+  </div>
+
+  <div></div>
+
+  <div></div>
+
+  <div fxLayout="row" fxLayoutAlign="end center">
+    <button mat-raised-button color="primary" class='w-200'>SAVE</button>
+  </div>
+
+</div>

@@ -30,6 +30,10 @@ export class UtilityService {
 		this.angularfireauth.auth.currentUser.sendEmailVerification();
 
 	}
+
+	ifFileImage(file){
+		return file && file['type'].split('/')[0] === 'image';
+	}
 }
 
 export class ErrorStateMatcherForsignUppage implements ErrorStateMatcher {

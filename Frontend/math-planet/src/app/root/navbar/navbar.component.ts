@@ -44,8 +44,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.initiateVariables();
 		this.setUsername();
-		this.selectedRow = 1;
-		this.route(defaultConst.sidebar[1].url);
+		this.selectedRow = 0;
+		this.route(defaultConst.sidebar[0].url);
 		// console.log(this.isHandset$.subscribe(res=>console.log(res)));
 		// console.log(this.aut.getCurrentUser());
 	}
@@ -124,6 +124,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
 	route(url) {
 		this.router.navigateByUrl(url);
 		if (url == defaultConst.menu.profile.url) {
+			this.rootService.$menuIndex.next(-1);
+		}
+		if(url == defaultConst.menu.changeAccount.url){
 			this.rootService.$menuIndex.next(-1);
 		}
 	}

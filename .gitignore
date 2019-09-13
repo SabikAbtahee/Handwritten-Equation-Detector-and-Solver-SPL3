@@ -46,3 +46,4 @@ Frontend/math-planet/.DS_Store
 Frontend/math-planetThumbs.db
 
 Backend/Dataset/
+.vscode/*

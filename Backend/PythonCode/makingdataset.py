@@ -62,10 +62,19 @@ def convertToshape(directories):
             whiteImg=proces.makeTextWhite(img) #Converted and made text white
             dilated=proces.dilate(whiteImg) #dilated
             resized=proces.resize(dilated,wid,height) #Resized
-            done=proces.expandShape(resized,2) # wid*height*1 shaped
-            os.mkdir(newPath[index-1]) # new folder
+            done=proces.expandShape(resized,2) # wid*height*1 shaped      
             imagePath=newPath[index-1]+'/'+ y.__str__() + '.png' # image path
             proces.saveNumpyImage(imagePath,done) # Saved Image
             
             
+
+
+
+def createFolders(directories):
+    index=0
+    for folder in directories:
+        index+=1
+        os.mkdir(newPath[index-1]) # new folder
+
+createFolders(paths)
 convertToshape(paths)

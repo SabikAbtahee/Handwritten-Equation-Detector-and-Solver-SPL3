@@ -97,3 +97,7 @@ class ImageConversions:
         dim=(width,height)
         resized = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
         return resized
+
+
+
+        

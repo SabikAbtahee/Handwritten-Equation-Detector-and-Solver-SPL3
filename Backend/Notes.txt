@@ -1,0 +1,38 @@
+1. Different ways to train the model
+    * Use existing from your work where there are train and test folders
+    * Make the color of the text white and make sure they are eroded
+    * only take 0-9,+,x,-,y ---- 14 classes 
+
+2. What can you change loop through kernel_size, dense layer size, dropout rate, activation function and loss function, maxpooling size
+    *activation - relu,sigmoid,softmax,
+    *loss= sparse_categorical_crossentropy,categorical_crossentropy
+    *optimizer = adam,rmsprop
+
+3. Train model with expressions given
+    * () {} [] 0-9 + - sqrt > < =  ----21 classes
+    * int, 
+
+
+4. Avoid 
+    * No need to pickle for now it only make a great hassle
+    * Try to make one model for simple equation 0-9,+,x,-,y ---- 14 classes 
+    * Try one for calculus 0-9,+,-,x,dx,integration
+    * 
+
+
+5. 
+- 33997 7000 1000
++ 25112
+= 13104
+0 12837
+1 26520
+2 26141
+3 10909
+4 13238
+5 9000
+6 9036
+7 9174
+8 8919
+9 9686
+x 26594
+y 9340

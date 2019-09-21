@@ -8,7 +8,10 @@ class ImageConversions:
     def openImageUsingCV(self,path):
         img = cv2.imread(path)
         return img
-
+    def openImageUsingCVGrayScale(self,path):
+        img = cv2.imread(path)
+        imgray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+        return imgray
     def saveNumpyImage(self,path,numImg):
         cv2.imwrite(path, numImg) 
 
@@ -62,7 +65,10 @@ class ImageConversions:
         return gray
 
     def convertOnlyto255and0(self,img): # returns image to 0 and 255 image
-        grayImage=self.convertToGrayScale(img)
+        if(self.isImageGrayScale(img)==False):
+            grayImage=self.convertToGrayScale(img)
+        else:
+            grayImage=img
         (thresh, blackAndWhiteImage) = cv2.threshold(grayImage, 127, 255, cv2.THRESH_BINARY)
         
 
@@ -70,7 +76,7 @@ class ImageConversions:
     
     def makeTextWhite(self,img):
         bwImg=self.convertOnlyto255and0(img)
-        self.printInformation(bwImg)
+        # self.printInformation(bwImg)
         if(self.isTextWhite(bwImg)==False):
             whiteTextImage=self.pixelInversion0to255(bwImg)
         else:
@@ -96,3 +102,9 @@ class ImageConversions:
         dim=(width,height)
         resized = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
         return resized
+
+    def isImageGrayScale(self,img):
+        if(len(img.shape)<3):
+            return True
+        elif(len(img.shape)==3):
+            return False

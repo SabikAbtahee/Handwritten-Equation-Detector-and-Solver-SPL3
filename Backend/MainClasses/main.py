@@ -1,7 +1,6 @@
 from modelMaking import ModelMaking
 
-
-def main():
+def makemodel():
     modelName='EquationModel6.h5'
 
     modelClass = ModelMaking()
@@ -19,5 +18,31 @@ def main():
     model=modelClass.modelConfiguration()
     history=modelClass.compileModel(model,train_generator,validation_generator,modelName)
     modelClass.showChart(history)
+
+
+
+
+
+def process():
+
+def segment():
+
+def predict():
+
+def reconstruct():
+
+
+
+
+
+
+
+
+
+
+
+
+def main():
+    
 if __name__ == '__main__':
     main()

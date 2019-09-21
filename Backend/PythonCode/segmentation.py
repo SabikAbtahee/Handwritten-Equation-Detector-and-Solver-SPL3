@@ -8,7 +8,7 @@ import scipy.misc
 # from scipy.misc import imageio.imwrite
 
 from PIL import Image, ImageDraw
-
+from ImageProcessing import ImageConversions
 equal_path = "./data/annotated_test_Equal/"
 equal_result_path = "./data/annotated_test_Equal_result/"
 equal_boxed_path = "./data/annotated_test_Equal_boxes/"
@@ -234,6 +234,7 @@ def createSymbol(path):
 
 # run the code
 def main():
+    imconv=ImageConversions()
     image_list = glob.glob(equal_path + "*.jpg")
     for im_name in image_list:
         head, tail = os.path.split(im_name)
@@ -242,6 +243,8 @@ def main():
         finalRes = connect(im, rawRes)  # connect i, division mark, equation mark, ellipsis
         
         image_name = os.path.splitext(tail)[0]
+        
+        imconv.plotImageUsingCV(im)
         saveImages(im, finalRes, image_name)
 
 

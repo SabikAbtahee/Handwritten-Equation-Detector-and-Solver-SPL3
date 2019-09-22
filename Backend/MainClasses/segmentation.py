@@ -21,6 +21,7 @@ class Symbol:
     character = ''
     position = -1
     isSquare = False
+    isSupScript = False
     isMinus = False
     isVerticalBar = False
     isDot = False
@@ -45,8 +46,9 @@ class Symbol:
     def hwRatio(self):
         return self.height/self.width
 
-    def setSquare(self):
-        return self.isSquare
+    # def setSquare(self):
+    #     return self.isSquare
+    # def setSupScript(self):
 
     def setMinus(self):  # - in most cases
         if(self.width > 0 and self.height > 0 and (self.width/self.height > 2)):
@@ -74,7 +76,7 @@ class Symbol:
 
     def setCenter(self):
         self.centerX = int(self.x + (self.width/2))
-        self.centerY = int(self.y - (self.height/2))
+        self.centerY = int(self.y + (self.height/2))
 
     def getCenter(self):
         return (self.centerX, self.centerY)
@@ -92,12 +94,34 @@ def startSegmentation(preprocessedImage):
 
 
 def checkEqual():
-    for i in AllSymbols:
-        print(i.info())
+    for i in range(len(AllSymbols)-1):
+        # print(AllSymbols[i].info())
+        if(AllSymbols[i].isMinus == True and AllSymbols[i+1].isMinus == True):
+            AllSymbols[i].character = '='
+            AllSymbols[i+1].position = -1
+            AllSymbols[i].x = min(AllSymbols[i].x, AllSymbols[i+1].x)
+            AllSymbols[i].y = min(
+                (AllSymbols[i].y), (AllSymbols[i+1].y))
+            AllSymbols[i].height = max(((AllSymbols[i+1].y + AllSymbols[i+1].height) - AllSymbols[i].y),
+                                       (AllSymbols[i].y-(AllSymbols[i+1].y + AllSymbols[i+1].height)))
+            AllSymbols[i].width = max(AllSymbols[i+1].x+AllSymbols[i+1].width -
+                                      AllSymbols[i].x, AllSymbols[i].x-AllSymbols[i+1].x+AllSymbols[i+1].width)
+            AllSymbols[i].setCenter()
+            print(AllSymbols[i].info())
+
 
 def checkSquare():
-    for i in AllSymbols:
-        print(i.info())
+    for i in range(len(AllSymbols)-1):
+        wid = float(AllSymbols[i].height/2)
+
+        diff = AllSymbols[i].centerY-AllSymbols[i+1].centerY
+        if(diff > wid and AllSymbols[i].isMinus == False and AllSymbols[i].isDot == False):
+            # print('square hobe',AllSymbols[i+1].position)
+            AllSymbols[i+1].isSquare = True
+
+        diff = AllSymbols[i+1].centerY-AllSymbols[i].centerY
+        if(diff > wid and AllSymbols[i].isMinus == False and AllSymbols[i].isDot == False):
+            AllSymbols[i+1].isSupScript = True
 
 
 def makeSymbols(results):
@@ -130,5 +154,5 @@ def getPositionInformationOfContours(img, contours):
         x, y, w, h = cv2.boundingRect(cnt)
 
         res.append([(x, y), (x+w, y+h)])
-    print(len(contours))
+    # print(len(contours))
     return res

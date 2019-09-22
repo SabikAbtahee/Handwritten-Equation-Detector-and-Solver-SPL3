@@ -1,9 +1,10 @@
 # from modelMaking import ModelMaking
 from imageProcessing import ImageConversions
-from segmentation import Symbol,startSegmentation
+from segmentation import Symbol, startSegmentation
 
-imagePath='../Equations/equ2.jpg'  # later it will be used as rest api or not at all
-imgConversions=ImageConversions()
+# later it will be used as rest api or not at all
+imagePath = '../Equations/equ2.jpg'
+imgConversions = ImageConversions()
 
 
 def makemodel():
@@ -24,33 +25,47 @@ def makemodel():
     history = modelClass.compileModel(
         model, train_generator, validation_generator, modelName)
     modelClass.showChart(history)
-    
+
 
 def process(imageofequation):
-    
-    blackAndWhite=imgConversions.convertOnlyto255and0(imageofequation)
-    eroded=imgConversions.erode(blackAndWhite)
-    textWhite=imgConversions.makeTextWhite(eroded)
+
+    blackAndWhite = imgConversions.convertOnlyto255and0(imageofequation)
+    eroded = imgConversions.erode(blackAndWhite)
+    textWhite = imgConversions.makeTextWhite(eroded)
     return textWhite
-    
+
 
 def segment(preprocessedImage):
-    symbols=startSegmentation(preprocessedImage)
+    symbols = startSegmentation(preprocessedImage)
     return symbols
 
-def predict():
-    pass
+
+def predict(preprocessedImage, symbols):
+    # crop=imgConversions.cropImage(preprocessedImage,75,106,1021,1137)
+    # imgConversions.plotImageUsingCV(crop)
+    symbols.sort(key=lambda x: x.position, reverse=False)
+    for i in range(len(symbols)):
+
+        crop = imgConversions.cropImage(preprocessedImage, symbols[i].y, (
+            symbols[i].y+symbols[i].height), symbols[i].x, (symbols[i].x+symbols[i].width))
+
+        imgConversions.plotImageUsingCV(crop)
+
+        # print(i.info())
+
 
 def reconstruct():
     pass
 
-def main(): # the rest api will send a image until then work with a single path image object
-    symbols=[]
-    imageObject=imgConversions.openImageUsingCV(imagePath)
+
+def main():  # the rest api will send a image until then work with a single path image object
+
+    imageObject = imgConversions.openImageUsingCV(imagePath)
     if imageObject is not None:
         print('Image object detected')
-        preprocessedImage=process(imageObject)
-        symbols=segment(preprocessedImage)
+        preprocessedImage = process(imageObject)
+        symbols = segment(preprocessedImage)
+        predict(preprocessedImage, symbols)
 
 
 if __name__ == '__main__':

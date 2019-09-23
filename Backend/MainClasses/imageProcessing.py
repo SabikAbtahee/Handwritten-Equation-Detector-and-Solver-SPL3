@@ -104,6 +104,12 @@ class ImageConversions:
         erosion = cv2.erode(img, kernel, iterations=1)
         return erosion
 
+    def erodewithParam(self, img,k1,k2,iter): # makes the text thinner
+        kernel = np.ones((k1, k2), np.uint8)
+        opening = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
+        erosion = cv2.erode(img, kernel, iterations=iter)
+        return erosion
+
     def resize(self, img, width, height):
         dim = (width, height)
         if(img.shape[0]<height or img.shape[1]<width):
@@ -116,8 +122,32 @@ class ImageConversions:
         if(len(img.shape) < 3):
             return True
         elif(len(img.shape) == 3):
+            if(img.shape[2]!=3):
+                return True
             return False
 
     def cropImage(self,img,ystart,yend,xstart,xend): # first two is the y axis range counts from top second two is x axis range counts from left
         croppedImage = img[ystart:yend,xstart:xend]
         return croppedImage
+
+    def makeBorder(self,img):
+        h=img.shape[0]
+        w=img.shape[1]
+        if(h>w):
+            bordersizelr=int((h-w)/2)+4
+            bordersizetb=4
+        else:
+            bordersizetb=int((w-h)/2)+4
+            bordersizelr=4
+        # bordersize=size
+        borderImage = cv2.copyMakeBorder(
+            img,
+            top=bordersizetb,
+            bottom=bordersizetb,
+            left=bordersizelr,
+            right=bordersizelr,
+            borderType=cv2.BORDER_CONSTANT,
+            value=[0, 0, 0]
+        )
+        # self.plotImageUsingCV(border)
+        return borderImage

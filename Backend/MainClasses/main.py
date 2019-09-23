@@ -1,9 +1,12 @@
 # from modelMaking import ModelMaking
 from imageProcessing import ImageConversions
 from segmentation import Symbol, startSegmentation
-
+from reconstruction import reconstruct
+import os
+import sys
 # later it will be used as rest api or not at all
-imagePath = '../Equations/equ2.jpg'
+imagePath = '../Equations/Equ14.jpg'
+allimage = '../Equations/'
 imgConversions = ImageConversions()
 
 
@@ -27,45 +30,58 @@ def makemodel():
     modelClass.showChart(history)
 
 
+# removes noise and gives back a black and white grayscale image where the text is white
 def process(imageofequation):
 
-    blackAndWhite = imgConversions.convertOnlyto255and0(imageofequation)
-    eroded = imgConversions.erode(blackAndWhite)
-    textWhite = imgConversions.makeTextWhite(eroded)
-    return textWhite
+    img = imgConversions.convertOnlyto255and0(imageofequation)
+    # imgConversions.plotImageUsingCV(img)
+    img = imgConversions.erode(img)
+    # imgConversions.plotImageUsingCV(img)
+    img = imgConversions.makeTextWhite(img)
+    # imgConversions.plotImageUsingCV(img)
+    return img
 
 
-def segment(preprocessedImage):
+def segment(preprocessedImage):  # does initial segmentation and gives out a list of symbol objects
     symbols = startSegmentation(preprocessedImage)
     return symbols
 
 
-def predict(preprocessedImage, symbols):
+def reconstruction(preprocessedImage, symbols):
     # crop=imgConversions.cropImage(preprocessedImage,75,106,1021,1137)
     # imgConversions.plotImageUsingCV(crop)
-    symbols.sort(key=lambda x: x.position, reverse=False)
-    for i in range(len(symbols)):
+    equation = reconstruct(preprocessedImage, symbols)
+    return equation
 
-        crop = imgConversions.cropImage(preprocessedImage, symbols[i].y, (
-            symbols[i].y+symbols[i].height), symbols[i].x, (symbols[i].x+symbols[i].width))
-
-        imgConversions.plotImageUsingCV(crop)
-
-        # print(i.info())
+    # print(i.info())
 
 
-def reconstruct():
-    pass
+# def reconstruction():
+#     pass
 
 
 def main():  # the rest api will send a image until then work with a single path image object
+    # allpath()
+    runEachFile(imagePath)
 
-    imageObject = imgConversions.openImageUsingCV(imagePath)
+
+def runEachFile(path):
+    imageObject = imgConversions.openImageUsingCV(path)
     if imageObject is not None:
-        print('Image object detected')
-        preprocessedImage = process(imageObject)
-        symbols = segment(preprocessedImage)
-        predict(preprocessedImage, symbols)
+            print('Image object detected')
+            preprocessedImage = process(imageObject)
+            symbols = segment(preprocessedImage)
+            equation = reconstruction(preprocessedImage, symbols)
+            print(equation)
+
+
+def allpath():
+
+    for root, dirs, files in os.walk(allimage):
+        for fname in files:
+            if (fname.endswith('.jpg') or fname.endswith('.png')):
+                path = allimage+fname
+                runEachFile(path)
 
 
 if __name__ == '__main__':

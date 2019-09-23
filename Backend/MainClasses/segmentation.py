@@ -51,7 +51,7 @@ class Symbol:
     # def setSupScript(self):
 
     def setMinus(self):  # - in most cases
-        if(self.width > 0 and self.height > 0 and (self.width/self.height > 2)):
+        if(self.width > 0 and self.height > 0 and (self.width/self.height > 2.5)):
             self.isMinus = True
         else:
             self.isMinus = False
@@ -63,8 +63,11 @@ class Symbol:
             self.isVerticalBar = False
 
     def setDot(self):  # Might change according to test cases
-        if(self.width > 0 and self.height > 0 and (self.height*self.width < 400)):
-            self.isDot = True
+        if(self.width > 0 and self.height > 0 and (self.height*self.width < 100)):
+            if(self.isMinus==True):
+                self.isDot = False
+            else:
+                self.isDot=True
         else:
             self.isDot = False
 
@@ -97,6 +100,7 @@ def checkEqual():
     for i in range(len(AllSymbols)-1):
         # print(AllSymbols[i].info())
         if(AllSymbols[i].isMinus == True and AllSymbols[i+1].isMinus == True):
+            print(AllSymbols[i].position)
             AllSymbols[i].character = '='
             AllSymbols[i+1].position = -1
             AllSymbols[i].x = min(AllSymbols[i].x, AllSymbols[i+1].x)
@@ -107,19 +111,21 @@ def checkEqual():
             AllSymbols[i].width = max(AllSymbols[i+1].x+AllSymbols[i+1].width -
                                       AllSymbols[i].x, AllSymbols[i].x-AllSymbols[i+1].x+AllSymbols[i+1].width)
             AllSymbols[i].setCenter()
-            print(AllSymbols[i].info())
+            # print(AllSymbols[i].info())
 
 
 def checkSquare():
     for i in range(len(AllSymbols)-1):
-        wid = float(AllSymbols[i].height/2)
+        wid = float(AllSymbols[i].height/2.2)
 
         diff = AllSymbols[i].centerY-AllSymbols[i+1].centerY
+        # print(diff,wid)
         if(diff > wid and AllSymbols[i].isMinus == False and AllSymbols[i].isDot == False):
             # print('square hobe',AllSymbols[i+1].position)
             AllSymbols[i+1].isSquare = True
 
         diff = AllSymbols[i+1].centerY-AllSymbols[i].centerY
+        # print(diff,wid)
         if(diff > wid and AllSymbols[i].isMinus == False and AllSymbols[i].isDot == False):
             AllSymbols[i+1].isSupScript = True
 
@@ -149,10 +155,15 @@ def getContours(img):
 
 
 def getPositionInformationOfContours(img, contours):
+    # c=img
+    # c=ImageConversions().graytobgr(c)
     res = []
     for cnt in contours:
         x, y, w, h = cv2.boundingRect(cnt)
-
+        # cv2.rectangle(c,(x,y),(x+w,y+h),(0,255,240),2)
+        # print(x,y,w,h)
         res.append([(x, y), (x+w, y+h)])
     # print(len(contours))
+
+    # ImageConversions().plotImageUsingCV(c)
     return res

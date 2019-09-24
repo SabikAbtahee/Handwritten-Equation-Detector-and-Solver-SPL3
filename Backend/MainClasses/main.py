@@ -5,7 +5,8 @@ from reconstruction import reconstruct
 import os
 import sys
 # later it will be used as rest api or not at all
-imagePath = '../Equations/Equ4.jpg'
+# imagePath = '../Equations/Equ1.jpg'
+imagePath = '../Equations/Equ2Folder/Equ4.jpg'
 allimage = '../Equations/'
 imgConversions = ImageConversions()
 
@@ -35,7 +36,7 @@ def process(img,thresh):
     img = imgConversions.erodewithParam(img,2,2,1)
     # imgConversions.plotImageUsingCV(img)
     img = imgConversions.makeTextWhite(img)
-    # imgConversions.plotImageUsingCV(img)
+    imgConversions.plotImageUsingCV(img)
     return img
 
 

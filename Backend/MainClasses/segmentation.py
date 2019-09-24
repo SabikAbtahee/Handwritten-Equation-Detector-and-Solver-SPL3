@@ -40,7 +40,7 @@ class Symbol:
     #     return self.isSquare
     # def setSupScript(self):
     def setMinus(self):  # - in most cases
-        if(self.width > 0 and self.height > 0 and (self.width/self.height > 2.5)):
+        if(self.width > 0 and self.height > 0 and (self.width/self.height > 2.3)):
             self.isMinus = True
         else:
             self.isMinus = False
@@ -94,9 +94,11 @@ def checkEqual():
             # print(AllSymbols[i].info())
 def checkSquare():
     for i in range(len(AllSymbols)-1):
-        wid = float(AllSymbols[i].height/2.2)
+        wid = float(AllSymbols[i].height/2.25)
         diff = AllSymbols[i].centerY-AllSymbols[i+1].centerY
-        # print(diff,wid)
+        # print(AllSymbols[i].position,diff,wid)
+        # print(AllSymbols[i].isMinus)
+        # print(AllSymbols[i].isDot)
         if(diff > wid and AllSymbols[i].isMinus == False and AllSymbols[i].isDot == False):
             # print('square hobe',AllSymbols[i+1].position)
             AllSymbols[i+1].isSquare = True

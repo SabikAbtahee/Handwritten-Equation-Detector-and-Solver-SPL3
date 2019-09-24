@@ -5,7 +5,7 @@ from reconstruction import reconstruct
 import os
 import sys
 # later it will be used as rest api or not at all
-imagePath = '../Equations/Equ9.jpg'
+imagePath = '../Equations/Equ4.jpg'
 allimage = '../Equations/'
 imgConversions = ImageConversions()
 
@@ -31,11 +31,11 @@ def makemodel():
 # removes noise and gives back a black and white grayscale image where the text is white
 def process(img,thresh):
     img = imgConversions.convertOnlyto255and0WithThresh(img,thresh)
-    imgConversions.plotImageUsingCV(img)
+    # imgConversions.plotImageUsingCV(img)
     img = imgConversions.erodewithParam(img,2,2,1)
-    imgConversions.plotImageUsingCV(img)
+    # imgConversions.plotImageUsingCV(img)
     img = imgConversions.makeTextWhite(img)
-    imgConversions.plotImageUsingCV(img)
+    # imgConversions.plotImageUsingCV(img)
     return img
 
 
@@ -64,10 +64,10 @@ def runEachFile(path):
     imageObject = imgConversions.openImageUsingCV(path)
     if imageObject is not None:
             while(True):
-                print('Image object detected')
+                # print('Image object detected')
                 preprocessedImage = process(imageObject,thresh)
                 symbols = segment(preprocessedImage)
-                print(len(symbols))
+                # print(len(symbols))
                 if(len(symbols)>30):
                     thresh-=10
                 else:

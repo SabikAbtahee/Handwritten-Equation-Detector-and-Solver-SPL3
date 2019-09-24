@@ -138,15 +138,15 @@ class ImageConversions:
         croppedImage = img[ystart:yend,xstart:xend]
         return croppedImage
     
-    def makeBorder(self,img):
+    def makeBorder(self,img,fixedWidth):
         h=img.shape[0]
         w=img.shape[1]
         if(h>w):
-            bordersizelr=int((h-w)/2)+4
-            bordersizetb=4
+            bordersizelr=int((h-w)/2)+fixedWidth
+            bordersizetb=fixedWidth
         else:
-            bordersizetb=int((w-h)/2)+4
-            bordersizelr=4
+            bordersizetb=int((w-h)/2)+fixedWidth
+            bordersizelr=fixedWidth
         # bordersize=size
         borderImage = cv2.copyMakeBorder(
             img,

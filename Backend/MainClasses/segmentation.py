@@ -4,19 +4,13 @@ import cv2
 import glob
 import os
 import scipy.misc
-
 # from scipy.misc import imageio.imwrite
-
 from PIL import Image, ImageDraw
 from imageProcessing import ImageConversions
-
 equal_path = '../Equations/'
 equal_result_path = '../Equations/res/'
 equal_boxed_path = '../Equations/boxed/'
-
 AllSymbols = []  # Global list of objects for symbols
-
-
 class Symbol:
     character = ''
     position = -1
@@ -29,9 +23,7 @@ class Symbol:
     width = 1
     (centerX, centerY) = (1, 1)
     (x, y) = (1, 1)
-
     def info(self):
-
         print('Character ', self.character)
         print('position ', self.position)
         print('isSquare ', self.isSquare)
@@ -42,65 +34,53 @@ class Symbol:
         print('width ', self.width)
         print('Center x & y ', self.centerX, self.centerY)
         print('x & y ', self.x, self.y)
-
     def hwRatio(self):
         return self.height/self.width
-
     # def setSquare(self):
     #     return self.isSquare
     # def setSupScript(self):
-
     def setMinus(self):  # - in most cases
         if(self.width > 0 and self.height > 0 and (self.width/self.height > 2.5)):
             self.isMinus = True
         else:
             self.isMinus = False
-
     def setVerticalBar(self):  # 1 in most cases
         if(self.width > 0 and self.height > 0 and (self.height/self.width > 2)):
             self.isVerticalBar = True
         else:
             self.isVerticalBar = False
-
     def setDot(self):  # Might change according to test cases
-        if(self.width > 0 and self.height > 0 and (self.height*self.width < 100)):
+        # print(self.getArea())
+        if(self.width > 0 and self.height > 0 and (self.height*self.width < 300)):
             if(self.isMinus==True):
                 self.isDot = False
             else:
                 self.isDot=True
         else:
             self.isDot = False
-
     def getArea(self):
         return self.height*self.width
-
     def getXY(self):
         return (self.x, self.y)
-
     def setCenter(self):
         self.centerX = int(self.x + (self.width/2))
         self.centerY = int(self.y + (self.height/2))
-
     def getCenter(self):
         return (self.centerX, self.centerY)
-
-
 def startSegmentation(preprocessedImage):
     contours = getContours(preprocessedImage)
     res = getPositionInformationOfContours(preprocessedImage, contours)
     res.sort()
+    AllSymbols.clear()
     makeSymbols(res)
     checkSquare()
     checkEqual()
-
     return AllSymbols
-
-
 def checkEqual():
     for i in range(len(AllSymbols)-1):
         # print(AllSymbols[i].info())
         if(AllSymbols[i].isMinus == True and AllSymbols[i+1].isMinus == True):
-            print(AllSymbols[i].position)
+            # print(AllSymbols[i].position)
             AllSymbols[i].character = '='
             AllSymbols[i+1].position = -1
             AllSymbols[i].x = min(AllSymbols[i].x, AllSymbols[i+1].x)
@@ -112,26 +92,19 @@ def checkEqual():
                                       AllSymbols[i].x, AllSymbols[i].x-AllSymbols[i+1].x+AllSymbols[i+1].width)
             AllSymbols[i].setCenter()
             # print(AllSymbols[i].info())
-
-
 def checkSquare():
     for i in range(len(AllSymbols)-1):
         wid = float(AllSymbols[i].height/2.2)
-
         diff = AllSymbols[i].centerY-AllSymbols[i+1].centerY
         # print(diff,wid)
         if(diff > wid and AllSymbols[i].isMinus == False and AllSymbols[i].isDot == False):
             # print('square hobe',AllSymbols[i+1].position)
             AllSymbols[i+1].isSquare = True
-
         diff = AllSymbols[i+1].centerY-AllSymbols[i].centerY
         # print(diff,wid)
         if(diff > wid and AllSymbols[i].isMinus == False and AllSymbols[i].isDot == False):
             AllSymbols[i+1].isSupScript = True
-
-
 def makeSymbols(results):
-
     count = 0
     for i in results:
         sym = Symbol()
@@ -146,14 +119,10 @@ def makeSymbols(results):
         sym.setDot()
         sym.setVerticalBar()
         AllSymbols.append(sym)
-
-
 def getContours(img):
     contours, hierarchy = cv2.findContours(
         img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     return contours
-
-
 def getPositionInformationOfContours(img, contours):
     # c=img
     # c=ImageConversions().graytobgr(c)
@@ -164,6 +133,5 @@ def getPositionInformationOfContours(img, contours):
         # print(x,y,w,h)
         res.append([(x, y), (x+w, y+h)])
     # print(len(contours))
-
     # ImageConversions().plotImageUsingCV(c)
     return res

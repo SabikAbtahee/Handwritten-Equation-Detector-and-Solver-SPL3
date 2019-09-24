@@ -5,14 +5,13 @@ from reconstruction import reconstruct
 import os
 import sys
 # later it will be used as rest api or not at all
-imagePath = '../Equations/Equ14.jpg'
+imagePath = '../Equations/Equ9.jpg'
 allimage = '../Equations/'
 imgConversions = ImageConversions()
 
 
 def makemodel():
     modelName = 'EquationModel6.h5'
-
     modelClass = ModelMaking()
     modelClass.kernel_size = (2, 2)
     modelClass.first_convolutional_layer = 256
@@ -22,7 +21,6 @@ def makemodel():
     modelClass.dropout = 0.3
     modelClass.epochNumber = 5
     modelClass.optimizer = 'rmsprop'
-
     train_generator, validation_generator = modelClass.trainTestGenerator()
     model = modelClass.modelConfiguration()
     history = modelClass.compileModel(
@@ -31,14 +29,13 @@ def makemodel():
 
 
 # removes noise and gives back a black and white grayscale image where the text is white
-def process(imageofequation):
-
-    img = imgConversions.convertOnlyto255and0(imageofequation)
-    # imgConversions.plotImageUsingCV(img)
-    img = imgConversions.erode(img)
-    # imgConversions.plotImageUsingCV(img)
+def process(img,thresh):
+    img = imgConversions.convertOnlyto255and0WithThresh(img,thresh)
+    imgConversions.plotImageUsingCV(img)
+    img = imgConversions.erodewithParam(img,2,2,1)
+    imgConversions.plotImageUsingCV(img)
     img = imgConversions.makeTextWhite(img)
-    # imgConversions.plotImageUsingCV(img)
+    imgConversions.plotImageUsingCV(img)
     return img
 
 
@@ -52,34 +49,38 @@ def reconstruction(preprocessedImage, symbols):
     # imgConversions.plotImageUsingCV(crop)
     equation = reconstruct(preprocessedImage, symbols)
     return equation
-
     # print(i.info())
-
-
 # def reconstruction():
 #     pass
 
 
 def main():  # the rest api will send a image until then work with a single path image object
-    # allpath()
-    runEachFile(imagePath)
+    allpath()
+    # runEachFile(imagePath)
 
 
 def runEachFile(path):
+    thresh=127
     imageObject = imgConversions.openImageUsingCV(path)
     if imageObject is not None:
-            print('Image object detected')
-            preprocessedImage = process(imageObject)
-            symbols = segment(preprocessedImage)
-            equation = reconstruction(preprocessedImage, symbols)
-            print(equation)
+            while(True):
+                print('Image object detected')
+                preprocessedImage = process(imageObject,thresh)
+                symbols = segment(preprocessedImage)
+                print(len(symbols))
+                if(len(symbols)>30):
+                    thresh-=10
+                else:
+                    equation = reconstruction(preprocessedImage, symbols)
+                    print(equation)
+                    break
+
 
 
 def allpath():
-
     for root, dirs, files in os.walk(allimage):
         for fname in files:
-            if (fname.endswith('.jpg') or fname.endswith('.png')):
+            if (fname.endswith('.jpg')):
                 path = allimage+fname
                 runEachFile(path)
 

@@ -52,13 +52,13 @@ class ImageConversions:
         #     print('Pillow object of JPEG file')
         # elif isinstance(obj, PIL.PngImagePlugin.PngImageFile):
         #     print('Pillow object of PNG file')
-
+    
     def pixelInversion0to255(self, img):  # inverts image b - w or w - b
         copyImage = np.copy(img)
         copyImage[img > 175] = 0
         copyImage[img <= 175] = 255
         return copyImage
-
+    
     def isTextWhite(self, img):  # returns true if text white else false
         white = np.sum(img >= 127)
         black = np.sum(img < 127)
@@ -66,12 +66,12 @@ class ImageConversions:
             return False
         else:
             return True
-
+    
     def bgrtogray(self, img):  # returns grayscale image
         if(self.isImageGrayScale(img)==False):
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         return img
-
+    
     def convertOnlyto255and0(self, img):  # returns image to 0 and 255 image
         if(self.isImageGrayScale(img) == False):
             grayImage = self.bgrtogray(img)
@@ -79,9 +79,17 @@ class ImageConversions:
             grayImage = img
         (thresh, blackAndWhiteImage) = cv2.threshold(
             grayImage, 127, 255, cv2.THRESH_BINARY)
-
         return blackAndWhiteImage
 
+    def convertOnlyto255and0WithThresh(self, img,ths):  # returns image to 0 and 255 image
+        if(self.isImageGrayScale(img) == False):
+            grayImage = self.bgrtogray(img)
+        else:
+            grayImage = img
+        (thresh, blackAndWhiteImage) = cv2.threshold(
+            grayImage, ths, 255, cv2.THRESH_BINARY)
+        return blackAndWhiteImage
+    
     def makeTextWhite(self, img): # makes the text white for contour detection
         bwImg = self.convertOnlyto255and0(img)
         if(self.isTextWhite(bwImg) == False):
@@ -90,26 +98,26 @@ class ImageConversions:
             whiteTextImage = bwImg
         inv = self.expandShape(whiteTextImage, 2)
         return inv
-
+    
     def dilate(self, img):  #Makes the text thicker
         kernel = np.ones((5, 5), np.uint8)
         # erosion = cv2.erode(img,kernel,iterations = 1)
         opening = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
         dilation = cv2.dilate(img, kernel, iterations=1)
         return dilation
-
+    
     def erode(self, img): # makes the text thinner
         kernel = np.ones((5, 5), np.uint8)
         opening = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
         erosion = cv2.erode(img, kernel, iterations=1)
         return erosion
-
+    
     def erodewithParam(self, img,k1,k2,iter): # makes the text thinner
         kernel = np.ones((k1, k2), np.uint8)
         opening = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
         erosion = cv2.erode(img, kernel, iterations=iter)
         return erosion
-
+    
     def resize(self, img, width, height):
         dim = (width, height)
         if(img.shape[0]<height or img.shape[1]<width):
@@ -117,7 +125,7 @@ class ImageConversions:
         else:
             resized = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
         return resized
-
+    
     def isImageGrayScale(self, img):
         if(len(img.shape) < 3):
             return True
@@ -125,11 +133,11 @@ class ImageConversions:
             if(img.shape[2]!=3):
                 return True
             return False
-
+    
     def cropImage(self,img,ystart,yend,xstart,xend): # first two is the y axis range counts from top second two is x axis range counts from left
         croppedImage = img[ystart:yend,xstart:xend]
         return croppedImage
-
+    
     def makeBorder(self,img):
         h=img.shape[0]
         w=img.shape[1]

@@ -5,7 +5,8 @@ from keras.preprocessing import image
 from keras.models import Sequential
 labels = ['+', '-', '0', '1', '2', '3', '4',
           '5', '6', '7', '8', '9', '=', 'x', 'y']
-classifier = keras.models.load_model('../Models/EquationModel6.h5')
+# classifier = keras.models.load_model('../Models/EquationModel6.h5')
+classifier = keras.models.load_model('EquationModel10.h5')
 imgConversions = ImageConversions()
 width = 28
 height = 28

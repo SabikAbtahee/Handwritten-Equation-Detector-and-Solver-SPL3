@@ -1,4 +1,4 @@
-# from modelMaking import ModelMaking
+from modelMaking import ModelMaking
 from imageProcessing import ImageConversions
 from segmentation import Symbol, startSegmentation
 from reconstruction import reconstruct
@@ -12,16 +12,16 @@ imgConversions = ImageConversions()
 
 
 def makemodel():
-    modelName = 'EquationModel6.h5'
+    modelName = 'EquationModel9.h5'
     modelClass = ModelMaking()
     modelClass.kernel_size = (2, 2)
-    modelClass.first_convolutional_layer = 256
-    modelClass.second_convolutional_layer = 128
+    modelClass.first_convolutional_layer = 128
+    modelClass.second_convolutional_layer = 256
     modelClass.hiddenLayer = 512
     modelClass.maxPooling = (2, 2)
-    modelClass.dropout = 0.3
+    modelClass.dropout = 0.5
     modelClass.epochNumber = 5
-    modelClass.optimizer = 'rmsprop'
+    modelClass.optimizer = 'adam'
     train_generator, validation_generator = modelClass.trainTestGenerator()
     model = modelClass.modelConfiguration()
     history = modelClass.compileModel(
@@ -56,6 +56,7 @@ def reconstruction(preprocessedImage, symbols):
 
 
 def main():  # the rest api will send a image until then work with a single path image object
+    # makemodel()
     allpath()
     # runEachFile(imagePath)
 

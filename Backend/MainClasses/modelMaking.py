@@ -39,11 +39,11 @@ class ModelMaking:
     epochNumber = 10
 
     def trainTestGenerator(self):
-        shift = 0.0
+        shift = 0.1
         training_datagen = ImageDataGenerator(
-            rescale=1./255, featurewise_center=True, featurewise_std_normalization=True, zca_whitening=True,width_shift_range=shift, height_shift_range=shift)
+            rescale=1./255, featurewise_center=True, featurewise_std_normalization=True, zca_whitening=True,width_shift_range=shift, height_shift_range=shift,zoom_range=0.1)
         validation_datagen = ImageDataGenerator(
-            rescale=1./255, featurewise_center=True, featurewise_std_normalization=True, zca_whitening=True,width_shift_range=shift, height_shift_range=shift)
+            rescale=1./255, featurewise_center=True, featurewise_std_normalization=True, zca_whitening=True,width_shift_range=shift, height_shift_range=shift,zoom_range=0.1)
 
         train_generator = training_datagen.flow_from_directory(
             self.TRAINING_DIR,

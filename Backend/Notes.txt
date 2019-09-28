@@ -36,3 +36,65 @@
 9 9686
 x 26594
 y 9340
+
+
+
+MODEL 6
+---------------------------------------------------------------------------------
+modelName = 'EquationModel7.h5'
+    modelClass = ModelMaking()
+    modelClass.kernel_size = (2, 2)
+    modelClass.first_convolutional_layer = 256
+    modelClass.second_convolutional_layer = 128
+    modelClass.hiddenLayer = 512
+    modelClass.maxPooling = (2, 2)
+    modelClass.dropout = 0.3
+    modelClass.epochNumber = 5
+    modelClass.optimizer = 'rmsprop'
+    train_generator, validation_generator = modelClass.trainTestGenerator()
+    model = modelClass.modelConfiguration()
+    history = modelClass.compileModel(
+        model, train_generator, validation_generator, modelName)
+    modelClass.showChart(history)
+
+-------------------------------------------
+
+
+MODEL 7
+modelName = 'EquationModel8.h5'
+    modelClass = ModelMaking()
+    modelClass.kernel_size = (2, 2)
+    modelClass.first_convolutional_layer = 32
+    modelClass.second_convolutional_layer = 64
+    modelClass.hiddenLayer = 128
+    modelClass.maxPooling = (2, 2)
+    modelClass.dropout = 0.4
+    modelClass.epochNumber = 20
+    modelClass.optimizer = 'adam'
+    train_generator, validation_generator = modelClass.trainTestGenerator()
+    model = modelClass.modelConfiguration()
+    history = modelClass.compileModel(
+        model, train_generator, validation_generator, modelName)
+    modelClass.showChart(history)
+
+
+MODEL 8
+
+modelName = 'EquationModel8.h5'
+    modelClass = ModelMaking()
+    modelClass.kernel_size = (2, 2)
+    modelClass.first_convolutional_layer = 32
+    modelClass.second_convolutional_layer = 64
+    modelClass.hiddenLayer = 128
+    modelClass.maxPooling = (2, 2)
+    modelClass.dropout = 0.4
+    modelClass.epochNumber = 20
+    modelClass.optimizer = 'adam'
+    train_generator, validation_generator = modelClass.trainTestGenerator()
+    model = modelClass.modelConfiguration()
+    history = modelClass.compileModel(
+        model, train_generator, validation_generator, modelName)
+    modelClass.showChart(history)
+
+
+    zoom_range=0.3

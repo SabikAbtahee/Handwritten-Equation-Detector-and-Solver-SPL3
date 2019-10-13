@@ -98,3 +98,9 @@ modelName = 'EquationModel8.h5'
 
 
     zoom_range=0.3
+
+
+
+To run flask
+set FLASK_APP=main.py
+python -m flask run

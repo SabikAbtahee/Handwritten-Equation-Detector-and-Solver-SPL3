@@ -114,7 +114,12 @@ class ModelMaking:
                                       validation_steps=15000 / 128,
                                       verbose=1)
         model.summary()
-        model.save(modelName)
+        # model.save(modelName)
+
+        model_json = model.to_json()
+        with open("model_json.json", "w") as json_file:
+            json_file.write(model_json)
+        model.save_weights(modelName)
         return history
 
     def showChart(self, history):

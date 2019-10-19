@@ -1,5 +1,5 @@
 <div fxLayout="column" fxLayoutAlign="center  " class='margin-auto p-64' fxLayoutGap="16px">
-  <div>
+  <!-- <div>
     <div>
       
       <div *ngIf='!isValid' fxLayout="column" fxLayoutAlign="center center " fxLayoutGap="12px" class='dropzone p-24 margin-auto h-200'
@@ -39,12 +39,21 @@
 
     </div>
     <div></div>
-  </div>
+  </div> -->
 
-  <div fxLayout="row" fxLayoutAlign="center center">
-    <button mat-stroked-button color="primary" class='w-200'>SOLVE</button>
-  </div>
+  <form [formGroup]="uploadForm">
+    
 
+      <div>
+        <input type="file"   (change)="onFileSelect($event)" formControlName='picture' />
+      </div>
+      
+
+    
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <button mat-stroked-button color="primary" class='w-200' (click)='onSubmit()'>SOLVE</button>
+    </div>
+  </form>
   <div></div>
 
   <div></div>

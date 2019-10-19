@@ -5,10 +5,11 @@ from reconstruction import reconstruct
 import os
 import sys
 from tensorflow import keras
-
+import cv2
 from flask import Flask, render_template, request,flash, redirect, url_for
 from werkzeug.utils import secure_filename
 # from load import *
+import numpy as np
 
 #######   FLASK #################
 UPLOAD_FOLDER = '../Uploads/'
@@ -142,7 +143,28 @@ def test():
                 path = allimage+fname
                 return runEachFile(path)
 
-
+def testDirect(file):
+    print(file)
+    print(type(file))
+           
+    # imageObject = cv2.imdecode(np.fromstring(file.read(), np.uint8), cv2.CV_LOAD_IMAGE_COLOR)
+    thresh=127
+    # imageObject = imgConversions.openImageUsingCV(file)
+    imageObject=imgConversions.openImageUsingPillow(file)
+    imageObject = np.array(imageObject)
+    if imageObject is not None:
+            while(True):
+                # print('Image object detected')
+                preprocessedImage = process(imageObject,thresh)
+                symbols = segment(preprocessedImage)
+                # print(len(symbols))
+                if(len(symbols)>30):
+                    thresh-=10
+                else:
+                    equation = reconstruction(preprocessedImage, symbols)
+                    print(equation)
+                    return equation
+                    break
 
 @app.route('/predict', methods=['GET','POST'])
 def predict():
@@ -158,8 +180,9 @@ def predict():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            x=test()
-            print(x)
+            x=testDirect(file)
+            # x=test()
+            # print(x)
             return str(x)
     # imgData = request.get_data()
     # response=test(imgData)

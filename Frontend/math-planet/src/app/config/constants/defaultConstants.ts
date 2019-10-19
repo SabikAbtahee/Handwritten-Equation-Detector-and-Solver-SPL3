@@ -1,3 +1,5 @@
+import { baseURL } from './../../../environments/environment';
+import { HttpHeaders } from '@angular/common/http';
 export const defaultConst = {
 	
 	sidebar: [
@@ -132,3 +134,15 @@ export const urlPaths = {
 	}
 };
 
+
+export const apiRoutes={
+	baseURL:`${baseURL}`,
+	predict:`${baseURL}/predict`
+}
+
+export const httpHeader = {
+	headers: new HttpHeaders({
+		'Content-Type': 'text/html',
+		
+	})
+};

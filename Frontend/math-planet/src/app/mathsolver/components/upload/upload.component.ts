@@ -1,7 +1,10 @@
+import { MathsolverService } from './../../services/mathsolver.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { UtilityService } from 'src/app/core/utility-service/utility.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { first } from 'rxjs/operators';
 // import { type } from 'os';
 
 @Component({
@@ -24,9 +27,49 @@ export class UploadComponent implements OnInit {
 	imageblob: any = '';
 	croppedImage: any = '';
 	isValid = false;
-	constructor(private utilityService: UtilityService) {}
 
-	ngOnInit() {}
+	uploadForm: FormGroup;
+	formData = new FormData();
+
+
+	constructor(private utilityService: UtilityService, private fb: FormBuilder,private mathSolver:MathsolverService) {}
+
+	ngOnInit() {
+		this.makeUploadForm();
+	}
+
+	makeUploadForm() {
+		this.uploadForm = this.fb.group({
+			picture: [ null ]
+		});
+	}
+	onSubmit() {
+		
+		
+		this.mathSolver.predictImage(this.formData).pipe(first()).subscribe(res=>{
+			console.log(res);
+		},err=>{
+			console.log(err);
+		});
+
+	  }
+	onFileSelect(event) {
+		if (event.target.files.length > 0) {
+			const file = event.target.files[0];
+			console.log(file);
+			let f= new FormData();
+			// formData.append('name', 'file');
+			f.append('file',file,'test.png');
+			this.mathSolver.predictImage(f).pipe(first()).subscribe(res=>{
+				console.log(res.equation);
+			},err=>{
+				console.log(err);
+			});
+			// formData.append('file', this.uploadForm.get('picture').value);
+			// this.uploadForm.get('picture').setValue(file);
+		}
+	}
+
 	toggleHover(event: boolean) {
 		this.isHovering = event;
 	}

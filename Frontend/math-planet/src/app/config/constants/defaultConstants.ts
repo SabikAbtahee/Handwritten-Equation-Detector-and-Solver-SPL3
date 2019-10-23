@@ -4,6 +4,36 @@ export const defaultConst = {
 	
 	sidebar: [
 		{
+			name: 'Home',
+			url: 'authentication/sign-in',
+			icon:'home'
+		},
+		{
+			name: 'Upload Image',
+			url: 'mathsolver/upload',
+			icon:'cloud_upload'
+		},
+		{
+			name: 'Draw Image',
+			url: 'mathsolver/draw',
+			icon:'color_lens'
+		},
+		
+		{
+			name: 'Practice',
+			url: 'mathpractice',
+			icon:'ballot'
+		},
+		{
+			name: 'Tutorial',
+			url: 'tutorial',
+			icon:'help_outline'
+		},
+		
+	],
+	sidebarLoggedIn:[
+		
+		{
 			name: 'Upload Image',
 			url: 'mathsolver/upload',
 			icon:'cloud_upload'
@@ -28,7 +58,6 @@ export const defaultConst = {
 			url: 'tutorial',
 			icon:'help_outline'
 		},
-		
 	],
 	menu: {
 		profile: {

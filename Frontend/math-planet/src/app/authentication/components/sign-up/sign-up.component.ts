@@ -124,7 +124,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 	}
 
 	routeToHome() {
-		this.router.navigate([ urlPaths.MathSolver.upload.url ]);
+		this.router.navigate([ urlPaths.Authentication.Signin.url ]);
 	}
 	ngOnDestroy() {
 		this._unsubscribeAll.next();

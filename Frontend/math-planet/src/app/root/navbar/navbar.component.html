@@ -1,46 +1,60 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" 
-  fixedInViewport="true"
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="!(isHandset$ | async)">
-    <div class="h-176 primary-background mb-80">
-      <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center" class="white-color-foreground">
-        <div>{{title}}</div>
+<mat-sidenav-container class="sidenav-container " autosize>
+  <mat-sidenav #drawer [ngClass]="isExpanded ? 'sidenav-opened' : 'sidenav-closed' "
+    [opened]="(isHandset$ | async) === false" [mode]="(isHandset$ | async) ? 'side' : 'side'">
+    <!-- [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" -->
+    <mat-toolbar *ngIf="isExpanded" fxLayout="row" fxLayoutAlign="space-between center" >
+      <div>{{title}}</div>
 
-        <div *ngIf="drawer.opened">
-            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
-              <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-            </button>
-          </div>
-      </mat-toolbar>
-
-      <div fxLayout="row" fxLayoutAlign="center center" class="mb-48 mt-46 ">
-        <img class="border-radius-50-p w-120 h-120 profile-picture-border" src="../../../assets/images/profile_img_avatar.png"
-          alt="Upload Profile Picture">
-
+      <div>
+        <button mat-mini-fab color='white' mat-icon-button (click)="isExpanded = !isExpanded">
+          <mat-icon>menu</mat-icon>
+        </button>
       </div>
-    </div>
-    <mat-nav-list>
+    </mat-toolbar>
+
+    <mat-toolbar *ngIf="!isExpanded" fxLayout="row" fxLayoutAlign="space-between center" class="white-color-foreground">
+
+      <div>
+        <button mat-mini-fab  mat-icon-button (click)="isExpanded = !isExpanded" class='mt-8 black-color-background'>
+          <mat-icon class=' white-color-foreground'>menu</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+
+
+    <mat-nav-list *ngIf='isExpanded && sidebar' class="white-color-foreground">
       <div *ngFor="let content of sidebar;let i = index">
-        <!-- <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px"> -->
-            
-                <a mat-list-item (click)="route(content.url) ; selectRow(i)" [class.active]="i == selectedRow" class="cursor-pointer px-24 font-size-16">
-                    <i class="material-icons-outlined mr-16">
-                        {{content.icon}}
-                        </i>
-                 <span> {{content.name}}</span>
-                
-                </a>
 
-        <!-- </div> -->
+        <mat-list-item (click)="route(content.url) ; selectRow(i)" [class.active]="i == selectedRow"
+          class="cursor-pointer px-24 font-size-16 ">
+          <i class="material-icons-outlined mr-16">
+            {{content.icon}}
+          </i>
+          <span> {{content.name}}</span>
+
+        </mat-list-item>
       </div>
-      <!-- <mat-button-toggle-group  *ngFor="let content of sidebar">
-          <mat-button-toggle mat-list-item (click)="route(content.url)" value="${content.name}"  class="cursor-pointer px-24 font-size-16">{{content.name}}</mat-button-toggle>
-        </mat-button-toggle-group> -->
     </mat-nav-list>
+
+    <mat-nav-list *ngIf='!isExpanded && sidebar' class="white-color-foreground">
+
+      <div *ngFor="let content of sidebar;let i = index">
+
+        <mat-list-item class='my-12'>
+          <button mat-mini-fab color='white' (click)="route(content.url); selectRow(i)"
+            [class.active]="i == selectedRow" class="cursor-pointer white-color-background"><i
+              class="material-icons-outlined ">
+              {{content.icon}}
+            </i> </button>
+
+        </mat-list-item>
+      </div>
+    </mat-nav-list>
+
+
+
   </mat-sidenav>
   <mat-sidenav-content>
-
 
     <mat-toolbar color="primary" class="h-64 w-100-p ">
       <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px" class="w-100-p">
@@ -54,39 +68,45 @@
             <span *ngIf="!drawer.opened">Math Planet</span>
             <div *ngIf="drawer.opened" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
               <div>MP</div>
-            <div><i class="material-icons">
-                whatshot
-                </i></div> 
-              
-              </div>
+
+
+            </div>
 
           </div>
         </div>
-        <div [matMenuTriggerFor]="menu" fxLayout="row" fxLayoutAlign="center center" class="mr-64">
-          <mat-icon class="material-icons-rounded cursor-pointer">
-            account_circle
-          </mat-icon>
-          <button mat-button class="font-size-16">{{Username}}</button>
-          <mat-icon class="material-icons-rounded cursor-pointer">
-            arrow_drop_down
-            </mat-icon>
+        <!-- [matMenuTriggerFor]="menu" -->
+        <div [matMenuTriggerFor]="menu" *ngIf='isAuthenticated' fxLayout="row" fxLayoutAlign="center center"
+          class="mr-64">
+
+          <!-- (click)='route(Username.url)' -->
+          <button mat-button class="font-size-16">{{Username}} <i class="material-icons">
+            keyboard_arrow_down
+            </i></button>
+
           <mat-menu #menu="matMenu" class="w-180 mt-16">
-            <!-- <button mat-menu-item>
-              <div (click)="route(menuItems.profile.url)">{{menuItems.profile.name}}</div>
-            </button> -->
             <button mat-menu-item>
-              <div (click)="route(menuItems.changeAccount.url)">{{menuItems.changeAccount.name}}</div>
+              <div (click)="route(menuItems.profile.url)">{{menuItems.profile.name}}</div>
             </button>
             <button mat-menu-item>
               <div (click)="logout()">{{menuItems.logout.name}}</div>
             </button>
-            
           </mat-menu>
+        </div>
+
+
+        <div *ngIf='!isAuthenticated' (click)='doRoute()' fxLayout="row" fxLayoutAlign="center center" class="mr-64">
+          <mat-icon class="material-icons-outlined cursor-pointer">
+            settings
+          </mat-icon>
+          <button mat-button class="font-size-16">{{Username}}</button>
         </div>
       </div>
 
+
+
+
     </mat-toolbar>
-    <!-- Add Content Here -->
     <router-outlet></router-outlet>
+
   </mat-sidenav-content>
 </mat-sidenav-container>

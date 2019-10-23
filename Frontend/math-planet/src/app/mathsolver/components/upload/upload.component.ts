@@ -44,8 +44,6 @@ export class UploadComponent implements OnInit {
 		});
 	}
 	onSubmit() {
-		
-		
 		this.mathSolver.predictImage(this.formData).pipe(first()).subscribe(res=>{
 			console.log(res);
 		},err=>{

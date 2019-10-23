@@ -3,7 +3,13 @@
 }
 
 .sidenav {
-  width: 280px;
+  width: 70px;
+  background-color: #e6e6e6 !important;
+}
+.sidenav-opened{
+  width: 280px !important;
+  background-color: #e6e6e6 !important;
+
 }
 
 .sidenav .mat-toolbar {
@@ -20,3 +26,4 @@
 .mat-drawer-side{
   border-right: none !important;
 }
+

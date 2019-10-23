@@ -289,16 +289,16 @@ $x1: 0;
 }
 
 .white-color-background {
-	background: $white-color;
+	background: $white-color !important;
 }
 .white-color-foreground {
-	color: $white-color;
+	color: $white-color !important;
 }
 .black-color-background {
-	background: $black-color;
+	background: $black-color !important;
 }
 .black-color-foreground {
-	color: $black-color;
+	color: $black-color !important;
 }
 
 .header-1 {

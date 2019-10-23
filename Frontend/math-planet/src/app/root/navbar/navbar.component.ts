@@ -27,16 +27,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
 	// $username: Observable<any>;
 	menuItems;
 	selectedRow: number;
+	isAuthenticated: boolean = false;
 	_unsubscribeAll: Subject<any>;
-	
-    // $menuIndex = this.menuIndex.asObservable();
+
+	// $menuIndex = this.menuIndex.asObservable();
 	constructor(
 		private breakpointObserver: BreakpointObserver,
 		private aut: AuthenticationService,
 		private router: Router,
 		private corequery: QueryDatabaseService,
 		private sharedService: SharedService,
-		private rootService: RootService,
+		private rootService: RootService
 	) {
 		this._unsubscribeAll = new Subject();
 	}
@@ -44,41 +45,36 @@ export class NavbarComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.initiateVariables();
 		this.setUsername();
-		this.selectedRow = 0;
-		this.route(defaultConst.sidebar[0].url);
-		// console.log(this.isHandset$.subscribe(res=>console.log(res)));
-		// console.log(this.aut.getCurrentUser());
+		this.makeSideBar();
+		this.checkRow();
 	}
 
 	initiateVariables() {
 		this.title = defaultConst.siteName.name;
-		this.menuItems = defaultConst.menu;
-
-		this.makeSideBar();
-
-		this.rootService.$Username.subscribe((res) => {
-			this.Username=res;
-		});
-
-		this.rootService.$menuIndex.subscribe(res=>{
-			this.selectedRow=res;
-		})
 	}
 
-	makeSideBar(){
-		this.sidebar = defaultConst.sidebar;
+	makeSideBar() {
+		if (this.isAuthenticated) {
+			this.sidebar = defaultConst.sidebarLoggedIn;
+			this.menuItems = defaultConst.menu;
+		} else {
+			this.sidebar = defaultConst.sidebar;
+		}
 	}
 
 	setUsername() {
 		this.corequery.getLoggedInUserID().pipe(takeUntil(this._unsubscribeAll)).subscribe((res) => {
 			if (res) {
 				this.getUserName(res).pipe(takeUntil(this._unsubscribeAll)).subscribe((res) => {
+					debugger
 					this.Username = res;
-					this.rootService.$Username.next(this.Username);
+					this.isAuthenticated = true;
+					this.makeSideBar();
 				});
 			} else {
 				this.Username = defaultConst.annonymous;
-				this.rootService.$Username.next(defaultConst.annonymous);
+				this.isAuthenticated = false;
+				this.makeSideBar();
 			}
 		});
 	}
@@ -121,17 +117,32 @@ export class NavbarComponent implements OnInit, OnDestroy {
 		this._unsubscribeAll.complete();
 		this._unsubscribeAll.unsubscribe();
 	}
+
 	route(url) {
-		this.router.navigateByUrl(url);
-		if (url == defaultConst.menu.profile.url) {
-			this.rootService.$menuIndex.next(-1);
-		}
-		if(url == defaultConst.menu.changeAccount.url){
-			this.rootService.$menuIndex.next(-1);
-		}
+		this.router.navigateByUrl(url).then((res) => {
+			this.checkRow();
+		});
 	}
+
 	selectRow(index) {
 		this.selectedRow = index;
 		// console.log(this.selectedRow);
+	}
+
+	checkRow() {
+		let currentUrl = this.router.url;
+		let count = 0;
+		for (let i of this.sidebar) {
+			if (currentUrl == `/${i.url}`) {
+				this.selectedRow = count;
+				debugger;
+				break;
+			}
+			count += 1;
+		}
+	}
+
+	doRoute() {
+		this.route(defaultConst.menu.changeAccount.url);
 	}
 }

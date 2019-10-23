@@ -65,7 +65,6 @@ export class SignInComponent implements OnInit {
 				this.router.navigate([ urlPaths.MathSolver.upload.url ]);
 				this.isLoading = false;
 				// console.log(this.authenticationservice.getCurrentUser().email);
-				this.root.$Username.next(this.authenticationservice.getCurrentUser().email);
 				// location.reload();
 
 			}

@@ -8,7 +8,7 @@ import { AuthguardService } from '../core/security-service/authguard.service';
 export const routes: Routes = [
 	{
 		path: '',
-		redirectTo: 'authentication',
+		redirectTo: 'mathsolver',
 		pathMatch: 'full'
 	},
 	{
@@ -16,11 +16,6 @@ export const routes: Routes = [
 		component: NavbarComponent,
 		children: [
 			
-			// {
-			// 	path: 'profile',
-			// 	loadChildren: '../profile/profile.module#ProfileModule',
-			// 	canActivate: [ AuthguardService ]
-			// },
 			{
 				path: 'mathsolver',
 				loadChildren: '../mathsolver/mathsolver.module#MathsolverModule',
@@ -40,6 +35,12 @@ export const routes: Routes = [
 
 			},
 			
+		]
+	},
+	{
+		path: '',
+		component: AnonymousComponent,
+		children: [
 			{
 				path: 'authentication',
 				loadChildren: '../authentication/authentication.module#AuthenticationModule',
@@ -47,17 +48,6 @@ export const routes: Routes = [
 			}
 		]
 	},
-	// {
-	// 	path: '',
-	// 	component: AnonymousComponent,
-	// 	children: [
-	// 		{
-	// 			path: 'authentication',
-	// 			loadChildren: '../authentication/authentication.module#AuthenticationModule',
-				
-	// 		}
-	// 	]
-	// },
 	{
 		path: '**',
 		component: NotFoundComponent

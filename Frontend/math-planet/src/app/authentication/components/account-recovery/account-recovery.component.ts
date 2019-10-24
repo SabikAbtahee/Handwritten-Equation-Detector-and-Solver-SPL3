@@ -6,8 +6,7 @@ import { first } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { urlPaths, recoverAccountCode, defaultConst } from '../../../config/constants/defaultConstants';
 import { SharedService } from '../../../shared/services/shared.service';
-import { ValidationErrorMessages } from '../../../config/validators/errormessages.validator';
-import { UtilityService } from 'src/app/core/utility-service/utility.service';
+import { UtilityService } from '../../../core/utility-service/utility.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -24,7 +23,6 @@ export class AccountRecoveryComponent implements OnInit {
 		private fb: FormBuilder,
 		private router: Router,
 		private sharedService: SharedService,
-		private errorMessages: ValidationErrorMessages,
 		private util: UtilityService
 	) {}
 
@@ -56,10 +54,7 @@ export class AccountRecoveryComponent implements OnInit {
 		errobj[errorCode] = true;
 		this.recoveryForm.controls.email.setErrors(errobj);
 	}
-	emailError() {
-		// return 'asdf';
-		return this.errorMessages.resetPasswordMessage(this.recoveryForm.get('email'));
-	}
+	
 	updateform() {
 		let controlsvalues = this.util.getFormControlsValueFromFormGroup(this.recoveryForm);
 		_.forEach(controlsvalues, (value) => {

@@ -60,18 +60,7 @@ export const defaultConst = {
 		},
 	],
 	menu: {
-		profile: {
-			name: 'My Profile',
-			url: 'profile'
-		},
-		changePassword:{
-			name:'Change Password',
-			url:'profile'
-		},
-		changeAccount:{
-			name:'Change Account',
-			url:'authentication/sign-in'
-		},
+		
 		logout: {
 			name: 'Logout',
 			url: 'authentication/sign-in'
@@ -175,3 +164,10 @@ export const httpHeader = {
 		
 	})
 };
+
+
+export const error_messages={
+	updated:'Updated',
+	failed:'Failed'
+
+}

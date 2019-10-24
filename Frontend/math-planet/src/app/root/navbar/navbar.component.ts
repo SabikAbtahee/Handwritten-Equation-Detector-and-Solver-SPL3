@@ -142,7 +142,5 @@ export class NavbarComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	doRoute() {
-		this.route(defaultConst.menu.changeAccount.url);
-	}
+	
 }

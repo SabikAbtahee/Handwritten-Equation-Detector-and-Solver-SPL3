@@ -4,8 +4,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 import { UserInformation, CustomerUserInformation } from '../../../config/interfaces/user.interface';
 import { first, takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { defaultConst, urlPaths, passwordRegex, signupErrorCodes } from '../../../config/constants/defaultConstants';
-import { errorMessages } from '../../../config/validators/errormessages.constants';
+import { defaultConst, urlPaths, passwordRegex, signupErrorCodes, error_messages } from '../../../config/constants/defaultConstants';
 import { SharedService } from '../../../shared/services/shared.service';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
@@ -19,7 +18,7 @@ import { ErrorStateMatcherForsignUppage } from '../../../core/utility-service/ut
 export class SignUpComponent implements OnInit, OnDestroy {
 	signupform: FormGroup;
 	userInformation: UserInformation;
-	errormessages = errorMessages;
+	errormessages = error_messages;
 	_unsubscribeAll: Subject<any>;
 	verificationEmailsent = defaultConst.checkEmail;
 	matcher;

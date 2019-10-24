@@ -1,14 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PracticeDefaultComponent } from './components/practice-default/practice-default.component';
-import { mathPracticeRoutes } from '../config/routes/lazyloadedRoutes.routes';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
+
+const routes:Routes=[
+  {
+    path:'',
+    component:PracticeDefaultComponent
+  }
+]
 @NgModule({
   declarations: [PracticeDefaultComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(mathPracticeRoutes)
+    RouterModule.forChild(routes)
   ]
 })
 export class MathpracticeModule { }

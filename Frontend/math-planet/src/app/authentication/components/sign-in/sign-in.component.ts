@@ -5,7 +5,6 @@ import { UserInformation } from '../../../config/interfaces/user.interface';
 import { first } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { urlPaths, signinErrorCode } from '../../../config/constants/defaultConstants';
-import { ValidationErrorMessages } from '../../../config/validators/errormessages.validator';
 import { UtilityService } from '../../../core/utility-service/utility.service';
 import * as _ from 'lodash';
 import { NavbarComponent } from 'src/app/root/navbar/navbar.component';
@@ -21,7 +20,6 @@ export class SignInComponent implements OnInit {
 		private authenticationservice: AuthenticationService,
 		private fb: FormBuilder,
 		private router: Router,
-		private errorMessages: ValidationErrorMessages,
 		private util: UtilityService,
 		private root:RootService
 	) {}
@@ -98,11 +96,5 @@ export class SignInComponent implements OnInit {
 		});
 	}
 
-	emailError() {
-		// return 'asdf';
-		return this.errorMessages.authMessageForEmail(this.signinform.get('email'));
-	}
-	passwordError(){
-		return this.errorMessages.authMessageForPassword(this.signinform.get('password'));
-	}
+	
 }

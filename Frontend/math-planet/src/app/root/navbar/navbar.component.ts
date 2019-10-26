@@ -70,11 +70,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
 					this.Username = res;
 					this.isAuthenticated = true;
 					this.makeSideBar();
+					this.checkRow();
 				});
 			} else {
 				this.Username = defaultConst.annonymous;
 				this.isAuthenticated = false;
 				this.makeSideBar();
+				this.checkRow();
+
 			}
 		});
 	}

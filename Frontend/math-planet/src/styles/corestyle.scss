@@ -151,6 +151,15 @@ $x1: 0;
 	}
 }
 
+$font-size: font-size !default;
+$x1: 0;
+@while $x1 < 10 {
+	$x1: $x1 + 0.1;
+	.#{$font-size}-#{$x1}-vw {
+		font-size: 0vw + $x1 !important;
+	}
+}
+
 // width
 
 $w: w !default;

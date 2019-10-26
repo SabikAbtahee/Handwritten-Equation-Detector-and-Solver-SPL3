@@ -8,6 +8,10 @@ import { CoreModule } from '../core/core.module';
 
 const routes:Routes=[
 	{
+		path:'',
+		redirectTo:'upload',
+	  },
+	{
 		path:'upload',
 		component:UploadComponent,
 	  },

@@ -15,6 +15,7 @@ import { first } from 'rxjs/operators';
 export class UploadComponent implements OnInit {
 	// Progress monitoring
 	percentage: Observable<number>;
+	algebra = require('algebra.js');
 
 	snapshot: Observable<any>;
 
@@ -29,13 +30,25 @@ export class UploadComponent implements OnInit {
 	isValid = false;
 
 	uploadForm: FormGroup;
+	equationForm: FormGroup;
 	formData = new FormData();
 
-
-	constructor(private utilityService: UtilityService, private fb: FormBuilder,private mathSolver:MathsolverService) {}
+	constructor(
+		private utilityService: UtilityService,
+		private fb: FormBuilder,
+		private mathSolver: MathsolverService
+	) {}
 
 	ngOnInit() {
 		this.makeUploadForm();
+		this.makeEquationForm();
+	}
+
+	makeEquationForm() {
+		this.equationForm = this.fb.group({
+			equation: [ '' ],
+			solution: [ '' ]
+		});
 	}
 
 	makeUploadForm() {
@@ -44,25 +57,43 @@ export class UploadComponent implements OnInit {
 		});
 	}
 	onSubmit() {
-		this.mathSolver.predictImage(this.formData).pipe(first()).subscribe(res=>{
-			console.log(res);
-		},err=>{
-			console.log(err);
-		});
-
-	  }
+		this.mathSolver.predictImage(this.formData).pipe(first()).subscribe(
+			(res) => {
+				console.log(res);
+			},
+			(err) => {
+				console.log(err);
+			}
+		);
+	}
 	onFileSelect(event) {
 		if (event.target.files.length > 0) {
 			const file = event.target.files[0];
 			console.log(file);
-			let f= new FormData();
+			let f = new FormData();
 			// formData.append('name', 'file');
-			f.append('file',file,'test.png');
-			this.mathSolver.predictImage(f).pipe(first()).subscribe(res=>{
-				console.log(res.equation);
-			},err=>{
-				console.log(err);
-			});
+			f.append('file', file, 'test.png');
+			this.mathSolver.predictImage(f).pipe(first()).subscribe(
+				(res) => {
+					
+					// let steps = this.mathsteps.simplifyExpression('x^2+3+3');
+					var eq = this.algebra.parse(res.equation);
+
+					console.log(eq.toString());
+
+					var ans = eq.solveFor('x');
+					this.equationForm.patchValue({
+						equation: res.equation,
+						solution:ans.toString()
+
+					});
+					console.log('x = ' + ans.toString());
+					console.log(res.equation);
+				},
+				(err) => {
+					console.log(err);
+				}
+			);
 			// formData.append('file', this.uploadForm.get('picture').value);
 			// this.uploadForm.get('picture').setValue(file);
 		}
@@ -72,23 +103,28 @@ export class UploadComponent implements OnInit {
 		this.isHovering = event;
 	}
 	startUpload(event: FileList) {}
-	// fileChangeEvent(event: any): void {
-	// 	if (event instanceof Event) {
-	// 		debugger;
-	// 		console.log(this.imageChangedEvent);
-	// 		if (this.utilityService.ifFileImage(event.target.files[0])) {
-	// 			this.imageChangedEvent = event;
-	// 			this.isValid = true;
-	// 		}
-	// 	}
-	// 	if (event instanceof FileList) {
-	// 		if (this.utilityService.ifFileImage(event[0])) {
-	// 			this.imageblob = event[0];
-	// 			this.isValid = true;
-	// 		}
-	// 	}
-	// }
+
+	fileChangeEvent(event: any): void {
+		// if (event instanceof Event) {
+		// 	debugger;
+		// 	console.log(this.imageChangedEvent);
+		// 	if (this.utilityService.ifFileImage(event.target.files[0])) {
+		// 		this.imageChangedEvent = event;
+		// 		this.isValid = true;
+		// 	}
+		// }
+		// if (event instanceof FileList) {
+		// 	if (this.utilityService.ifFileImage(event[0])) {
+		// 		this.imageblob = event[0];
+		// 		this.isValid = true;
+		// 	}
+		// }
+		this.imageChangedEvent = event;
+		this.isValid = true;
+	}
+
 	imageCropped(event: ImageCroppedEvent) {
+		console.log(event.file);
 		this.croppedImage = event.base64;
 	}
 	imageLoaded() {

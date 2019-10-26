@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutAlign="center  " class='margin-auto p-64' fxLayoutGap="16px">
   <form [formGroup]="uploadForm">
 
-    <div>
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="24px">
       <div>
 
         <div *ngIf='!isValid' fxLayout="column" fxLayoutAlign="center center " fxLayoutGap="12px"
@@ -12,7 +12,7 @@
           </div>
           <div class="file">
             <label class="file-label">
-              <input class="file-input" type="file" (change)="onFileSelect($event)" formControlName='picture'>
+              <input class="file-input" type="file" (change)="fileChangeEvent($event)" formControlName='picture'>
 
               <span class="file-cta">
                 <span class="file-icon">
@@ -30,7 +30,7 @@
         <div *ngIf='isValid' fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
           <div class='w-100-p'>
             <image-cropper [imageChangedEvent]="imageChangedEvent" [imageFileChanged]='imageblob'
-              [maintainAspectRatio]="false" [aspectRatio]="1" format="png" (imageCropped)="imageCropped($event)"
+              [maintainAspectRatio]="false"  format="png" (imageCropped)="imageCropped($event)"
               (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
             </image-cropper>
           </div>
@@ -44,6 +44,31 @@
       <div fxLayout="row" fxLayoutAlign="center center">
         <button mat-stroked-button color="primary" class='w-200' (click)='onSubmit()'>SOLVE</button>
       </div>
+    </div>
+  </form>
+  <form [formGroup]="equationForm">
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="12px">
+      <div fxFlex='15' ngClass='mat-icon-for-input font-size-20' [ngClass.lt-lg]="['font-size-14' ,'mat-icon-for-input']">Equation: </div>
+      <div fxFlex='60'>
+        <mat-form-field appearance="outline">
+          <!-- <mat-label>Parsed Equation</mat-label> -->
+          <input matInput type='text'  formControlName='equation' class='font-size-24'>
+        </mat-form-field>
+      </div>
+
+
+    </div>
+    <div fxLayout="row"  fxLayoutAlign="center center" fxLayoutGap="12px">
+      <div fxFlex='15' ngClass='mat-icon-for-input font-size-20'  [ngClass.lt-lg]="['font-size-14','mat-icon-for-input']">Solution: </div>
+      <div fxFlex='60'>
+
+        <mat-form-field appearance="outline">
+          <!-- <mat-label>Solution</mat-label> -->
+
+          <input matInput type='text'  formControlName='solution' class='font-size-24'>
+        </mat-form-field>
+      </div>
+
     </div>
   </form>
 

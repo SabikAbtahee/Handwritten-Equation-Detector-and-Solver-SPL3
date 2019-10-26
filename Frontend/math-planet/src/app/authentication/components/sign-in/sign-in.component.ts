@@ -75,6 +75,9 @@ export class SignInComponent implements OnInit {
 	routeToAccountRecovery() {
 		this.router.navigate([ urlPaths.Authentication.AccountRecovery.url ]);
 	}
+	routeToHome(){
+		this.router.navigate([ urlPaths.MathSolver.upload.url ]);
+	}
 
 	validateSignIn(errorCode) {
 		this.updateform();

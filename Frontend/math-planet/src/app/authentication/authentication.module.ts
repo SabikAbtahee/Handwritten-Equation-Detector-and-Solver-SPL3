@@ -10,6 +10,10 @@ import { SharedModule } from '../shared/shared.module';
 
 const routes:Routes=[
   {
+    path:'',
+    redirectTo:'sign-in'
+  },
+  {
     path:'sign-in',
     component:SignInComponent
   },

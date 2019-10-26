@@ -149,6 +149,21 @@ export const urlPaths = {
 		draw:{
 			url:'mathsolver/draw'
 		}
+	},
+	MathPractice:{
+		practice:{
+			url:'mathpractice'
+		}
+	},
+	MathTutorial:{
+		tutorial:{
+			url:'tutorial'
+		}
+	},
+	MathHistory:{
+		history:{
+			url:'history'
+		}
 	}
 };
 

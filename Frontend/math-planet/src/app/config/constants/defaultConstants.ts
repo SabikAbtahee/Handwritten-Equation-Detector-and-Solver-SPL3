@@ -6,28 +6,34 @@ export const defaultConst = {
 		{
 			name: 'Home',
 			url: 'authentication/sign-in',
-			icon:'home'
+			icon:'home',
+			mini_name:'Home'
 		},
 		{
 			name: 'Upload Image',
 			url: 'mathsolver/upload',
-			icon:'cloud_upload'
+			icon:'cloud_upload',
+			mini_name:'Upload'
 		},
 		{
 			name: 'Draw Image',
 			url: 'mathsolver/draw',
-			icon:'color_lens'
+			icon:'color_lens',
+			mini_name:'Draw'
 		},
 		
 		{
 			name: 'Practice',
 			url: 'mathpractice',
-			icon:'ballot'
+			icon:'ballot',
+			mini_name:'Practice'
 		},
 		{
 			name: 'Tutorial',
 			url: 'tutorial',
-			icon:'help_outline'
+			icon:'help_outline',
+			mini_name:'Tutorial'
+
 		},
 		
 	],
@@ -36,27 +42,37 @@ export const defaultConst = {
 		{
 			name: 'Upload Image',
 			url: 'mathsolver/upload',
-			icon:'cloud_upload'
+			icon:'cloud_upload',
+			mini_name:'Upload'
+
 		},
 		{
 			name: 'Draw Image',
 			url: 'mathsolver/draw',
-			icon:'color_lens'
+			icon:'color_lens',
+			mini_name:'Draw'
+
 		},
 		{
 			name: 'Show History',
 			url: 'history',
-			icon:'hourglass_empty'
+			icon:'hourglass_empty',
+			mini_name:'History'
+
 		},
 		{
 			name: 'Practice',
 			url: 'mathpractice',
-			icon:'ballot'
+			icon:'ballot',
+			mini_name:'Practice'
+
 		},
 		{
 			name: 'Tutorial',
 			url: 'tutorial',
-			icon:'help_outline'
+			icon:'help_outline',
+			mini_name:'Tutorial'
+
 		},
 	],
 	menu: {

@@ -14,13 +14,8 @@ import { first } from 'rxjs/operators';
 })
 export class UploadComponent implements OnInit {
 	// Progress monitoring
-	percentage: Observable<number>;
-	algebra = require('algebra.js');
-
-	snapshot: Observable<any>;
 
 	// Download URL
-	downloadURL: Observable<string>;
 
 	// State for dropzone CSS toggling
 	isHovering: boolean;
@@ -32,6 +27,7 @@ export class UploadComponent implements OnInit {
 	uploadForm: FormGroup;
 	equationForm: FormGroup;
 	formData = new FormData();
+	algebra = require('algebra.js')
 
 	constructor(
 		private utilityService: UtilityService,
@@ -42,6 +38,7 @@ export class UploadComponent implements OnInit {
 	ngOnInit() {
 		this.makeUploadForm();
 		this.makeEquationForm();
+		
 	}
 
 	makeEquationForm() {
@@ -79,7 +76,7 @@ export class UploadComponent implements OnInit {
 					// let steps = this.mathsteps.simplifyExpression('x^2+3+3');
 					var eq = this.algebra.parse(res.equation);
 
-					console.log(eq.toString());
+					// console.log(eq.toString());
 
 					var ans = eq.solveFor('x');
 					this.equationForm.patchValue({
@@ -87,8 +84,8 @@ export class UploadComponent implements OnInit {
 						solution:ans.toString()
 
 					});
-					console.log('x = ' + ans.toString());
-					console.log(res.equation);
+					// console.log('x = ' + ans.toString());
+					// console.log(res.equation);
 				},
 				(err) => {
 					console.log(err);

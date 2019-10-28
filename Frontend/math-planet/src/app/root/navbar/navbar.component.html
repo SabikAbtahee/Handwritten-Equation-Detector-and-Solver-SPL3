@@ -2,7 +2,7 @@
   <mat-sidenav #drawer [ngClass]="isExpanded ? 'sidenav-opened' : 'sidenav-closed' "
     [opened]="(isHandset$ | async) === false" [mode]="(isHandset$ | async) ? 'side' : 'side'">
     <!-- [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" -->
-    <mat-toolbar *ngIf="isExpanded" fxLayout="row" fxLayoutAlign="space-between center" >
+    <mat-toolbar *ngIf="isExpanded" fxLayout="row" fxLayoutAlign="space-between center">
       <div>{{title}}</div>
 
       <div>
@@ -15,7 +15,7 @@
     <mat-toolbar *ngIf="!isExpanded" fxLayout="row" fxLayoutAlign="space-between center" class="white-color-foreground">
 
       <div>
-        <button mat-mini-fab  mat-icon-button (click)="isExpanded = !isExpanded" class='mt-8 black-color-background'>
+        <button mat-mini-fab mat-icon-button (click)="isExpanded = !isExpanded" class='mt-8 black-color-background'>
           <mat-icon class=' white-color-foreground'>menu</mat-icon>
         </button>
       </div>
@@ -40,14 +40,22 @@
 
       <div *ngFor="let content of sidebar;let i = index">
 
-        <mat-list-item class='my-12'>
-          <button mat-mini-fab color='white' (click)="route(content.url); selectRow(i)"
-            [class.active]="i == selectedRow" class="cursor-pointer white-color-background"><i
-              class="material-icons-outlined ">
-              {{content.icon}}
-            </i> </button>
+        <div class='my-12' fxLayout='column' fxLayoutAlign="center center" fxLayoutGap="4px">
 
-        </mat-list-item>
+          <div fxLayout='column' fxLayoutAlign="center center">
+            <button mat-mini-fab color='white' (click)="route(content.url); selectRow(i)"
+              [class.active]="i == selectedRow" class="cursor-pointer white-color-background"><i
+                class="material-icons-outlined ">
+                {{content.icon}}
+              </i> </button>
+          </div>
+          <div fxLayout='row' fxLayoutAlign="center center">
+            <div class='font-size-14 black-color-foreground'>{{content.mini_name}}</div>
+          </div>
+
+
+
+        </div>
       </div>
     </mat-nav-list>
 
@@ -80,11 +88,11 @@
 
           <!-- (click)='route(Username.url)' -->
           <button mat-button class="font-size-16">{{Username}} <i class="material-icons">
-            keyboard_arrow_down
+              keyboard_arrow_down
             </i></button>
 
           <mat-menu #menu="matMenu" class="w-180 mt-16">
-            
+
             <button mat-menu-item>
               <div (click)="logout()">{{menuItems.logout.name}}</div>
             </button>
@@ -92,7 +100,7 @@
         </div>
 
 
-        <div *ngIf='!isAuthenticated'  fxLayout="row" fxLayoutAlign="center center" class="mr-64">
+        <div *ngIf='!isAuthenticated' fxLayout="row" fxLayoutAlign="center center" class="mr-64">
           <mat-icon class="material-icons-outlined cursor-pointer">
             settings
           </mat-icon>

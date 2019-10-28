@@ -12,7 +12,7 @@
           </div>
           <div class="file">
             <label class="file-label">
-              <input class="file-input" type="file" (change)="fileChangeEvent($event)" formControlName='picture'>
+              <input class="file-input" type="file" (change)="onFileSelect($event)" formControlName='picture'>
 
               <span class="file-cta">
                 <span class="file-icon">
@@ -42,7 +42,7 @@
 
       </div>
       <div fxLayout="row" fxLayoutAlign="center center">
-        <button mat-stroked-button color="primary" class='w-200' (click)='onSubmit()'>SOLVE</button>
+        <button mat-stroked-button color="primary" class='w-200' (click)='onSubmit()'>Upload</button>
       </div>
     </div>
   </form>

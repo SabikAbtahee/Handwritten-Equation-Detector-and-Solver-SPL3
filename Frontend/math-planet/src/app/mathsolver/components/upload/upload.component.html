@@ -28,8 +28,8 @@
 
       <div *ngIf='isValid' fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
         <div class='w-100-p'>
-          <image-cropper [imageChangedEvent]="imageChangedEvent" [outputType]='file' [maintainAspectRatio]="false"
-            format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+          <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false"
+            format="jpeg" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
             (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()" [aspectRatio]="4 / 3"
             [autoCrop]="true">
           </image-cropper>
@@ -42,8 +42,10 @@
 
 
     </div>
-    <div fxLayout="row" fxLayoutAlign="center center">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px">
       <button mat-raised-button color="warn" class='w-200' (click)='upload()'>UPLOAD</button>
+      <button *ngIf='isValid' mat-stroked-button color="primary" class='w-200' (click)='reupload()'>REUPLOAD</button>
+
     </div>
   </div>
 

@@ -41,7 +41,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatDialogModule,
     MatButtonToggleModule,
     ImageCropperModule,
-    HttpClientModule
+    HttpClientModule,
+    
   ],
   exports:[
     MatToolbarModule,
@@ -65,7 +66,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatButtonToggleModule,
     ImageCropperModule,
     DropzoneDirective,
-    HttpClientModule
+    HttpClientModule,
+    
   ],
   providers:[SharedService],
   entryComponents:[SnackbarComponent],

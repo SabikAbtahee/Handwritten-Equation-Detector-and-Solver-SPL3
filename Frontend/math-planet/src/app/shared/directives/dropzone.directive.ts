@@ -12,7 +12,7 @@ export class DropzoneDirective {
   @HostListener('drop',['$event'])
   onDrop($event){
       $event.preventDefault();
-      debugger;
+
       this.dropped.emit($event.dataTransfer.files);
       this.hovered.emit(false);
   }

@@ -66,7 +66,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 		this.corequery.getLoggedInUserID().pipe(takeUntil(this._unsubscribeAll)).subscribe((res) => {
 			if (res) {
 				this.getUserName(res).pipe(takeUntil(this._unsubscribeAll)).subscribe((res) => {
-					debugger
+					
 					this.Username = res;
 					this.isAuthenticated = true;
 					this.makeSideBar();
@@ -138,7 +138,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 		for (let i of this.sidebar) {
 			if (currentUrl == `/${i.url}`) {
 				this.selectedRow = count;
-				debugger;
+			
 				break;
 			}
 			count += 1;

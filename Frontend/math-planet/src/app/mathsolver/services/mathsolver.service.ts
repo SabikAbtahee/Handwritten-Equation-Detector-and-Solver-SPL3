@@ -13,4 +13,8 @@ export class MathsolverService {
   predictImage(payload):Observable<any>{
     return this.coreMutate.httpPost(apiRoutes.predict,payload);
   }
+
+  predictBase64(payload):Observable<any>{
+    return this.coreMutate.httpPost(apiRoutes.predictBase64,payload);
+  }
 }

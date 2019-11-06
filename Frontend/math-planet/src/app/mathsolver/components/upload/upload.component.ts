@@ -1,8 +1,9 @@
+import { Equation } from './../../../config/interfaces/mathplanet.interface';
 import { MathsolverService } from './../../services/mathsolver.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { UtilityService } from 'src/app/core/utility-service/utility.service';
+import { UtilityService } from '../../../core/utility-service/utility.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { first } from 'rxjs/operators';
 // import { type } from 'os';
@@ -27,7 +28,8 @@ export class UploadComponent implements OnInit {
 	uploadForm: FormGroup;
 	equationForm: FormGroup;
 	formData = new FormData();
-	algebra = require('algebra.js')
+
+	algebra = require('algebra.js');
 
 	constructor(
 		private utilityService: UtilityService,
@@ -38,7 +40,6 @@ export class UploadComponent implements OnInit {
 	ngOnInit() {
 		this.makeUploadForm();
 		this.makeEquationForm();
-		
 	}
 
 	makeEquationForm() {
@@ -72,7 +73,6 @@ export class UploadComponent implements OnInit {
 			f.append('file', file, 'test.png');
 			this.mathSolver.predictImage(f).pipe(first()).subscribe(
 				(res) => {
-					
 					// let steps = this.mathsteps.simplifyExpression('x^2+3+3');
 					var eq = this.algebra.parse(res.equation);
 
@@ -81,8 +81,7 @@ export class UploadComponent implements OnInit {
 					var ans = eq.solveFor('x');
 					this.equationForm.patchValue({
 						equation: res.equation,
-						solution:ans.toString()
-
+						solution: ans.toString()
 					});
 					// console.log('x = ' + ans.toString());
 					// console.log(res.equation);
@@ -99,38 +98,105 @@ export class UploadComponent implements OnInit {
 	toggleHover(event: boolean) {
 		this.isHovering = event;
 	}
-	startUpload(event: FileList) {}
 
-	fileChangeEvent(event: any): void {
-		// if (event instanceof Event) {
-		// 	debugger;
-		// 	console.log(this.imageChangedEvent);
-		// 	if (this.utilityService.ifFileImage(event.target.files[0])) {
-		// 		this.imageChangedEvent = event;
-		// 		this.isValid = true;
-		// 	}
-		// }
-		// if (event instanceof FileList) {
-		// 	if (this.utilityService.ifFileImage(event[0])) {
-		// 		this.imageblob = event[0];
-		// 		this.isValid = true;
-		// 	}
-		// }
-		this.imageChangedEvent = event;
-		this.isValid = true;
-	}
+	
 
 	imageCropped(event: ImageCroppedEvent) {
-		console.log(event.file);
+		// debugger;
+		console.log(event);
 		this.croppedImage = event.base64;
+		// let x={
+		// 	base64:event.base64
+		// }
+		// this.mathSolver.predictBase64(x).pipe(first()).subscribe(res=>{
+		// 	console.log(res);
+		// })
+		// console.log(this.imageblob);
+		// let blob=event.file;
+		// let file=this.blobToFile(blob,'test.png');
+		// debugger;
+		// var file = new File([blob], "test",{type:"image/png"});
+		// this.upload(event.file).subscribe(res=>{
+		// 	console.log(res.equation);
+		// })
+
+	
+		
 	}
+	
 	imageLoaded() {
-		// show cropper
+		console.log("Cropper Loaded");
+		
 	}
 	cropperReady() {
-		// cropper ready
+		console.log("Cropper ready to use");
 	}
 	loadImageFailed() {
-		// show message
+		console.log("Image Loading failed");
 	}
+
+	//upload file to server
+	upload(image): Observable<Equation> {
+		let f = new FormData();
+		f.append('file', image, 'test.png');
+
+		return new Observable(observer=>{
+			this.mathSolver.predictImage(f).pipe(first()).subscribe(res=>{
+				observer.next(res);
+			},
+			err=>{
+				observer.error(err);
+			})
+		})
+	}
+
+	fileSelected(event) {
+		this.imageChangedEvent=event;
+		if (event && event.target && event.target.files.length > 0) {
+			if (this.utilityService.ifFileImage(event.target.files[0])) {
+				this.imageblob = event.target.files[0];
+				this.isValid=true;
+			}
+		} else if (event instanceof FileList) {
+			if (this.utilityService.ifFileImage(event[0])) {
+				this.imageblob = event[0];
+				this.isValid=false;
+
+			}
+		}
+
+		console.log(this.imageblob);
+		// this.upload(this.imageblob).subscribe(res=>{
+		// 	console.log(res.equation);
+		// })
+	}
+
+	solve(){
+		let x=this.equationForm.get('equation').value;
+		console.log(x);
+	}
+
+	reupload(){
+		this.isValid=!this.isValid;
+	}
+
+
+	// fileChangeEvent(event: any): void {
+	// 	// if (event instanceof Event) {
+	// 	// 	debugger;
+	// 	// 	console.log(this.imageChangedEvent);
+	// 	// 	if (this.utilityService.ifFileImage(event.target.files[0])) {
+	// 	// 		this.imageChangedEvent = event;
+	// 	// 		this.isValid = true;
+	// 	// 	}
+	// 	// }
+	// 	// if (event instanceof FileList) {
+	// 	// 	if (this.utilityService.ifFileImage(event[0])) {
+	// 	// 		this.imageblob = event[0];
+	// 	// 		this.isValid = true;
+	// 	// 	}
+	// 	// }
+	// 	this.imageChangedEvent = event;
+	// 	this.isValid = true;
+	// }
 }

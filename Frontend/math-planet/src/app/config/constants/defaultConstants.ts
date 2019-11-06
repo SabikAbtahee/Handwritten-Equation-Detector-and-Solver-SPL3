@@ -186,7 +186,8 @@ export const urlPaths = {
 
 export const apiRoutes={
 	baseURL:`${baseURL}`,
-	predict:`${baseURL}/predict`
+	predict:`${baseURL}/predict`,
+	predictBase64:`${baseURL}/predictBase64`
 }
 
 export const httpHeader = {

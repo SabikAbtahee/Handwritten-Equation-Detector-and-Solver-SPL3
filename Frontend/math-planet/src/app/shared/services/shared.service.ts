@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { SnackbarComponent } from '../components/snackbar/snackbar.component';
 import { snackbar } from '../../config/interfaces/config.interface';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 // import { PasswordChangeComponent } from 'src/app/profile/components/password-change/password-change.component';
 
 @Injectable({
@@ -21,11 +21,14 @@ export class SharedService {
 		  duration: (configuration.duration?configuration.duration:1) * 1000,
       data: configuration.data,
       horizontalPosition:(configuration.horizontalPosition?configuration.horizontalPosition:'right'),
-      verticalPosition:(configuration.verticalPosition?configuration.verticalPosition:'bottom'),
+      verticalPosition:(configuration.verticalPosition?configuration.verticalPosition:'top'),
       panelClass:configuration.panelClass?configuration.panelClass:null ,
       
 		});
     }
+
+
+    
     
     
 }

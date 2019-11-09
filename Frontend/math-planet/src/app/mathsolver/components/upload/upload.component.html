@@ -5,7 +5,7 @@
 
       <div *ngIf='!isValid' fxLayout="column" fxLayoutAlign="center center " fxLayoutGap="12px"
         class='dropzone p-24 margin-auto h-200' dropZone (hovered)="toggleHover($event)"
-        (dropped)="fileSelected($event)" [class.hovering]="isHovering">
+        (dropped)="fileSelected($event)" [class.hovering]="isHovering" (change)="fileSelected($event)">
         <div class='font-size-20'>
           Drag and Drop your picture
         </div>
@@ -28,7 +28,7 @@
 
       <div *ngIf='isValid' fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
         <div class='w-100-p'>
-          <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false"
+          <image-cropper [imageChangedEvent]="imageChangedEvent" [imageBase64]="initialBase64pic" [maintainAspectRatio]="false"
             format="jpeg" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
             (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()" [aspectRatio]="4 / 3"
             [autoCrop]="true">
@@ -57,7 +57,10 @@
         <div fxFlex='80'>
           <mat-form-field appearance="outline">
             <!-- <mat-label>Parsed Equation</mat-label> -->
-            <input matInput type='text' formControlName='equation' class='font-size-24'>
+            <input matInput type='text' formControlName='equation' class='font-size-20'>
+            <mat-error *ngIf="equationForm.get('equation').touched && equationForm.get('equation').invalid">Invalid Equation</mat-error>
+            <mat-error *ngIf="!equationForm.get('equation').touched && equationForm.get('equation').hasError('required')">Required buddy</mat-error>
+
           </mat-form-field>
         </div>
 
@@ -71,7 +74,7 @@
           <mat-form-field appearance="outline">
             <!-- <mat-label>Solution</mat-label> -->
 
-            <input matInput type='text' formControlName='solution' class='font-size-24'>
+            <input matInput type='text' formControlName='solution' class='font-size-20'>
           </mat-form-field>
         </div>
 

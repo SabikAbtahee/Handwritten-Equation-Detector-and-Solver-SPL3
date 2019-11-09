@@ -30,4 +30,12 @@ export class MathsolverService {
     FileSaver.saveAs(f,filename);
     
   }
+
+  checkIfEquation(){
+
+  }
+
+  checkIfExpression(){
+    
+  }
 }

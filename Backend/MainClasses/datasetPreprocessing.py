@@ -128,7 +128,7 @@ def deleteFiles():
                     os.remove(os.path.join(root, fname))
                     count -= 1
 
-            print(count)
+            # print(count)
 
 
 deleteFiles()

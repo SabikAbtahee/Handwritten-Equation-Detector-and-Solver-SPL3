@@ -48,7 +48,7 @@ def prediction(file):
     thresh = 127
     imageObject = imgConversions.openImageUsingPillow(file)
     imageObject = np.array(imageObject)
-    print(imageObject)
+    # print(imageObject)
     if imageObject is not None:
         while(True):
             preprocessedImage = process(imageObject, thresh)

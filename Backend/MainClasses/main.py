@@ -162,7 +162,7 @@ def testDirect(file):
                     thresh-=10
                 else:
                     equation = reconstruction(preprocessedImage, symbols)
-                    print(equation)
+                    # print(equation)
                     return equation
                     break
 

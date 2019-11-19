@@ -1,3 +1,4 @@
+import { Content } from './../../../config/interfaces/content.interface';
 import { SharedService } from './../../../shared/services/shared.service';
 import { element } from 'protractor';
 import { Equation } from './../../../config/interfaces/mathplanet.interface';
@@ -27,38 +28,51 @@ export class UploadComponent implements OnInit {
 	croppedImage: any = '';
 	croppedImageFile: File = null;
 	isValid = false;
-	initialBase64pic:any='';
+	initialBase64pic: any = '';
 	uploadForm: FormGroup;
 	equationForm: FormGroup;
 	formData = new FormData();
-
+	isAuthenticated: boolean = false;
+	userId: string = '';
+	isSavable: boolean = false;
+	imageLink:any;
 	constructor(
 		private utilityService: UtilityService,
 		private fb: FormBuilder,
 		private mathSolver: MathsolverService,
-		private sharedService:SharedService
+		private sharedService: SharedService
 	) {}
 
 	ngOnInit() {
-		this.makeUploadForm();
+		// this.makeUploadForm();
 		this.makeEquationForm();
+		this.checkUser();
 	}
 
 	makeEquationForm() {
 		this.equationForm = this.fb.group({
-			equation: [ '' ,[Validators.required]],
+			equation: [ '', [ Validators.required ] ],
 			solution: [ '' ]
 		});
 	}
 
-	makeUploadForm() {
-		this.uploadForm = this.fb.group({
-			picture: [ null ]
+	// makeUploadForm() {
+	// 	this.uploadForm = this.fb.group({
+	// 		picture: [ null ]
+	// 	});
+	// }
+
+	checkUser() {
+		this.mathSolver.isUserLoggedIn().subscribe((res) => {
+			if (res) {
+				this.isAuthenticated = true;
+			} else {
+				this.isAuthenticated = false;
+			}
 		});
 	}
 
 	fileSelected(event) {
-
 		if (event && event.target && event.target.files.length > 0) {
 			if (this.utilityService.ifFileImage(event.target.files[0])) {
 				this.imageblob = event.target.files[0];
@@ -83,7 +97,7 @@ export class UploadComponent implements OnInit {
 
 	upload() {
 		let f = new FormData();
-		if(this.croppedImageFile!=null){
+		if (this.croppedImageFile != null) {
 			f.append('file', this.croppedImageFile, 'test.jpg');
 
 			this.mathSolver.predictImage(f).pipe(first()).subscribe((res) => {
@@ -92,20 +106,16 @@ export class UploadComponent implements OnInit {
 				});
 				this.solve();
 			});
-		}
-		else{
+		} else {
 			this.sharedService.openSnackBar({
-				data:{
-					message:'Please Select a file',
-					isAccepted:false
+				data: {
+					message: 'Please Select a file',
+					isAccepted: false
 				},
-				duration:3,
-				panelClass: [ 'recovery-snackbar' ],
-	
-			})
+				duration: 3,
+				panelClass: [ 'recovery-snackbar' ]
+			});
 		}
-		
-
 	}
 
 	reupload() {
@@ -113,6 +123,7 @@ export class UploadComponent implements OnInit {
 		this.imageblob = '';
 		this.croppedImage = '';
 		this.croppedImageFile = null;
+		this.isSavable = false;
 		this.equationForm.patchValue({
 			equation: '',
 			solution: ''
@@ -122,12 +133,13 @@ export class UploadComponent implements OnInit {
 	solve() {
 		let equation = this.equationForm.get('equation').value;
 		let solution = this.mathSolver.solveEquation(equation);
-		if(!solution){
-			solution='Sorry No Solution found';
+		if (!solution) {
+			solution = 'Sorry No Solution found';
 		}
 		this.equationForm.patchValue({
 			solution: solution
 		});
+		this.isSavable=true;
 	}
 
 	toggleHover(event: boolean) {
@@ -146,14 +158,79 @@ export class UploadComponent implements OnInit {
 		// console.log('Image Loading failed');
 	}
 
-	convertFiletoBase64(fileInput){
-		var myReader:FileReader = new FileReader();
+	convertFiletoBase64(fileInput) {
+		var myReader: FileReader = new FileReader();
 		myReader.onloadend = (e) => {
 			this.initialBase64pic = myReader.result;
-		  }
+		};
 		myReader.readAsDataURL(fileInput);
+	}
+
+	uploadFileToFirebase():Observable<any>{
+		return new Observable(obs=>{
+			let filepath=`${this.userId}/${this.croppedImageFile.name}_${new Date().getTime()}`;
+			this.mathSolver.uploadFileToFirebase(filepath,this.croppedImageFile).subscribe(res=>{
+				this.imageLink=res;
+				obs.next(res);
+			},
+			err=>{
+				obs.error(err);
+			})
+		})
 		
 	}
 
+	save() {
+		this.mathSolver.getUserId().pipe(first()).subscribe((res) => {
+			this.userId = res;
+			this.uploadFileToFirebase().subscribe(res=>{
+				let con: Content = {
+					userId: this.userId,
+					createdTime: new Date(),
+					equation: this.equationForm.get('equation').value,
+					solution: this.equationForm.get('solution').value,
+					uid: this.sharedService.generateGUID(),
+					imageLink:this.imageLink
+				};
+				if (con.userId && con.equation && con.solution) {
+					this.mathSolver.saveContent(con);
+					this.sharedService.openSnackBar({
+						data: {
+							message: 'Saved into account',
+							isAccepted: true
+						},
+						duration: 3,
+						panelClass: [ 'recovery-snackbar' ]
+					});
+				} else {
+					this.sharedService.openSnackBar({
+						data: {
+							message: 'Please Give a equation and solution',
+							isAccepted: false
+						},
+						duration: 3,
+						panelClass: [ 'recovery-snackbar' ]
+					});
+				}
+			},
+			err=>{
+				this.sharedService.openSnackBar({
+					data: {
+						message: 'Internal server error',
+						isAccepted: false
+					},
+					duration: 3,
+					panelClass: [ 'recovery-snackbar' ]
+				});
+			});
+			
+		});
 
+		// // con.userId=this.userId;
+		// // con.equation=this.equationForm.get('equation').value;
+		// // con.solution=this.equationForm.get('solution').value;
+		// // con.createdTime=new Date();
+		// // con.uid=this.sharedService.generateGUID();
+		// debugger
+	}
 }

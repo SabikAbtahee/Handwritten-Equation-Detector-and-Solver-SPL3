@@ -1,7 +1,8 @@
 export interface Content{
-    id:string,
-    parsedFormat?:string,
-    createdDate?:Date,
-    solution?:string,
-    imageUrl?:string
+    uid:any,
+    equation:string,
+    solution:string,
+    createdTime:Date,
+    imageLink?:string,
+    userId:string
 }

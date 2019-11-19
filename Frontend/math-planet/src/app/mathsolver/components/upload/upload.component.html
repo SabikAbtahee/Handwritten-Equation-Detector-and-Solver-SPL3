@@ -59,7 +59,7 @@
             <!-- <mat-label>Parsed Equation</mat-label> -->
             <input matInput type='text' formControlName='equation' class='font-size-20'>
             <mat-error *ngIf="equationForm.get('equation').touched && equationForm.get('equation').invalid">Invalid Equation</mat-error>
-            <mat-error *ngIf="!equationForm.get('equation').touched && equationForm.get('equation').hasError('required')">Required buddy</mat-error>
+            <mat-error *ngIf="!equationForm.get('equation').touched && equationForm.get('equation').hasError('required')">Equation Required</mat-error>
 
           </mat-form-field>
         </div>
@@ -82,6 +82,9 @@
       <div fxLayout="row" fxLayoutAlign="center center">
         <button mat-raised-button color="primary" class='w-200' (click)='solve()'>SOLVE</button>
       </div>
+      <div *ngIf='isAuthenticated && isSavable' fxLayout="row" fxLayoutAlign="center center">
+        <button mat-stroked-button color="primary" class='w-200' (click)='save()'>SAVE</button>
+      </div>
     </div>
   </form>
 
@@ -91,3 +94,4 @@
 
 
 </div>
+

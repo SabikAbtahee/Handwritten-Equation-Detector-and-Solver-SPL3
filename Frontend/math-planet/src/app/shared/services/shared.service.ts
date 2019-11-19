@@ -4,31 +4,29 @@ import { SnackbarComponent } from '../components/snackbar/snackbar.component';
 import { snackbar } from '../../config/interfaces/config.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 // import { PasswordChangeComponent } from 'src/app/profile/components/password-change/password-change.component';
-
+import { Guid } from 'guid-typescript';
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class SharedService {
+	// Username = new BehaviorSubject('');
+	// $username= this.Username.asObservable();
+	// menuIndex = new BehaviorSubject<number>(1);
+	// $menuIndex = this.menuIndex.asObservable();
+	constructor(private snackbar: MatSnackBar, public dialog: MatDialog) {}
 
-  // Username = new BehaviorSubject('');
-  // $username= this.Username.asObservable();
-  // menuIndex = new BehaviorSubject<number>(1);
-  // $menuIndex = this.menuIndex.asObservable();
-  constructor(private snackbar: MatSnackBar,public dialog: MatDialog) { }
-
-  openSnackBar(configuration:snackbar) {
+	openSnackBar(configuration: snackbar) {
 		this.snackbar.openFromComponent(SnackbarComponent, {
-		  duration: (configuration.duration?configuration.duration:1) * 1000,
-      data: configuration.data,
-      horizontalPosition:(configuration.horizontalPosition?configuration.horizontalPosition:'right'),
-      verticalPosition:(configuration.verticalPosition?configuration.verticalPosition:'top'),
-      panelClass:configuration.panelClass?configuration.panelClass:null ,
-      
+			duration: (configuration.duration ? configuration.duration : 1) * 1000,
+			data: configuration.data,
+			horizontalPosition: configuration.horizontalPosition ? configuration.horizontalPosition : 'right',
+			verticalPosition: configuration.verticalPosition ? configuration.verticalPosition : 'top',
+			panelClass: configuration.panelClass ? configuration.panelClass : null
 		});
-    }
-
-
-    
-    
-    
+  }
+  
+  generateGUID(){
+    let id = Guid.create();
+    return id.toString();
+  }
 }

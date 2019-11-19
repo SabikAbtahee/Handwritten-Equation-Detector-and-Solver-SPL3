@@ -74,7 +74,8 @@ def startSegmentation(preprocessedImage):
     AllSymbols.clear()
     makeSymbols(res)
     checkSquare()
-    checkEqual()
+    # checkEqual()
+    checkEqual2()
     return AllSymbols
 def checkEqual():
     for i in range(len(AllSymbols)-1):
@@ -92,6 +93,39 @@ def checkEqual():
                                       AllSymbols[i].x, AllSymbols[i].x-AllSymbols[i+1].x+AllSymbols[i+1].width)
             AllSymbols[i].setCenter()
             # print(AllSymbols[i].info())
+
+def checkEqual2():
+    for i in range(len(AllSymbols)-1):
+            if(AllSymbols[i].isMinus == True and AllSymbols[i+1].isMinus == True):
+                x1=AllSymbols[i].x
+                x2=AllSymbols[i].x+AllSymbols[i].width
+                x3=AllSymbols[i+1].x
+                x4=AllSymbols[i+1].x+AllSymbols[i+1].width
+                ans=giveEqualPositions(x1,x2,x3,x4)
+                ans2=giveEqualPositions(x3,x4,x1,x2)
+                if(ans==True or ans2==True):
+                    AllSymbols[i].character = '='
+                    AllSymbols[i+1].position = -1
+                    AllSymbols[i].x = min(AllSymbols[i].x, AllSymbols[i+1].x)
+                    AllSymbols[i].y = min(
+                        (AllSymbols[i].y), (AllSymbols[i+1].y))
+                    AllSymbols[i].height = max(((AllSymbols[i+1].y + AllSymbols[i+1].height) - AllSymbols[i].y),
+                                            (AllSymbols[i].y-(AllSymbols[i+1].y + AllSymbols[i+1].height)))
+                    AllSymbols[i].width = max(AllSymbols[i+1].x+AllSymbols[i+1].width -
+                                            AllSymbols[i].x, AllSymbols[i].x-AllSymbols[i+1].x+AllSymbols[i+1].width)
+                    AllSymbols[i].setCenter()
+                
+def giveEqualPositions(x1,x2,x3,x4):
+    if(x1>=x3 and x2>=x4 and x4>x1):
+        return True
+    elif(x1<=x3 and x2<=x4 and x3<x2):
+        return True
+    elif(x1>x3 and  x2<x4):
+        return True
+    elif(x1<x3 and x4<x2):
+        return True
+    
+    return False
 def checkSquare():
     for i in range(len(AllSymbols)-1):
         wid = float(AllSymbols[i].height/2.25)

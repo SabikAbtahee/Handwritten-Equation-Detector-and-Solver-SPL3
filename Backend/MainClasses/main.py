@@ -29,8 +29,8 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # later it will be used as rest api or not at all
 # imagePath = '../Equations/Equ1.jpg'
 imagePath = '../Equations/Equ2Folder/Equ4.jpg'
-# allimage = '../Equations/'
-allimage = '../Uploads/'
+allimage = '../Equations/testEqual/'
+# allimage = '../Uploads/'
 
 imgConversions = ImageConversions()
 
@@ -93,8 +93,8 @@ def reconstruction(preprocessedImage, symbols):
 
 
 def main():  # the rest api will send a image until then work with a single path image object
-    makemodel()
-    # allpath()
+    # makemodel()
+    allpath()
     # runEachFile(imagePath)
     # test()
 
@@ -112,8 +112,8 @@ def runEachFile(path):
                     thresh-=10
                 else:
                     equation = reconstruction(preprocessedImage, symbols)
-                    print(equation)
-                    return equation
+                    print(path,equation)
+                    # return equation
                     break
 
 
@@ -190,5 +190,5 @@ def predict():
     # return 'SABIk'
 
 if __name__ == '__main__':
-    # main()
-    flaskBackend()
+    main()
+    # flaskBackend()

@@ -1,3 +1,83 @@
-<p>
-  history-default works!
-</p>
+<!-- <div fxLayout='column' fxLayoutAlign='center center' fxLayoutGap="16px" class='p-48'>
+  <div *ngFor='let i of data'>
+    <mat-card fxLayout='column' fxLayoutGap="24px">
+      <div class='font-size-24'>
+        Created Date: {{i.createdTime.seconds* 1000 | date:'dd/MM/yyyy(EEE) - hh:mmaaa' }}
+      </div>
+      <div>
+        <img [src]='i.imageLink' class='w-500 h-100'>
+      </div>
+      <div fxLayout='row' fxLayoutAlign='start center' fxLayoutGap="16px" class='font-size-24'>
+        <div>Equation:</div>
+        <div>{{i.equation}}</div>
+
+      </div>
+      <div fxLayout='row' fxLayoutAlign='start center' fxLayoutGap="16px" class='font-size-24'>
+        <div>Solution: </div>
+        <div>{{i.solution}}</div>
+
+      </div>
+    </mat-card>
+  </div>
+</div> -->
+<div class='mx-40 mt-40'>
+    <mat-form-field appearance="outline">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+      <mat-icon matPrefix class='mr-16'>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+<div fxLayout="column" class="mx-40 mb-40 mt-20 mat-elevation-z8">
+  
+  <mat-table #table [dataSource]="equations" matSort matSortActive="createdTime" matSortDirection="desc"
+    [class.isMobile]="isMobile">
+
+    <ng-container matColumnDef="equation">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="primary-background white-color-foreground font-size-16">
+        Equation
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class='font-size-18 primary-text-color '>
+        <span class="mobile-label">Equation:</span>
+        {{ element.equation }}
+      </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="solution">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="primary-background white-color-foreground font-size-16">
+        Solution
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class='font-size-16'>
+        <span class="mobile-label">Solution:</span>
+
+        {{ element.solution }} </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="createdTime">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="primary-background white-color-foreground font-size-16">
+        Created Time
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class='font-size-16'>
+        <span class="mobile-label">Created at:</span>
+        <!-- {{element.createdTime.seconds * 1000}} -->
+        {{ element.createdTime.seconds * 1000 | date:'dd/MM/yyyy(EEE) - hh:mmaaa' }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="imageLink">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="primary-background white-color-foreground font-size-16">
+        Image
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <img [src]='element.imageLink' class='my-8 h-80 w-500'>
+        <!-- {{ element.imageLink }}  -->
+      </mat-cell>
+    </ng-container>
+
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

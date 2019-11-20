@@ -33,4 +33,39 @@ export class QueryDatabaseService {
 			);
 		});
 	}
+
+	getListData(collectionName:string):Observable<any>{
+		return new Observable(obs=>{
+			let itemsCollection = this.angularfirestore.collection<any>(collectionName);
+			let items = itemsCollection.valueChanges().subscribe(res=>{
+				obs.next(res);
+
+			});
+			
+		})
+	}
+
+	getListDataWhereEquals(collectionName:string,attribute:string,value:string):Observable<any>{
+		return new Observable(obs=>{
+			let itemsCollection = this.angularfirestore.collection<any>(collectionName, ref => ref.where(attribute, '==', value));
+			let items = itemsCollection.valueChanges().subscribe(res=>{
+				obs.next(res);
+
+			});
+			
+		})
+	}
+	// getListDataMultipleQuery(collectionName:string,where?:string,whereValue?:string,orderBy?:string,orderByValue?:any):Observable<any>{
+	// 	return new Observable(obs=>{
+	// 		let itemsCollection = this.angularfirestore.collection<any>(collectionName, ref => 
+	// 			ref.orderBy(orderBy,'asc')
+				
+	// 		);
+	// 		let items = itemsCollection.valueChanges().subscribe(res=>{
+	// 			obs.next(res);
+
+	// 		});
+			
+	// 	})
+	// }
 }

@@ -5,6 +5,7 @@ import { snackbar } from '../../config/interfaces/config.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 // import { PasswordChangeComponent } from 'src/app/profile/components/password-change/password-change.component';
 import { Guid } from 'guid-typescript';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Injectable({
 	providedIn: 'root'
 })
@@ -13,7 +14,7 @@ export class SharedService {
 	// $username= this.Username.asObservable();
 	// menuIndex = new BehaviorSubject<number>(1);
 	// $menuIndex = this.menuIndex.asObservable();
-	constructor(private snackbar: MatSnackBar, public dialog: MatDialog) {}
+	constructor(private snackbar: MatSnackBar, public dialog: MatDialog,private spinner: NgxSpinnerService) {}
 
 	openSnackBar(configuration: snackbar) {
 		this.snackbar.openFromComponent(SnackbarComponent, {
@@ -28,5 +29,13 @@ export class SharedService {
   generateGUID(){
     let id = Guid.create();
     return id.toString();
+  }
+
+  startSpinner(){
+	this.spinner.show();
+  }
+
+  hideSpinner(){
+	this.spinner.hide();
   }
 }

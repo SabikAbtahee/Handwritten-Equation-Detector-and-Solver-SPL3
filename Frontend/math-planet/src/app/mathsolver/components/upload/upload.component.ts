@@ -182,6 +182,7 @@ export class UploadComponent implements OnInit {
 
 	save() {
 		this.mathSolver.getUserId().pipe(first()).subscribe((res) => {
+			this.sharedService.startSpinner();
 			this.userId = res;
 			this.uploadFileToFirebase().subscribe(res=>{
 				let con: Content = {
@@ -202,6 +203,7 @@ export class UploadComponent implements OnInit {
 						duration: 3,
 						panelClass: [ 'recovery-snackbar' ]
 					});
+					this.sharedService.hideSpinner();
 				} else {
 					this.sharedService.openSnackBar({
 						data: {
@@ -211,6 +213,7 @@ export class UploadComponent implements OnInit {
 						duration: 3,
 						panelClass: [ 'recovery-snackbar' ]
 					});
+					this.sharedService.hideSpinner();
 				}
 			},
 			err=>{

@@ -43,6 +43,7 @@
     "ngx-bootstrap": "^5.1.1",
     "ngx-croppie": "^3.0.0",
     "ngx-image-cropper": "^1.5.1",
+    "ngx-spinner": "^7.2.0",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"

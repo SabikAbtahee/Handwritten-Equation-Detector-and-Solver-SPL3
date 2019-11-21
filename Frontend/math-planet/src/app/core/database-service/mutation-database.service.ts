@@ -57,6 +57,10 @@ export class MutationDatabaseService {
 		let col = this.angularfirestore.collection<any>(entity);
 		col.doc(uid).set(payload);
 	}
+	deleteDataWithUID(entity, uid) {
+		let col = this.angularfirestore.collection<any>(entity);
+		col.doc(uid).delete();
+	}
 
 	uploadFileToFirebase(filepath, file): Observable<any> {
 		return new Observable((obs) => {

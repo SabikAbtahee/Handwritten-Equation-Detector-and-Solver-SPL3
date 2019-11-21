@@ -21,14 +21,14 @@
   </div>
 </div> -->
 <div class='mx-40 mt-40'>
-    <mat-form-field appearance="outline">
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
-      <mat-icon matPrefix class='mr-16'>search</mat-icon>
-    </mat-form-field>
-  </div>
+  <mat-form-field appearance="outline">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+    <mat-icon matPrefix class='mr-16'>search</mat-icon>
+  </mat-form-field>
+</div>
 
 <div fxLayout="column" class="mx-40 mb-40 mt-20 mat-elevation-z8">
-  
+
   <mat-table #table [dataSource]="equations" matSort matSortActive="createdTime" matSortDirection="desc"
     [class.isMobile]="isMobile">
 
@@ -47,10 +47,15 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header class="primary-background white-color-foreground font-size-16">
         Solution
       </mat-header-cell>
-      <mat-cell *matCellDef="let element" class='font-size-16'>
+      <mat-cell  *matCellDef="let element" class='font-size-16'>
         <span class="mobile-label">Solution:</span>
-
-        {{ element.solution }} </mat-cell>
+<!-- <div fxLayout='row' fxLayoutAlign='start center' fxLayoutGap='12px'> -->
+        <div>{{ element.solution }} </div>
+        <!-- <div>
+          <mat-icon class='cursor-pointer'>delete_outline</mat-icon>
+        </div> -->
+      <!-- </div> -->
+      </mat-cell>
     </ng-container>
 
 
@@ -73,6 +78,14 @@
         <!-- {{ element.imageLink }}  -->
       </mat-cell>
     </ng-container>
+    <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="primary-background white-color-foreground font-size-16">
+          
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <mat-icon class='cursor-pointer' (click)='delete(element)'>delete_outline</mat-icon>
+        </mat-cell>
+      </ng-container>
 
 
 

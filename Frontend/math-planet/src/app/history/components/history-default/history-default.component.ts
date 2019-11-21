@@ -1,6 +1,6 @@
 import { SharedService } from './../../../shared/services/shared.service';
 import { HistoryService } from './../../services/history.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, enableProdMode } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -10,7 +10,7 @@ import { MatPaginator } from '@angular/material/paginator';
 	styleUrls: [ './history-default.component.scss' ]
 })
 export class HistoryDefaultComponent implements OnInit {
-  displayedColumns: string[] = ['createdTime','imageLink', 'equation', 'solution' ];
+  displayedColumns: string[] = ['createdTime','imageLink', 'equation', 'solution','delete' ];
   equations = new MatTableDataSource<any>();
   @ViewChild(MatSort)
 	sort: MatSort;
@@ -40,5 +40,10 @@ export class HistoryDefaultComponent implements OnInit {
   }
   applyFilter(filterValue: string) {
 		this.equations.filter = filterValue.trim().toLowerCase();
-	}
+  }
+  
+  delete(e){
+    
+    this.historyService.deleteData(e.uid);
+  }
 }

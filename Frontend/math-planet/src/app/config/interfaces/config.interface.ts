@@ -14,6 +14,14 @@ interface snackbarData{
 	message:string,
 	isAccepted?:any
 }
+
+export interface ConfirmationDialog{
+	message?:string,
+	yesButton:string,
+	noButton:string,
+	icon?:string,
+	closeIcon?:boolean
+}
 export declare type MatSnackBarHorizontalPosition = 'start' | 'center' | 'end' | 'left' | 'right';
 export declare type MatSnackBarVerticalPosition = 'top' | 'bottom';
 export declare type acceptance = 'default' | true | false;

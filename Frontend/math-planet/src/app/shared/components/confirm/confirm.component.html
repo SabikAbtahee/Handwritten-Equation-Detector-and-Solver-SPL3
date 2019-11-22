@@ -1,0 +1,19 @@
+<div fxLayout='column' fxLayoutAlign='center stretch' fxLayoutGap='24px'  class='px-24 pt-24 '>
+  <div *ngIf='data.closeIcon' fxLayout='row' fxLayoutAlign='end center'>
+    close
+  </div>
+  <div fxLayout='row' fxLayoutAlign='center center' fxLayoutGap='24px' mat-dialog-content class='h-80'>
+    <mat-icon *ngIf='data.icon' class="material-icons-outlined font-size-48 rejected-color">
+      {{data.icon}}
+    </mat-icon>
+    <div class='font-size-20 pt-24 pl-16'>
+      {{data.message}}
+    </div>
+
+
+  </div>
+  <div mat-dialog-actions fxLayout='row' fxLayoutAlign='end center' fxLayoutGap='12px' class='pt-30 pl-16'>
+    <button mat-stroked-button class='w-124' (click)="onNoClick()">{{data.noButton}}</button>
+    <button mat-raised-button class='w-124' color='warn' (click)='onYesClick()'>{{data.yesButton}}</button>
+  </div>
+</div>

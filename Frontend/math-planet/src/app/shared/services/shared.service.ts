@@ -1,7 +1,8 @@
+import { ConfirmComponent } from './../components/confirm/confirm.component';
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { SnackbarComponent } from '../components/snackbar/snackbar.component';
-import { snackbar } from '../../config/interfaces/config.interface';
+import { snackbar, ConfirmationDialog } from '../../config/interfaces/config.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 // import { PasswordChangeComponent } from 'src/app/profile/components/password-change/password-change.component';
 import { Guid } from 'guid-typescript';
@@ -14,7 +15,7 @@ export class SharedService {
 	// $username= this.Username.asObservable();
 	// menuIndex = new BehaviorSubject<number>(1);
 	// $menuIndex = this.menuIndex.asObservable();
-	constructor(private snackbar: MatSnackBar, public dialog: MatDialog,private spinner: NgxSpinnerService) {}
+	constructor(private snackbar: MatSnackBar, public dialog: MatDialog, private spinner: NgxSpinnerService) {}
 
 	openSnackBar(configuration: snackbar) {
 		this.snackbar.openFromComponent(SnackbarComponent, {
@@ -24,18 +25,32 @@ export class SharedService {
 			verticalPosition: configuration.verticalPosition ? configuration.verticalPosition : 'top',
 			panelClass: configuration.panelClass ? configuration.panelClass : null
 		});
-  }
-  
-  generateGUID(){
-    let id = Guid.create();
-    return id.toString();
-  }
+	}
 
-  startSpinner(){
-	this.spinner.show();
-  }
+	generateGUID() {
+		let id = Guid.create();
+		return id.toString();
+	}
 
-  hideSpinner(){
-	this.spinner.hide();
-  }
+	startSpinner() {
+		this.spinner.show();
+	}
+
+	hideSpinner() {
+		this.spinner.hide();
+	}
+
+	openConfirmationDialog(data: ConfirmationDialog): Observable<any> {
+		const dialogRef = this.dialog.open(ConfirmComponent, {
+			minWidth: '250px',
+			width: '400px',
+			height:'220px',
+			data: data
+		});
+		return new Observable((obs) => {
+			dialogRef.afterClosed().subscribe((result) => {
+				obs.next(result);
+			});
+		});
+	}
 }

@@ -31,8 +31,9 @@ import { DropzoneDirective } from './directives/dropzone.directive';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ConfirmComponent } from './components/confirm/confirm.component';
 @NgModule({
-	declarations: [ SnackbarComponent, DropzoneDirective ],
+	declarations: [ SnackbarComponent, DropzoneDirective, ConfirmComponent ],
 	imports: [
 		AngularFontAwesomeModule,
 
@@ -100,6 +101,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 		MatSortModule
 	],
 	providers: [ SharedService ],
-	entryComponents: [ SnackbarComponent ]
+	entryComponents: [ SnackbarComponent,ConfirmComponent ]
 })
 export class SharedModule {}

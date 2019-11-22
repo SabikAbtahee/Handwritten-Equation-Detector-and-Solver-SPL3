@@ -43,7 +43,17 @@ export class HistoryDefaultComponent implements OnInit {
   }
   
   delete(e){
-    
-    this.historyService.deleteData(e.uid);
+    this.sharedService.openConfirmationDialog({
+      message:'Are you sure to delete the content?',
+      noButton:'CANCEL',
+      yesButton:'CONFIRM',
+      icon:'error_outlined'
+      
+    }).subscribe(res=>{
+      if(res){
+        this.historyService.deleteData(e.uid);
+      }
+    })
+    // 
   }
 }

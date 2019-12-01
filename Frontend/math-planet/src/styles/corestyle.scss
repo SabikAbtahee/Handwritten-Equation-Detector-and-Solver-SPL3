@@ -395,3 +395,16 @@ $x1: 0;
 	background: $primary-color !important;
 	color: $white-color !important;
 }
+.dropzone { 
+    
+    
+    border: 2px dashed #2b1685;
+    border-radius: 5px;
+    background: white;
+    
+
+    &.hovering {
+        border: 2px solid #2b1685;
+        color: #dadada !important;
+    }
+}

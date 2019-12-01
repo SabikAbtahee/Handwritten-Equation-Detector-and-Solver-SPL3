@@ -44,17 +44,15 @@ export class UploadComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		// this.makeUploadForm();
-		this.makeEquationForm();
-		this.checkUser();
+		
 	}
 
-	makeEquationForm() {
-		this.equationForm = this.fb.group({
-			equation: [ '', [ Validators.required ] ],
-			solution: [ '' ]
-		});
-	}
+	// makeEquationForm() {
+	// 	this.equationForm = this.fb.group({
+	// 		equation: [ '', [ Validators.required ] ],
+	// 		solution: [ '' ]
+	// 	});
+	// }
 
 	// makeUploadForm() {
 	// 	this.uploadForm = this.fb.group({
@@ -62,15 +60,15 @@ export class UploadComponent implements OnInit {
 	// 	});
 	// }
 
-	checkUser() {
-		this.mathSolver.isUserLoggedIn().subscribe((res) => {
-			if (res) {
-				this.isAuthenticated = true;
-			} else {
-				this.isAuthenticated = false;
-			}
-		});
-	}
+	// checkUser() {
+	// 	this.mathSolver.isUserLoggedIn().subscribe((res) => {
+	// 		if (res) {
+	// 			this.isAuthenticated = true;
+	// 		} else {
+	// 			this.isAuthenticated = false;
+	// 		}
+	// 	});
+	// }
 
 	fileSelected(event) {
 		if (event && event.target && event.target.files.length > 0) {

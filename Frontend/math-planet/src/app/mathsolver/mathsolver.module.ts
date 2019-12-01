@@ -5,6 +5,7 @@ import { DrawComponent } from './components/draw/draw.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { CoreModule } from '../core/core.module';
+import { SolveComponent } from './components/solve/solve.component';
 
 const routes:Routes=[
 	{
@@ -22,7 +23,7 @@ const routes:Routes=[
 ]
 
 @NgModule({
-	declarations: [ UploadComponent, DrawComponent ],
+	declarations: [ UploadComponent, DrawComponent, SolveComponent ],
 	imports: [ CommonModule,
 		 RouterModule.forChild(routes),
 		  SharedModule,

@@ -1,3 +1,9 @@
-<p>
-  draw works!
-</p>
+<div fxLayout='row' fxLayoutAlign="center center" class='p-24 margin-auto w-100-p'> 
+  <canvas #canvas id='myCanvas' class='mat-elevation-z8 dropzone ' [ngClass]="mode=='pen' ? 'crosshair' : 'rubber' "></canvas>
+
+</div>
+<button (click)='changeMode("eraser")'>ss</button>
+<button (click)='changeMode("pen")'>ssss</button>
+<button (click)='clearCanvas()'>clear</button>
+<button (click)='saveImage()'>save</button>
+<!-- <img [src]=check> -->

@@ -8,7 +8,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 	providedIn: 'root'
 })
 export class UtilityService {
-	constructor(private angularfireauth:AngularFireAuth) {}
+	constructor(private angularfireauth: AngularFireAuth) {}
 
 	getFormControlsValueFromFormGroup(fg: FormGroup) {
 		let controls = [];
@@ -18,21 +18,26 @@ export class UtilityService {
 		return controls;
 	}
 
-
-	touchAllFieldsOfForm(formgroup:FormGroup){
-		let fields=this.getFormControlsValueFromFormGroup(formgroup);
+	touchAllFieldsOfForm(formgroup: FormGroup) {
+		let fields = this.getFormControlsValueFromFormGroup(formgroup);
 		_.forEach(fields, (value, key) => {
 			formgroup.controls[value].markAsTouched();
 		});
 	}
 
-	resendVerificationEmail(){
+	resendVerificationEmail() {
 		this.angularfireauth.auth.currentUser.sendEmailVerification();
-
 	}
 
-	ifFileImage(file){
+	ifFileImage(file) {
 		return file && file['type'].split('/')[0] === 'image';
+	}
+	b64toBlob(b64Data) {
+		var b64toBlob = require('b64-to-blob');
+
+		let contentType = 'image/jpeg';
+		var blob = b64toBlob(b64Data, contentType);
+		return blob;
 	}
 }
 
@@ -40,7 +45,7 @@ export class ErrorStateMatcherForsignUppage implements ErrorStateMatcher {
 	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
 		//   const isSubmitted = form && form.submitted;
 		//   return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-		return (form.hasError('notMatching') && control.touched)
+		return form.hasError('notMatching') && control.touched
 			? form.hasError('notMatching')
 			: control && control.invalid && control.touched ? control.invalid : false;
 	}

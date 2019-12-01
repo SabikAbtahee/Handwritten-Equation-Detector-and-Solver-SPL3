@@ -49,14 +49,13 @@
     </div>
   </div>
 
-  <form [formGroup]="equationForm">
+  <!-- <form [formGroup]="equationForm">
     <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="12px">
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <div fxFlex='20' ngClass='mat-icon-for-input font-size-20' [ngClass.lt-lg]="['font-size-14' ,'mat-icon-for-input']">
           Equation: </div>
         <div fxFlex='80'>
           <mat-form-field appearance="outline">
-            <!-- <mat-label>Parsed Equation</mat-label> -->
             <input matInput type='text' formControlName='equation' class='font-size-20'>
             <mat-error *ngIf="equationForm.get('equation').touched && equationForm.get('equation').invalid">Invalid Equation</mat-error>
             <mat-error *ngIf="!equationForm.get('equation').touched && equationForm.get('equation').hasError('required')">Equation Required</mat-error>
@@ -72,7 +71,6 @@
         <div fxFlex='80'>
 
           <mat-form-field appearance="outline">
-            <!-- <mat-label>Solution</mat-label> -->
 
             <input matInput type='text' formControlName='solution' class='font-size-20'>
           </mat-form-field>
@@ -86,9 +84,9 @@
         <button mat-stroked-button color="primary" class='w-200' (click)='save()'>SAVE</button>
       </div>
     </div>
-  </form>
+  </form> -->
 
-
+  <app-solve></app-solve>
 
 
 

@@ -32,10 +32,11 @@ export class UtilityService {
 	ifFileImage(file) {
 		return file && file['type'].split('/')[0] === 'image';
 	}
-	b64toBlob(b64Data) {
+	b64toBlob(b64Data, con) {
 		var b64toBlob = require('b64-to-blob');
 
-		let contentType = 'image/jpeg';
+		let contentType = con ? con : 'image/jpeg';
+		debugger;
 		var blob = b64toBlob(b64Data, contentType);
 		return blob;
 	}

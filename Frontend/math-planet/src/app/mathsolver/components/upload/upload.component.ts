@@ -44,7 +44,10 @@ export class UploadComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		
+		this.makeEquationForm();
+		this.makeUploadForm();
+		this.checkUser();
+
 	}
 
 	makeEquationForm() {
@@ -137,7 +140,10 @@ export class UploadComponent implements OnInit {
 		this.equationForm.patchValue({
 			solution: solution
 		});
-		this.isSavable=true;
+		if(this.croppedImageFile){
+			this.isSavable = true;
+
+		}
 	}
 
 	toggleHover(event: boolean) {
@@ -215,6 +221,8 @@ export class UploadComponent implements OnInit {
 				}
 			},
 			err=>{
+				this.sharedService.hideSpinner();
+
 				this.sharedService.openSnackBar({
 					data: {
 						message: 'Internal server error',
@@ -227,11 +235,6 @@ export class UploadComponent implements OnInit {
 			
 		});
 
-		// // con.userId=this.userId;
-		// // con.equation=this.equationForm.get('equation').value;
-		// // con.solution=this.equationForm.get('solution').value;
-		// // con.createdTime=new Date();
-		// // con.uid=this.sharedService.generateGUID();
-		// debugger
+		
 	}
 }

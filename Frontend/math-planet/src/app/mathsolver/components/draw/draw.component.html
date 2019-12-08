@@ -1,9 +1,83 @@
-<div fxLayout='row' fxLayoutAlign="center center" class='p-24 margin-auto w-100-p'> 
-  <canvas #canvas id='myCanvas' class='mat-elevation-z8 dropzone ' [ngClass]="mode=='pen' ? 'crosshair' : 'rubber' "></canvas>
+<div class='margin-auto p-64'>
+  <div fxLayout='row' fxLayoutAlign="center center" class='font-size-24'>Draw Below</div>
+  <div fxLayout='row' fxLayoutAlign="center center" class='p-24 margin-auto w-100-p'>
+    <canvas #canvas id='myCanvas' class='mat-elevation-z8 dropzone '
+      [ngClass]="mode=='pen' ? 'crosshair' : 'rubber' "></canvas>
 
+  </div>
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center center" fxLayoutGap="16px" class='pb-16'>
+    <button mat-stroked-button color="primary" (click)='changeMode("eraser")'
+      class='w-170 font-size-16 cornsilk-background'>
+
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <i class="material-icons font-size-16 pl-22">
+          crop_16_9
+        </i>
+        <div>Eraser</div>
+      </div>
+    </button>
+    <button mat-raised-button color="primary" (click)='changeMode("pen")'
+      class='w-170 black-color-background font-size-16'>
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <i class="material-icons font-size-16 pl-22">
+          create
+        </i>
+        <div>Pencil</div>
+      </div>
+
+
+    </button>
+    <button mat-raised-button color="warn" (click)='clearCanvas()' class='w-170  font-size-16'>
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <i class="material-icons font-size-16 pl-22">
+          close
+        </i>
+        <div>Clear</div>
+      </div>
+    </button>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" class='pb-16'>
+    <button mat-raised-button (click)='saveImage()' class='w-224 accepted-color-background font-size-16'>Save</button>
+  </div>
+  <form [formGroup]="equationForm">
+    <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="12px">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxFlex='20' ngClass='mat-icon-for-input font-size-20'
+          [ngClass.lt-lg]="['font-size-14' ,'mat-icon-for-input']">
+          Equation: </div>
+        <div fxFlex='80'>
+          <mat-form-field appearance="outline">
+            <input matInput type='text' formControlName='equation' class='font-size-20'>
+            <mat-error *ngIf="equationForm.get('equation').touched && equationForm.get('equation').invalid">Invalid
+              Equation</mat-error>
+            <mat-error
+              *ngIf="!equationForm.get('equation').touched && equationForm.get('equation').hasError('required')">
+              Equation Required</mat-error>
+
+          </mat-form-field>
+        </div>
+
+
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxFlex='20' ngClass='mat-icon-for-input font-size-20'
+          [ngClass.lt-lg]="['font-size-14','mat-icon-for-input']">Solution:
+        </div>
+        <div fxFlex='80'>
+
+          <mat-form-field appearance="outline">
+
+            <input matInput type='text' formControlName='solution' class='font-size-20'>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button color="primary" class='w-200' (click)='solve()'>SOLVE</button>
+      </div>
+      <div *ngIf='isAuthenticated && isSavable' fxLayout="row" fxLayoutAlign="center center">
+        <button mat-stroked-button color="primary" class='w-200' (click)='save()'>SAVE</button>
+      </div>
+    </div>
+  </form>
 </div>
-<button (click)='changeMode("eraser")'>ss</button>
-<button (click)='changeMode("pen")'>ssss</button>
-<button (click)='clearCanvas()'>clear</button>
-<button (click)='saveImage()'>save</button>
-<!-- <img [src]=check> -->

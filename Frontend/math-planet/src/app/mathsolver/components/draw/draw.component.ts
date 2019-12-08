@@ -1,10 +1,13 @@
+import { Content } from './../../../config/interfaces/content.interface';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Input, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
-import { fromEvent } from 'rxjs';
-import { switchMap, takeUntil, pairwise } from 'rxjs/operators';
+import { fromEvent, Observable } from 'rxjs';
+import { switchMap, takeUntil, pairwise, first } from 'rxjs/operators';
 import { MathsolverService } from '../../services/mathsolver.service';
 import { UtilityService } from 'src/app/core/utility-service/utility.service';
 import canvasToImage from 'canvas-to-image';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { SharedService } from 'src/app/shared/services/shared.service';
 @Component({
 	selector: 'app-draw',
 	templateUrl: './draw.component.html',
@@ -15,10 +18,48 @@ export class DrawComponent implements OnInit, AfterViewInit {
 	widthMinus = 300;
 	mode = 'pen';
 	check;
+	uploadForm: FormGroup;
+	equationForm: FormGroup;
+	isAuthenticated: boolean = false;
+	isSavable: boolean = false;
+	userId: string = '';
+	imageLink: any;
+	croppedImageFile: File = null;
 
-	constructor(private mathsolver: MathsolverService, private utility: UtilityService) {}
+	constructor(
+		private utilityService: UtilityService,
+		private fb: FormBuilder,
+		private mathSolver: MathsolverService,
+		private sharedService: SharedService
+	) {}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.makeEquationForm();
+		this.makeUploadForm();
+		this.checkUser();
+	}
+	makeEquationForm() {
+		this.equationForm = this.fb.group({
+			equation: [ '', [ Validators.required ] ],
+			solution: [ '' ]
+		});
+	}
+
+	makeUploadForm() {
+		this.uploadForm = this.fb.group({
+			picture: [ null ]
+		});
+	}
+
+	checkUser() {
+		this.mathSolver.isUserLoggedIn().subscribe((res) => {
+			if (res) {
+				this.isAuthenticated = true;
+			} else {
+				this.isAuthenticated = false;
+			}
+		});
+	}
 	@ViewChild('canvas') public canvas: ElementRef;
 
 	@Input() public width = this.widthMinus;
@@ -26,7 +67,11 @@ export class DrawComponent implements OnInit, AfterViewInit {
 
 	@HostListener('window:resize', [ '$event' ])
 	onResize(event) {
-		this.canvasEl.width = event.target.innerWidth - this.widthMinus;
+		if (event.target.innerWidth - this.widthMinus > 500) {
+			this.canvasEl.width = event.target.innerWidth - this.widthMinus;
+		} else {
+			this.canvasEl.width = event.target.innerWidth - 100;
+		}
 		this.canvasEl.height = 200;
 	}
 
@@ -38,7 +83,7 @@ export class DrawComponent implements OnInit, AfterViewInit {
 
 		this.canvasEl.width = screen.width - this.widthMinus;
 		this.canvasEl.height = 200;
-		this.cx.fillStyle='#ffffff';
+		this.cx.fillStyle = '#ffffff';
 		this.cx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
 		this.cx.lineWidth = 5;
 		this.cx.lineCap = 'round';
@@ -104,17 +149,115 @@ export class DrawComponent implements OnInit, AfterViewInit {
 
 	clearCanvas() {
 		this.cx.clearRect(0, 0, this.cx.canvas.width, this.cx.canvas.height);
-		this.cx.fillStyle='#ffffff';
+		this.cx.fillStyle = '#ffffff';
 		this.cx.fillRect(0, 0, this.cx.canvas.width, this.cx.canvas.height); // Clears the canvas
+		this.clearAll();
+	}
+	clearAll(){
+		this.croppedImageFile = null;
+		this.isSavable = false;
+		this.equationForm.patchValue({
+			equation: '',
+			solution: ''
+		});
 	}
 
 	saveImage() {
 		let base64 = this.canvasEl.toDataURL('image/png');
 		let base64Data = base64.slice(22);
-		this.mathsolver.predictBase64({
-			base64:base64Data
-		}).subscribe(res=>{
-			console.log(res);
-		})
+
+		let blobfile=this.utilityService.b64toBlob(base64Data,'image/png')
+		let f = new File([ blobfile ], 'test.jpg', { type: 'image/jpeg', lastModified: Date.now() });
+		this.croppedImageFile = f;
+		this.mathSolver
+			.predictBase64({
+				base64: base64Data
+			})
+			.subscribe((res) => {
+				this.equationForm.patchValue({
+					equation: res.equation
+				});
+				this.solve();
+			});
+	}
+	solve() {
+		let equation = this.equationForm.get('equation').value;
+		let solution = this.mathSolver.solveEquation(equation);
+		if (!solution) {
+			solution = 'Sorry No Solution found';
+		}
+		this.equationForm.patchValue({
+			solution: solution
+		});
+		if(this.croppedImageFile){
+			this.isSavable = true;
+
+		}
+	}
+	uploadFileToFirebase(): Observable<any> {
+		return new Observable((obs) => {
+			let filepath = `${this.userId}/${this.croppedImageFile.name}_${new Date().getTime()}`;
+			this.mathSolver.uploadFileToFirebase(filepath, this.croppedImageFile).subscribe(
+				(res) => {
+					this.imageLink = res;
+					obs.next(res);
+				},
+				(err) => {
+					obs.error(err);
+				}
+			);
+		});
+	}
+	save() {
+		this.mathSolver.getUserId().pipe(first()).subscribe((res) => {
+			this.sharedService.startSpinner();
+			this.userId = res;
+			this.uploadFileToFirebase().subscribe(
+				(res) => {
+					let con: Content = {
+						userId: this.userId,
+						createdTime: new Date(),
+						equation: this.equationForm.get('equation').value,
+						solution: this.equationForm.get('solution').value,
+						uid: this.sharedService.generateGUID(),
+						imageLink: this.imageLink
+					};
+					if (con.userId && con.equation && con.solution) {
+						this.mathSolver.saveContent(con);
+						this.sharedService.openSnackBar({
+							data: {
+								message: 'Saved into account',
+								isAccepted: true
+							},
+							duration: 3,
+							panelClass: [ 'recovery-snackbar' ]
+						});
+						this.sharedService.hideSpinner();
+					} else {
+						this.sharedService.openSnackBar({
+							data: {
+								message: 'Please Give a equation and solution',
+								isAccepted: false
+							},
+							duration: 3,
+							panelClass: [ 'recovery-snackbar' ]
+						});
+						this.sharedService.hideSpinner();
+					}
+				},
+				(err) => {
+					this.sharedService.hideSpinner();
+
+					this.sharedService.openSnackBar({
+						data: {
+							message: 'Internal server error',
+							isAccepted: false
+						},
+						duration: 3,
+						panelClass: [ 'recovery-snackbar' ]
+					});
+				}
+			);
+		});
 	}
 }

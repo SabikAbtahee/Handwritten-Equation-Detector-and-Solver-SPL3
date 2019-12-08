@@ -293,6 +293,9 @@ $x1: 0;
 .accepted-color {
 	color: $accepted-color !important;
 }
+.accepted-color-background {
+	background: $accepted-color !important;
+}
 .rejected-color {
 	color: $rejected-color !important;
 }
@@ -308,6 +311,9 @@ $x1: 0;
 }
 .black-color-foreground {
 	color: $black-color !important;
+}
+.cornsilk-background{
+	background: cornsilk !important;
 }
 
 .header-1 {

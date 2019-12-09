@@ -1,3 +1,4 @@
+import { SharedService } from './../../../shared/services/shared.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms';
@@ -7,8 +8,8 @@ import { Router } from '@angular/router';
 import { urlPaths, signinErrorCode } from '../../../config/constants/defaultConstants';
 import { UtilityService } from '../../../core/utility-service/utility.service';
 import * as _ from 'lodash';
-import { NavbarComponent } from 'src/app/root/navbar/navbar.component';
-import { RootService } from 'src/app/root/services/root.service';
+import { NavbarComponent } from '../../../root/navbar/navbar.component';
+import { RootService } from '../../../root/services/root.service';
 
 @Component({
 	selector: 'app-sign-in',
@@ -21,7 +22,8 @@ export class SignInComponent implements OnInit {
 		private fb: FormBuilder,
 		private router: Router,
 		private util: UtilityService,
-		private root:RootService
+		private root:RootService,
+		private sharedService:SharedService
 	) {}
 
 	signinform: FormGroup;
@@ -62,10 +64,13 @@ export class SignInComponent implements OnInit {
 			} else {
 				this.router.navigate([ urlPaths.MathSolver.upload.url ]);
 				this.isLoading = false;
+
 				// console.log(this.authenticationservice.getCurrentUser().email);
 				// location.reload();
 
 			}
+		},err=>{
+			this.openErrorBar('Try Again');
 		});
 	}
 
@@ -90,12 +95,22 @@ export class SignInComponent implements OnInit {
 		else{
 			this.signinform.controls.email.setErrors(errobj);
 		}
+		this.openErrorBar(String(errorCode));
 	}
 
 	updateform() {
 		let controlsvalues = this.util.getFormControlsValueFromFormGroup(this.signinform);
 		_.forEach(controlsvalues, (value) => {
 			this.signinform.get(value).markAsTouched();
+		});
+	}
+	openErrorBar(errorMessage) {
+		this.sharedService.openSnackBar({
+			data: { message: errorMessage, isAccepted: false },
+			duration: 2,
+			panelClass: [ 'default-snackbar' ],
+			horizontalPosition: 'right',
+			verticalPosition: 'top'
 		});
 	}
 

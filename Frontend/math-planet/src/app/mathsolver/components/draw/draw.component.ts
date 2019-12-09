@@ -182,7 +182,7 @@ export class DrawComponent implements OnInit, AfterViewInit {
 	}
 	solve() {
 		let equation = this.equationForm.get('equation').value;
-		let solution = this.mathSolver.solveEquation(equation);
+		let solution = this.mathSolver.solve(equation);
 		if (!solution) {
 			solution = 'Sorry No Solution found';
 		}

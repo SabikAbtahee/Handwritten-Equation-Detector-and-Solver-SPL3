@@ -125,8 +125,23 @@ def makeCharacter(character, symbol):
 def FormEquation():
     equation = ''
     for i in CompleteSymbols:
+       
+        # print(CompleteSymbols[CompleteSymbols.index(i)+1].character)
+        # print(i+1)
         # print(i.position, i.character)
-        if(i.position >= 0):
-            equation += i.character
+        if(i.position >= 0 ):
+            if(i.character=='x'):
+                position=CompleteSymbols.index(i)
+                length=len(CompleteSymbols)
+                # print(CompleteSymbols[length-1].character)
+                if(position-1>=0 and position+1<length):
+                    if(CompleteSymbols[position-1].character.isdigit() and CompleteSymbols[position+1].character.isdigit()):
+                        equation+='*'
+                    else:
+                        equation+='x'
+                else:
+                    equation+=i.character
+            else:
+                equation += i.character
     return equation
     # return 's'

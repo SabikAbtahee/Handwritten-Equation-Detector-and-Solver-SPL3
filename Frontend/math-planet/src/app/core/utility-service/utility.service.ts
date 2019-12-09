@@ -36,7 +36,6 @@ export class UtilityService {
 		var b64toBlob = require('b64-to-blob');
 
 		let contentType = con ? con : 'image/jpeg';
-		debugger;
 		var blob = b64toBlob(b64Data, contentType);
 		return blob;
 	}

@@ -112,7 +112,7 @@ def runEachFile(path):
                     thresh-=10
                 else:
                     equation = reconstruction(preprocessedImage, symbols)
-                    print(path,equation)
+                    # print(path,equation)
                     # return equation
                     break
 
@@ -144,8 +144,8 @@ def test():
                 return runEachFile(path)
 
 def testDirect(file):
-    print(file)
-    print(type(file))
+    # print(file)
+    # print(type(file))
            
     # imageObject = cv2.imdecode(np.fromstring(file.read(), np.uint8), cv2.CV_LOAD_IMAGE_COLOR)
     thresh=127

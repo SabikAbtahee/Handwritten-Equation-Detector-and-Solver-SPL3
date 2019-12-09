@@ -122,8 +122,8 @@ def predict():
 def predictBase64():
     if request.method == 'POST':
         data = request.get_json()
-        print(data);
-        print(data['base64'])
+        # print(data);
+        # print(data['base64'])
         if(data['base64']):
             baseImageString = data['base64']
             response=predictionBase64(baseImageString)

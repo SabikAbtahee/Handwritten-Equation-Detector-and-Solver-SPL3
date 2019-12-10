@@ -44,20 +44,36 @@ export class MathsolverService {
 
 	
 	solveEquation(parsed) {
+		debugger;
 		let ansX = '',
 			ansY = '',
 			answer = '';
 		let equ = parsed.toString();
 		for (let i of equ) {
 			if (i == 'x') {
-				let X = parsed.solveFor('x');
+				let X;
+				try{
+					X = parsed.solveFor('x');
+
+				}
+				catch(error){
+					X="No Solution"
+				}
 				if (X && X[0] && X[1]) {
 					ansX = `${Number(X[0]).toFixed(2)} , ${Number(X[1]).toFixed(2)}`;
 				} else {
 					ansX = X;
 				}
 			} else if (i == 'y') {
-				let Y = parsed.solveFor('y');
+				let Y;
+				try{
+					Y = parsed.solveFor('y');
+
+				}
+				catch(error){
+					Y="No Solution"
+				}
+				// let Y = parsed.solveFor('y');
 				if (Y && Y[0] && Y[1]) {
 					ansY = `${Number(Y[0]).toFixed(2)} , ${Number(Y[1]).toFixed(2)}`;
 				} else {
@@ -72,7 +88,7 @@ export class MathsolverService {
 		} else if (ansY != '') {
 			answer = `Y:${ansY}`;
 		}
-
+		debugger
 		return answer ? answer : 'No solution';
 	}
 

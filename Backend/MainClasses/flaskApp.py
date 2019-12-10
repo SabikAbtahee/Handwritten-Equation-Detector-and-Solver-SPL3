@@ -1,3 +1,5 @@
+from flask import Flask, render_template, request, flash, redirect, url_for
+
 from modelMaking import ModelMaking
 from imageProcessing import ImageConversions
 from segmentation import Symbol, startSegmentation
@@ -6,7 +8,6 @@ import os
 import sys
 from tensorflow import keras
 import json
-from flask import Flask, render_template, request, flash, redirect, url_for
 from werkzeug.utils import secure_filename
 import cv2
 import numpy as np

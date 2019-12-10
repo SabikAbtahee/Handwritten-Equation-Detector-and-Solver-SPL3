@@ -108,11 +108,11 @@ def makeCharacter(character, symbol):
         return symbol
     if(symbol.character == ''):
         symbol.character = character
-    if(symbol.isSquare == True):
+    if(symbol.isSquare == True and symbol.isdenominator==False and symbol.isNominator==False):
         if(character.isdigit()):
             symbol.character = '^'+character
         else:
-            symbol.character = '^2'
+            symbol.character = character
     if(symbol.isVerticalBar == True):
         symbol.character = '1'
     if(symbol.isDot == True):
@@ -121,6 +121,18 @@ def makeCharacter(character, symbol):
         symbol.character = '-'
     if(symbol.isDivide == True):
         symbol.character = '/'
+    if(symbol.isNominatorFirst==True):
+        symbol.character = '(('+character
+    if(symbol.isNominatorLast==True):
+        symbol.character = character+')'
+    if(symbol.isdenominatorFirst==True):
+        symbol.character = '('+character   
+    if(symbol.isdenominatorLast==True):
+        symbol.character = character+'))'
+    if(symbol.isdenominatorFirst==True and symbol.isdenominatorLast==True):
+        symbol.character = '('+character+'))'
+    if(symbol.isNominatorFirst==True and symbol.isNominatorLast==True):
+        symbol.character = '(('+character+')'
     return symbol
 
 

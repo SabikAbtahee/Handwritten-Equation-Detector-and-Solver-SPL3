@@ -4,6 +4,7 @@ import cv2
 import glob
 import os
 import scipy.misc
+import operator
 # from scipy.misc import imageio.imwrite
 from PIL import Image, ImageDraw
 from imageProcessing import ImageConversions
@@ -20,6 +21,13 @@ class Symbol:
     isVerticalBar = False
     isDot = False
     isDivide=False
+    isNominator=False
+    isdenominator=False
+    isNominatorFirst=False
+    isNominatorLast=False
+    isdenominatorLast=False
+    isdenominatorFirst=False
+
     height = 1
     width = 1
     (centerX, centerY) = (1, 1)
@@ -76,6 +84,8 @@ def startSegmentation(preprocessedImage):
     makeSymbols(res)
     checkDivide()
     checkEqual2()
+    AllSymbols.sort(key=lambda x: x.position, reverse=False)
+
     checkSquare()
     # checkEqual()
     return AllSymbols
@@ -116,29 +126,50 @@ def checkDivide():
             positions.append(AllSymbols[i].position)
             for j in range(len(AllSymbols)):
                 if(x1<AllSymbols[j].centerX and AllSymbols[j].centerX<x2):
-                    if(AllSymbols[j].centerY>AllSymbols[i].centerY):
-                        Up.append(AllSymbols[j])
+                    if(AllSymbols[j].centerY<AllSymbols[i].centerY):
+                        Up.append(tuple((AllSymbols[j].centerX,j)))
+                        positions.append(AllSymbols[j].position)
+                    elif(AllSymbols[j].centerY>AllSymbols[i].centerY):
+                        Down.append(tuple((AllSymbols[j].centerX,j)))
                         positions.append(AllSymbols[j].position)
 
-                    elif(AllSymbols[j].centerY<AllSymbols[i].centerY):
-                        Down.append(AllSymbols[j])
-                        positions.append(AllSymbols[j].position)
             if(Up and Down):
+                # print('positions',positions)
                 Lowest=min(positions)
                 Highest=max(positions)
-                Up.sort(key=lambda x: x.centerX, reverse=False)
-                Down.sort(key=lambda x: x.centerX, reverse=False)
+                # print('Lowest',Lowest)
+                # print('Highest',Highest)
+
+                # Up.sort(key=lambda x: x.centerX, reverse=False)
+                # Down.sort(key=lambda x: x.centerX, reverse=False)
+                Up.sort(key = operator.itemgetter(0))
+                Down.sort(key = operator.itemgetter(0))
+
                 count=0
-                for a in range(len(Up)):
-                    AllSymbols[a].position=Lowest+count
+                for a in Up:
+                    # print(AllSymbols[a].centerX,AllSymbols[a].centerY)
+                    # print('Up',a[0],a[1])
+                    if(count==0):
+                        AllSymbols[a[1]].isNominatorFirst=True
+                    AllSymbols[a[1]].position=Lowest+count
+                    AllSymbols[a[1]].isNominator=True
                     count+=1
+                AllSymbols[a[1]].isNominatorLast=True
                 AllSymbols[i].position=Lowest+count
                 AllSymbols[i].isDivide=True
+                # print(AllSymbols[i].centerX,AllSymbols[i].centerY)
                 count+=1
-                for b in range(len(Down)):
-                    AllSymbols[b].position=Lowest+count
+                count2=0
+                for b in Down:
+                    # print(AllSymbols[b].centerX,AllSymbols[b].centerY)
+                    # print('down',b[0],b[1])
+                    if(count2==0):
+                        AllSymbols[b[1]].isdenominatorFirst=True
+                        count2+=1
+                    AllSymbols[b[1]].position=Lowest+count
+                    AllSymbols[b[1]].isdenominator=True
                     count+=1
-
+                AllSymbols[b[1]].isdenominatorLast=True
 def checkEqual2():
     for i in range(len(AllSymbols)-1):
             if(AllSymbols[i].isMinus == True and AllSymbols[i+1].isMinus == True):
@@ -178,12 +209,12 @@ def checkSquare():
         # print(AllSymbols[i].position,diff,wid)
         # print(AllSymbols[i].isMinus)
         # print(AllSymbols[i].isDot)
-        if(diff > wid and AllSymbols[i].isMinus == False and AllSymbols[i].isDot == False):
+        if(diff > wid and AllSymbols[i].isMinus == False and AllSymbols[i].isDivide == False and AllSymbols[i].isDot == False):
             # print('square hobe',AllSymbols[i+1].position)
             AllSymbols[i+1].isSquare = True
         diff = AllSymbols[i+1].centerY-AllSymbols[i].centerY
         # print(diff,wid)
-        if(diff > wid and AllSymbols[i].isMinus == False and AllSymbols[i].isDot == False):
+        if(diff > wid and AllSymbols[i].isMinus == False and AllSymbols[i].isDivide == False and AllSymbols[i].isDot == False):
             AllSymbols[i+1].isSupScript = True
 def makeSymbols(results):
     count = 0

@@ -32,6 +32,7 @@ export class MathsolverService {
 
 	solve(parsed) {
 		var eq = this.algebra.parse(parsed);
+
 		if (this.checkIfEquation(eq)) {
 			return this.solveEquation(eq);
 		} else if (this.checkIfExpression(eq)) {
@@ -41,6 +42,7 @@ export class MathsolverService {
 		}
 	}
 
+	
 	solveEquation(parsed) {
 		let ansX = '',
 			ansY = '',
@@ -76,6 +78,7 @@ export class MathsolverService {
 
 	solveExpression(parsed) {
 		let answer;
+
 		answer=parsed.simplify();
 		return answer.toString();
 	}

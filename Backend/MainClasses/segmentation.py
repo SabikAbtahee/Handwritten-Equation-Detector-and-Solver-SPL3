@@ -19,6 +19,7 @@ class Symbol:
     isMinus = False
     isVerticalBar = False
     isDot = False
+    isDivide=False
     height = 1
     width = 1
     (centerX, centerY) = (1, 1)
@@ -73,9 +74,10 @@ def startSegmentation(preprocessedImage):
     res.sort()
     AllSymbols.clear()
     makeSymbols(res)
+    checkDivide()
+    checkEqual2()
     checkSquare()
     # checkEqual()
-    checkEqual2()
     return AllSymbols
 def checkEqual():
     for i in range(len(AllSymbols)-1):
@@ -93,6 +95,49 @@ def checkEqual():
                                       AllSymbols[i].x, AllSymbols[i].x-AllSymbols[i+1].x+AllSymbols[i+1].width)
             AllSymbols[i].setCenter()
             # print(AllSymbols[i].info())
+
+def checkDivide():
+    center=[]
+    Up=[]
+    Down=[]
+    positions=[]
+    # Lowest
+    # Highest
+    
+    for i in range(len(AllSymbols)):
+        if(AllSymbols[i].isMinus == True):
+
+            positions.clear();
+            Up.clear();
+            Down.clear();
+
+            x1=AllSymbols[i].x
+            x2=AllSymbols[i].x+AllSymbols[i].width
+            positions.append(AllSymbols[i].position)
+            for j in range(len(AllSymbols)):
+                if(x1<AllSymbols[j].centerX and AllSymbols[j].centerX<x2):
+                    if(AllSymbols[j].centerY>AllSymbols[i].centerY):
+                        Up.append(AllSymbols[j])
+                        positions.append(AllSymbols[j].position)
+
+                    elif(AllSymbols[j].centerY<AllSymbols[i].centerY):
+                        Down.append(AllSymbols[j])
+                        positions.append(AllSymbols[j].position)
+            if(Up and Down):
+                Lowest=min(positions)
+                Highest=max(positions)
+                Up.sort(key=lambda x: x.centerX, reverse=False)
+                Down.sort(key=lambda x: x.centerX, reverse=False)
+                count=0
+                for a in range(len(Up)):
+                    AllSymbols[a].position=Lowest+count
+                    count+=1
+                AllSymbols[i].position=Lowest+count
+                AllSymbols[i].isDivide=True
+                count+=1
+                for b in range(len(Down)):
+                    AllSymbols[b].position=Lowest+count
+                    count+=1
 
 def checkEqual2():
     for i in range(len(AllSymbols)-1):

@@ -16,6 +16,7 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 export class DrawComponent implements OnInit, AfterViewInit {
 	canvasEl: HTMLCanvasElement;
 	widthMinus = 300;
+	canvasHeight=300;
 	mode = 'pen';
 	check;
 	uploadForm: FormGroup;
@@ -63,7 +64,7 @@ export class DrawComponent implements OnInit, AfterViewInit {
 	@ViewChild('canvas') public canvas: ElementRef;
 
 	@Input() public width = this.widthMinus;
-	@Input() public height = 200;
+	@Input() public height = this.canvasHeight;
 
 	@HostListener('window:resize', [ '$event' ])
 	onResize(event) {
@@ -72,7 +73,7 @@ export class DrawComponent implements OnInit, AfterViewInit {
 		} else {
 			this.canvasEl.width = event.target.innerWidth - 100;
 		}
-		this.canvasEl.height = 200;
+		this.canvasEl.height = this.canvasHeight;
 	}
 
 	private cx: CanvasRenderingContext2D;
@@ -82,7 +83,7 @@ export class DrawComponent implements OnInit, AfterViewInit {
 		this.cx = this.canvasEl.getContext('2d');
 
 		this.canvasEl.width = screen.width - this.widthMinus;
-		this.canvasEl.height = 200;
+		this.canvasEl.height = this.canvasHeight;
 		this.cx.fillStyle = '#ffffff';
 		this.cx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
 		this.cx.lineWidth = 5;

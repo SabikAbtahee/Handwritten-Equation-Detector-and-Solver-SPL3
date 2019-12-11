@@ -203,3 +203,18 @@ export const error_messages={
 	failed:'Failed'
 
 }
+
+export const DifficultyLevel={
+	easy:{
+		minimum:-4,
+		maximum:4
+	},
+	average:{
+		minimum:-10,
+		maximum:10
+	},
+	hard:{
+		minimum:-16,
+		maximum:16
+	}
+}

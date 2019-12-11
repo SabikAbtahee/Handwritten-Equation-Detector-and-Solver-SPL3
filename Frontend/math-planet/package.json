@@ -29,6 +29,7 @@
     "@types/jquery": "^3.3.31",
     "algebra.js": "^0.2.6",
     "angular-font-awesome": "^3.1.2",
+    "angular2-virtual-scroll": "^0.4.16",
     "b64-to-blob": "^1.2.19",
     "bootstrap": "4.1.1",
     "canvas": "^2.6.0",

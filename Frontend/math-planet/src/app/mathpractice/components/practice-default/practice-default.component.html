@@ -1,3 +1,85 @@
-<p>
-  practice-default works!
-</p>
+<form [formGroup]="questionForm">
+  <div fxLayout="column" fxLayoutAlign="center center" class='py-24'>
+    <div class='font-size-28 pb-24 primary-text-color '>Practice Math Problems</div>
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="12px">
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Number of Questions</mat-label>
+          <mat-select formControlName='questionNumbers'>
+            <mat-option *ngFor="let num of questionNumbers" [value]="num.value">
+              {{num.viewValue}}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="questionForm.get('questionNumbers').touched && questionForm.get('questionNumbers').hasError('required')">
+            How many questions do you want?</mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Difficulty</mat-label>
+          <mat-select formControlName='difficulty'>
+            <mat-option *ngFor="let num of difficulty" [value]="num.value">
+              {{num.viewValue}}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="questionForm.get('difficulty').touched && questionForm.get('difficulty').hasError('required')">Choose
+            Difficulty</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <button mat-raised-button color='primary' class='w-220 h-40' (click)='generateQuestions()'>GENERATE
+        QUESTIONS</button>
+    </div>
+    <div *ngIf='IsQuizRunning'>
+      <button mat-raised-button color='accent' class='w-220 h-40'>FINISH QUIZ</button>
+    </div>
+
+  </div>
+
+</form>
+
+<div fxLayout="column" fxLayoutAlign="center center">
+
+  <div *ngFor='let content of GeneratedQuestions;let i=index;  '>
+
+    <mat-card [class.mat-elevation-z10]="true" class="font-size-12 w-470 mb-12">
+      <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="16px">
+        <div class='font-size-16'>
+          {{i+1}}
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="8px">
+          <div class='font-size-16'> Solve for x for the following equation {{content.parsed}} </div>
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="54px">
+            <div>
+              <mat-form-field appearance="outline">
+                <input matInput type='text' class='font-size-16'>
+                <!-- <mat-error *ngIf="equationForm.get('equation').touched && equationForm.get('equation').invalid">Invalid
+                        Equation</mat-error>
+                      <mat-error
+                        *ngIf="!equationForm.get('equation').touched && equationForm.get('equation').hasError('required')">
+                        Equation Required</mat-error> -->
+
+              </mat-form-field>
+            </div>
+            <div class='pb-16'> <button mat-mini-fab color="primary" class='font-size-12 accepted-color-background'><i
+                  class="material-icons">
+                  done_outline
+                </i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+
+  </div>
+
+
+</div>
+
+
+
+<!-- </div> -->

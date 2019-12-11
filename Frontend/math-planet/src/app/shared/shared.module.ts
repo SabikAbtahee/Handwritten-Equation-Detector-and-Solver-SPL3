@@ -32,6 +32,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ConfirmComponent } from './components/confirm/confirm.component';
+import { VirtualScrollModule } from 'angular2-virtual-scroll';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 @NgModule({
 	declarations: [ SnackbarComponent, DropzoneDirective, ConfirmComponent ],
 	imports: [
@@ -65,7 +67,9 @@ import { ConfirmComponent } from './components/confirm/confirm.component';
 		NgxSpinnerModule,
 
 		MatChipsModule,
-		MatSortModule
+		MatSortModule,
+		VirtualScrollModule,
+		ScrollingModule
 	],
 	exports: [
 		AngularFontAwesomeModule,
@@ -98,7 +102,9 @@ import { ConfirmComponent } from './components/confirm/confirm.component';
 		NgxSpinnerModule,
 
 		MatChipsModule,
-		MatSortModule
+		MatSortModule,
+		VirtualScrollModule,
+		ScrollingModule
 	],
 	providers: [ SharedService ],
 	entryComponents: [ SnackbarComponent,ConfirmComponent ]

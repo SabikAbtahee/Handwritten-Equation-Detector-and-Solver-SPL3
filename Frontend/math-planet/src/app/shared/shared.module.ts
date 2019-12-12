@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {
 	MatCardModule,
 	MatFormFieldModule,
@@ -49,7 +50,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 		MatCardModule,
 		MatFormFieldModule,
 		MatInputModule,
-
+		MatTooltipModule,
 		MatDividerModule,
 		MatProgressBarModule,
 		MatSnackBarModule,
@@ -84,7 +85,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 		MatCardModule,
 		MatFormFieldModule,
 		MatInputModule,
-
+		MatTooltipModule,
 		MatDividerModule,
 		MatProgressBarModule,
 		MatSnackBarModule,

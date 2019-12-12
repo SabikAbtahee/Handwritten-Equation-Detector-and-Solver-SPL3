@@ -30,42 +30,65 @@
       </div>
     </div>
     <div>
-      <button mat-raised-button color='primary' class='w-220 h-40' (click)='generateQuestions()'>GENERATE
+      <button matTooltip="Generate random question to practice" mat-raised-button color='primary' class='w-220 h-40'
+        (click)='generateQuestions()'>GENERATE
         QUESTIONS</button>
     </div>
-    <div *ngIf='IsQuizRunning'>
-      <button mat-raised-button color='accent' class='w-220 h-40'>FINISH QUIZ</button>
+    <div *ngIf='IsQuizRunning' class='pt-16'>
+      <button (click)='finishQuiz()' matTooltip="Finish Quiz and see results" mat-raised-button color='accent' class='w-220 h-40'>FINISH QUIZ</button>
     </div>
 
   </div>
 
 </form>
 
-<div fxLayout="column" fxLayoutAlign="center center">
+<div *ngIf='GeneratedQuestions' fxLayout="column" fxLayoutAlign="center center">
 
-  <div *ngFor='let content of GeneratedQuestions;let i=index;  '>
+  <div *ngFor='let content of GeneratedQuestions.slice(first, last);let i=index;  '>
 
     <mat-card [class.mat-elevation-z10]="true" class="font-size-12 w-470 mb-12">
       <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="16px">
         <div class='font-size-16'>
-          {{i+1}}
+          {{content.questionNumber}}
         </div>
         <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="8px">
-          <div class='font-size-16'> Solve for x for the following equation {{content.parsed}} </div>
+          <div class='font-size-16'> Solve for x for the following equation {{content.question.parsed}} </div>
           <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="54px">
+
+
+
+
+
+
             <div>
               <mat-form-field appearance="outline">
-                <input matInput type='text' class='font-size-16'>
-                <!-- <mat-error *ngIf="equationForm.get('equation').touched && equationForm.get('equation').invalid">Invalid
-                        Equation</mat-error>
-                      <mat-error
-                        *ngIf="!equationForm.get('equation').touched && equationForm.get('equation').hasError('required')">
-                        Equation Required</mat-error> -->
+                <input matInput [formControl]="answer[i]" type='text' class='font-size-16'>
 
               </mat-form-field>
             </div>
-            <div class='pb-16'> <button mat-mini-fab color="primary" class='font-size-12 accepted-color-background'><i
-                  class="material-icons">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div *ngIf='!content.isAnswered' class='pb-16'> <button (click)='turnInAnswer(content.questionNumber)'
+                matTooltip="Turn in current answer" mat-mini-fab color="primary"
+                class='font-size-12 accepted-color-background'><i class="material-icons">
+                  get_app
+                </i></button>
+            </div>
+            <div *ngIf='content.isAnswered' class='pb-16'> <button matTooltip="Turned in" mat-mini-fab color="accent"
+                class='font-size-12 '><i class="material-icons">
                   done_outline
                 </i></button>
             </div>
@@ -77,9 +100,12 @@
 
   </div>
 
-
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="48px" class='py-24'>
+    <button matTooltip="Go to previous page" mat-fab (click)='Back()'><i class="material-icons">
+        keyboard_arrow_left
+      </i></button>
+    <button matTooltip="Go to next page" mat-fab (click)='Forward()'><i class="material-icons">
+        keyboard_arrow_right
+      </i></button>
+  </div>
 </div>
-
-
-
-<!-- </div> -->

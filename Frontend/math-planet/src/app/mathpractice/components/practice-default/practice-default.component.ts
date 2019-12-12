@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { EquationQuestion as QuestionInterface, quiz } from '../../../config/interfaces/mathplanet.interface';
 import { generate, Subject } from 'rxjs';
+import { MathsolverService } from '../../../mathsolver/services/mathsolver.service';
 @Component({
 	selector: 'app-practice-default',
 	templateUrl: './practice-default.component.html',
@@ -40,7 +41,8 @@ export class PracticeDefaultComponent implements OnInit {
 		private fb: FormBuilder,
 		private sharedService: SharedService,
 		private utility: UtilityService,
-		private practiceService: PracticeService
+    private practiceService: PracticeService,
+    private mathsolver:MathsolverService
 	) {}
 
 	ngOnInit() {
@@ -96,10 +98,10 @@ export class PracticeDefaultComponent implements OnInit {
 		d = this.practiceService.getRandomIntWithinRange(this.minimumDifficulty, this.maximumDifficulty);
 		c = this.practiceService.getCGivenabxd(a, b, x, d);
 		let equ = this.practiceService.makeStringGivenABCD(a, b, c, d);
-
+    
 		let EquObject: QuestionInterface = {
 			parsed: equ,
-			solution: x
+			solution: [x]
 		};
 		return EquObject;
 	}
@@ -145,13 +147,18 @@ export class PracticeDefaultComponent implements OnInit {
 		for (let i = 0; i < loop; i++) {
 			if (
 				Number(this.GeneratedQuestions[i].givenAnswer) ==
-        Number(this.GeneratedQuestions[i].question.solution[0]) ||
+					Number(this.GeneratedQuestions[i].question.solution[0]) ||
 				Number(this.GeneratedQuestions[i].givenAnswer) ==
-        Number(this.GeneratedQuestions[i].question.solution[1])
+					Number(this.GeneratedQuestions[i].question.solution[1])
 			) {
 				correctAnswer += 1;
 				this.GeneratedQuestions[i].isCorrect = true;
 			}
+
+			console.log(Number(this.GeneratedQuestions[i].givenAnswer));
+			console.log(Number(this.GeneratedQuestions[i].question.solution[0]));
+			console.log(Number(this.GeneratedQuestions[i].givenAnswer));
+			console.log(Number(this.GeneratedQuestions[i].question.solution[1]));
 		}
 		alert(correctAnswer);
 	}

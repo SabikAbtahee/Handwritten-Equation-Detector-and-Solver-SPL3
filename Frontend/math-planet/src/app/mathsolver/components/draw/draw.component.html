@@ -59,6 +59,24 @@
 
 
       </div>
+
+
+
+
+      <div *ngIf='isSolved==true'>
+        <div>{{beforeChange}}</div>
+
+        <div>{{change}}</div>
+
+        <div>{{afterchange}}</div>
+        <div>{{numberOfChange}}</div>
+
+      </div>
+
+
+
+
+
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <div fxFlex='20' ngClass='mat-icon-for-input font-size-20'
           [ngClass.lt-lg]="['font-size-14','mat-icon-for-input']">Solution:
@@ -73,7 +91,7 @@
 
       </div>
       <div fxLayout="row" fxLayoutAlign="center center">
-        <button mat-raised-button color="primary" class='w-200' (click)='solve()'>SOLVE</button>
+        <button mat-raised-button color="primary" class='w-200' (click)='solveMathjs()'>SOLVE</button>
       </div>
       <div *ngIf='isAuthenticated && isSavable' fxLayout="row" fxLayoutAlign="center center">
         <button mat-stroked-button color="primary" class='w-200' (click)='save()'>SAVE</button>

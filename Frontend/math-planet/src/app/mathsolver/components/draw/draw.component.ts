@@ -27,6 +27,11 @@ export class DrawComponent implements OnInit, AfterViewInit {
 	imageLink: any;
 	croppedImageFile: File = null;
 
+	beforeChange;
+	change;
+	afterchange;
+	numberOfChange;
+	isSolved:boolean=false;
 	constructor(
 		private utilityService: UtilityService,
 		private fb: FormBuilder,
@@ -161,6 +166,7 @@ export class DrawComponent implements OnInit, AfterViewInit {
 			equation: '',
 			solution: ''
 		});
+		this.isSolved=false;
 	}
 
 	saveImage() {
@@ -179,11 +185,32 @@ export class DrawComponent implements OnInit, AfterViewInit {
 					equation: res.equation
 				});
 				this.solve();
+				this.solveMathjs();
 			});
+	}
+	solveMathjs(){
+
+		let equation = this.equationForm.get('equation').value;
+		let solutions=this.mathSolver.solveEquationWithMathJs(equation);
+		solutions.forEach(step => {
+			this.beforeChange=step.oldEquation.ascii();
+			this.change=step.changeType;
+			this.afterchange=step.newEquation.ascii();
+			this.numberOfChange=step.substeps.length;
+			this.isSolved=true;
+
+			// console.log("before change: " + step.oldEquation.ascii());  // e.g. before change: 2x + 3x = 35
+			// console.log("change: " + step.changeType);                  // e.g. change: SIMPLIFY_LEFT_SIDE
+			// console.log("after change: " + step.newEquation.ascii());   // e.g. after change: 5x = 35
+			// console.log("# of substeps: " + step.substeps.length);      // e.g. # of substeps: 2
+		});
+		this.isSolved=true;
 	}
 	solve() {
 		let equation = this.equationForm.get('equation').value;
 		let solution = this.mathSolver.solve(equation);
+		
+		debugger;
 		if (!solution) {
 			solution = 'Sorry No Solution found';
 		}

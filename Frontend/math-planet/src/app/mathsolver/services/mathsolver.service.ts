@@ -10,11 +10,16 @@ import { saveAs } from 'file-saver';
 import { first } from 'rxjs/operators';
 import { Entities } from '../../config/enums/default.enum';
 import { parse } from 'querystring';
+import {
+	atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt
+  } from 'mathjs'
 @Injectable({
 	providedIn: 'root'
 })
 export class MathsolverService {
 	algebra = require('algebra.js');
+    mathsteps = require('mathsteps');
+	// maths = require('..')
 
 	constructor(
 		private coreMutate: MutationDatabaseService,
@@ -44,7 +49,6 @@ export class MathsolverService {
 
 	
 	solveEquation(parsed) {
-		debugger;
 		let ansX = '',
 			ansY = '',
 			answer = '';
@@ -88,11 +92,11 @@ export class MathsolverService {
 		} else if (ansY != '') {
 			answer = `Y:${ansY}`;
 		}
-		debugger
 		return answer ? answer : 'No solution';
 	}
 
 	solveExpression(parsed) {
+		
 		let answer;
 
 		answer=parsed.simplify();
@@ -168,5 +172,13 @@ export class MathsolverService {
 				}
 			);
 		});
+	}
+
+
+
+	solveEquationWithMathJs(equation){
+		const steps = this.mathsteps.solveEquation(equation);
+		return steps;
+		
 	}
 }

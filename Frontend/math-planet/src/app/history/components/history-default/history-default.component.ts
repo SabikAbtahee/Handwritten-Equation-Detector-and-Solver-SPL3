@@ -32,9 +32,7 @@ export class HistoryDefaultComponent implements OnInit {
         this.equations.sort = this.sort;
         this.equations.paginator = this.paginator;
         this.sharedService.hideSpinner();
-        // this.data=res;
-        // console.log(res);
-        // debugger;
+        
 			});
 		});
   }

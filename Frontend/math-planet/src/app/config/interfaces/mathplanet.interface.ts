@@ -13,5 +13,6 @@ export interface quiz{
     question:EquationQuestion,
     isAnswered:boolean,
     givenAnswer:any,
-    isCorrect:boolean
+    isCorrect:boolean,
+    type:string
 }

@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-
+import {
+	atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt,parser
+  } from 'mathjs'
 @Injectable({
 	providedIn: 'root'
 })
 export class PracticeService {
+    mathsteps = require('mathsteps');
+	algebra = require('algebra.js');
+
 	constructor() {
 	}
 
@@ -60,4 +65,19 @@ export class PracticeService {
 		c = d - (a * x ** 2 + b * x);
 		return c;
 	}
+
+	solveEquationConfirmed(parsed) {
+		parsed=this.algebra.parse(parsed);
+		let X = parsed.solveFor('x');
+		let answer=[];
+		if(X && X[0]){
+			answer.push(X[0].toString());
+		}
+		if(X && X[1]){
+			answer.push(X[1].toString());
+
+		}
+		return answer;
+	}
+	
 }

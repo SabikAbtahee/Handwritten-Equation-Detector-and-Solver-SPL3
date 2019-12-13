@@ -36,6 +36,9 @@ export class UploadComponent implements OnInit {
 	userId: string = '';
 	isSavable: boolean = false;
 	imageLink:any;
+	solutionSteps=[];
+	isSolved:boolean=false;
+
 	constructor(
 		private utilityService: UtilityService,
 		private fb: FormBuilder,
@@ -105,7 +108,8 @@ export class UploadComponent implements OnInit {
 				this.equationForm.patchValue({
 					equation: res.equation
 				});
-				this.solve();
+				this.solveMathjs();
+
 			});
 		} else {
 			this.sharedService.openSnackBar({
@@ -144,6 +148,79 @@ export class UploadComponent implements OnInit {
 			this.isSavable = true;
 
 		}
+	}
+	solveMathjs(){
+
+		let equation = this.equationForm.get('equation').value;
+		let solutions=this.mathSolver.solveEquationWithMathJs(equation);
+		let solution;
+		this.solutionSteps=[];
+		solutions.forEach(step => {	
+			if(step && step.newNode){
+				solution=step.newNode.toString();
+				this.solutionSteps.push({
+					'change':step.changeType,
+					'newEquation':step.newNode.toString()
+				});
+			}
+			else if(step && step.newEquation){
+				solution=step.newEquation.ascii();
+				this.solutionSteps.push({
+					'change':step.changeType,
+					'newEquation':step.newEquation.ascii()
+				});
+			}
+			
+		});
+		this.isSolved=true;
+		if (!solution) {
+			this.solve();
+			// solution = 'Sorry No Solution found';
+			// this.isSolved=false;
+		}
+		else{
+			this.equationForm.patchValue({
+				solution: solution
+			});
+		}
+		
+		if(this.croppedImageFile){
+			this.isSavable = true;
+
+		}
+		this.tryDerivative();
+
+	}
+	tryDerivative(){
+		let equ=this.equationForm.get('solution').value;
+		let x,y;
+		for(let i of equ){
+
+			if(i=='x'){
+
+				x=this.mathSolver.solveDerivative(equ,'x');
+
+			}
+			else if(i=='y'){
+
+				y=this.mathSolver.solveDerivative(equ,'y');
+
+			}
+		}
+		
+		if(x){
+			let sol=this.equationForm.get('solution').value
+			this.equationForm.patchValue({
+				solution: `${sol}, Derivation with respect to x : ${x}`
+			});
+		}
+		if(y){
+			let sol=this.equationForm.get('solution').value
+			this.equationForm.patchValue({
+				solution: `${sol}, Derivation with respect to y : ${y}`
+			});
+		}
+		// console.log(x,y);
 	}
 
 	toggleHover(event: boolean) {

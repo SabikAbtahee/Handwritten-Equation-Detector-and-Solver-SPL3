@@ -32,6 +32,12 @@ export class DrawComponent implements OnInit, AfterViewInit {
 	afterchange;
 	numberOfChange;
 	isSolved:boolean=false;
+	solutionSteps=[];
+
+
+	derivativeX;
+	derivativeY;
+
 	constructor(
 		private utilityService: UtilityService,
 		private fb: FormBuilder,
@@ -184,33 +190,91 @@ export class DrawComponent implements OnInit, AfterViewInit {
 				this.equationForm.patchValue({
 					equation: res.equation
 				});
-				this.solve();
+				// this.solve();
 				this.solveMathjs();
 			});
 	}
+
+	tryDerivative(){
+		// debugger;
+		let equ=this.equationForm.get('solution').value;
+		let x,y;
+		for(let i of equ){
+
+			if(i=='x'){
+
+				x=this.mathSolver.solveDerivative(equ,'x');
+
+			}
+			else if(i=='y'){
+
+				y=this.mathSolver.solveDerivative(equ,'y');
+
+			}
+		}
+		this.derivativeX=x;
+		this.derivativeY=y;
+		if(this.derivativeX){
+			let sol=this.equationForm.get('solution').value
+			this.equationForm.patchValue({
+				solution: `${sol}, Derivation with respect to x : ${this.derivativeX}`
+			});
+		}
+		if(this.derivativeY){
+			let sol=this.equationForm.get('solution').value
+			this.equationForm.patchValue({
+				solution: `${sol}, Derivation with respect to y : ${this.derivativeY}`
+			});
+		}
+		// console.log(x,y);
+	}
+
 	solveMathjs(){
 
 		let equation = this.equationForm.get('equation').value;
 		let solutions=this.mathSolver.solveEquationWithMathJs(equation);
-		solutions.forEach(step => {
-			this.beforeChange=step.oldEquation.ascii();
-			this.change=step.changeType;
-			this.afterchange=step.newEquation.ascii();
-			this.numberOfChange=step.substeps.length;
-			this.isSolved=true;
-
-			// console.log("before change: " + step.oldEquation.ascii());  // e.g. before change: 2x + 3x = 35
-			// console.log("change: " + step.changeType);                  // e.g. change: SIMPLIFY_LEFT_SIDE
-			// console.log("after change: " + step.newEquation.ascii());   // e.g. after change: 5x = 35
-			// console.log("# of substeps: " + step.substeps.length);      // e.g. # of substeps: 2
+		let solution;
+		this.solutionSteps=[];
+		solutions.forEach(step => {	
+			if(step && step.newNode){
+				solution=step.newNode.toString();
+				this.solutionSteps.push({
+					'change':step.changeType,
+					'newEquation':step.newNode.toString()
+				});
+			}
+			else if(step && step.newEquation){
+				solution=step.newEquation.ascii();
+				this.solutionSteps.push({
+					'change':step.changeType,
+					'newEquation':step.newEquation.ascii()
+				});
+			}
+			
 		});
 		this.isSolved=true;
+		if (!solution) {
+			this.solve();
+			// solution = 'Sorry No Solution found';
+			// this.isSolved=false;
+		}
+		else{
+			this.equationForm.patchValue({
+				solution: solution
+			});
+		}
+		
+		if(this.croppedImageFile){
+			this.isSavable = true;
+
+		}
+		this.tryDerivative();
+
 	}
 	solve() {
 		let equation = this.equationForm.get('equation').value;
 		let solution = this.mathSolver.solve(equation);
 		
-		debugger;
 		if (!solution) {
 			solution = 'Sorry No Solution found';
 		}
@@ -222,6 +286,22 @@ export class DrawComponent implements OnInit, AfterViewInit {
 
 		}
 	}
+	// solve() {
+	// 	let equation = this.equationForm.get('equation').value;
+	// 	let solution = this.mathSolver.solve(equation);
+		
+	// 	debugger;
+	// 	if (!solution) {
+	// 		solution = 'Sorry No Solution found';
+	// 	}
+	// 	this.equationForm.patchValue({
+	// 		solution: solution
+	// 	});
+	// 	if(this.croppedImageFile){
+	// 		this.isSavable = true;
+
+	// 	}
+	// }
 	uploadFileToFirebase(): Observable<any> {
 		return new Observable((obs) => {
 			let filepath = `${this.userId}/${this.croppedImageFile.name}_${new Date().getTime()}`;

@@ -39,6 +39,10 @@
   <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" class='pb-16'>
     <button mat-raised-button (click)='saveImage()' class='w-224 accepted-color-background font-size-16'>Upload</button>
   </div>
+
+
+
+
   <form [formGroup]="equationForm">
     <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="12px">
       <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -56,6 +60,32 @@
 
           </mat-form-field>
         </div>
+        
+
+
+      </div>
+
+
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxFlex='20' ngClass='mat-icon-for-input font-size-20'
+          [ngClass.lt-lg]="['font-size-14' ,'mat-icon-for-input']">
+        </div>
+
+        <div fxFlex='80' >
+          <div *ngIf='isSolved==true' class=' px-24 pt-24 pb-12'>
+            
+           
+              <div *ngFor='let i of solutionSteps'>
+                <div fxLayout="row" fxLayoutAlign="start center"  class=' mb-12'>
+                  <div fxFlex.lt-md='50' fxFlex='40' class='font-size-20'><i class="material-icons font-size-16 mr-12">adjust</i> {{i.newEquation}}</div>
+                  <div fxFlex.lt-md='50' fxFlex='60' class='font-size-16'>{{i.change}}</div>
+                </div>
+              </div>
+              
+
+          </div>
+        </div>
+
 
 
       </div>
@@ -63,15 +93,7 @@
 
 
 
-      <div *ngIf='isSolved==true'>
-        <div>{{beforeChange}}</div>
 
-        <div>{{change}}</div>
-
-        <div>{{afterchange}}</div>
-        <div>{{numberOfChange}}</div>
-
-      </div>
 
 
 
@@ -97,5 +119,14 @@
         <button mat-stroked-button color="primary" class='w-200' (click)='save()'>SAVE</button>
       </div>
     </div>
+
+
   </form>
+
+
+
+
+
+
 </div>
+

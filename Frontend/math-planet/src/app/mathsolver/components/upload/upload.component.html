@@ -28,10 +28,10 @@
 
       <div *ngIf='isValid' fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
         <div class='w-100-p'>
-          <image-cropper [imageChangedEvent]="imageChangedEvent" [imageBase64]="initialBase64pic" [maintainAspectRatio]="false"
-            format="jpeg" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
-            (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()" [aspectRatio]="4 / 3"
-            [autoCrop]="true">
+          <image-cropper [imageChangedEvent]="imageChangedEvent" [imageBase64]="initialBase64pic"
+            [maintainAspectRatio]="false" format="jpeg" (imageCropped)="imageCropped($event)"
+            (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"
+            [aspectRatio]="4 / 3" [autoCrop]="true">
           </image-cropper>
         </div>
         <div>
@@ -49,24 +49,57 @@
     </div>
   </div>
 
-   <form [formGroup]="equationForm"> 
+  <form [formGroup]="equationForm">
     <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="12px">
       <div fxLayout="row" fxLayoutAlign="space-between center">
-        <div fxFlex='20' ngClass='mat-icon-for-input font-size-20' [ngClass.lt-lg]="['font-size-14' ,'mat-icon-for-input']">
+        <div fxFlex='20' ngClass='mat-icon-for-input font-size-20'
+          [ngClass.lt-lg]="['font-size-14' ,'mat-icon-for-input']">
           Equation: </div>
         <div fxFlex='80'>
           <mat-form-field appearance="outline">
             <input matInput type='text' formControlName='equation' class='font-size-20'>
-            <mat-error *ngIf="equationForm.get('equation').touched && equationForm.get('equation').invalid">Invalid Equation</mat-error>
-            <mat-error *ngIf="!equationForm.get('equation').touched && equationForm.get('equation').hasError('required')">Equation Required</mat-error>
+            <mat-error *ngIf="equationForm.get('equation').touched && equationForm.get('equation').invalid">Invalid
+              Equation</mat-error>
+            <mat-error
+              *ngIf="!equationForm.get('equation').touched && equationForm.get('equation').hasError('required')">
+              Equation Required</mat-error>
 
           </mat-form-field>
         </div>
 
 
       </div>
+
+
       <div fxLayout="row" fxLayoutAlign="space-between center">
-        <div fxFlex='20' ngClass='mat-icon-for-input font-size-20' [ngClass.lt-lg]="['font-size-14','mat-icon-for-input']">Solution:
+        <div fxFlex='20' ngClass='mat-icon-for-input font-size-20'
+          [ngClass.lt-lg]="['font-size-14' ,'mat-icon-for-input']">
+        </div>
+
+        <div fxFlex='80'>
+          <div *ngIf='isSolved==true' class=' px-24 pt-24 pb-12'>
+
+
+            <div *ngFor='let i of solutionSteps'>
+              <div fxLayout="row" fxLayoutAlign="start center" class=' mb-12'>
+                <div fxFlex.lt-md='50' fxFlex='40' class='font-size-20'><i
+                    class="material-icons font-size-16 mr-12">adjust</i> {{i.newEquation}}</div>
+                <div fxFlex.lt-md='50' fxFlex='60' class='font-size-16'>{{i.change}}</div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+
+
+      </div>
+
+
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxFlex='20' ngClass='mat-icon-for-input font-size-20'
+          [ngClass.lt-lg]="['font-size-14','mat-icon-for-input']">Solution:
         </div>
         <div fxFlex='80'>
 
@@ -78,13 +111,13 @@
 
       </div>
       <div fxLayout="row" fxLayoutAlign="center center">
-        <button mat-raised-button color="primary" class='w-200' (click)='solve()'>SOLVE</button>
+        <button mat-raised-button color="primary" class='w-200' (click)='solveMathjs()'>SOLVE</button>
       </div>
       <div *ngIf='isAuthenticated && isSavable' fxLayout="row" fxLayoutAlign="center center">
         <button mat-stroked-button color="primary" class='w-200' (click)='save()'>SAVE</button>
       </div>
     </div>
-  </form> 
+  </form>
 
   <!-- <app-solve></app-solve> -->
 

@@ -7,6 +7,7 @@ import { FormArray, FormGroup, FormBuilder, Validators, FormControl } from '@ang
 import { EquationQuestion as QuestionInterface, quiz } from '../../../config/interfaces/mathplanet.interface';
 import { generate, Subject } from 'rxjs';
 import { MathsolverService } from '../../../mathsolver/services/mathsolver.service';
+import { lookup } from 'dns';
 @Component({
 	selector: 'app-practice-default',
 	templateUrl: './practice-default.component.html',
@@ -32,17 +33,19 @@ export class PracticeDefaultComponent implements OnInit {
 	IsQuizRunning: boolean = false;
 	// IsQuizRunningSubject: Subject<boolean>;
 	GeneratedQuestions: quiz[] = [];
-
+	solvedAnswerCount = 0;
+	correctAnswer = 0;
 	first: number = 0;
 	last: number = this.perPageShow;
+	isQuizFinished = false;
 
 	answer: FormControl[] = [];
 	constructor(
 		private fb: FormBuilder,
 		private sharedService: SharedService,
 		private utility: UtilityService,
-    private practiceService: PracticeService,
-    private mathsolver:MathsolverService
+		private practiceService: PracticeService,
+		private mathsolver: MathsolverService
 	) {}
 
 	ngOnInit() {
@@ -64,17 +67,22 @@ export class PracticeDefaultComponent implements OnInit {
 		this.first = 0;
 		this.last = this.perPageShow;
 		let loop = this.questionNumber;
+		this.GeneratedQuestions = [];
+		this.isQuizFinished = false;
+		this.IsQuizRunning = true;
+
 		for (let i = 0; i < loop; i++) {
 			this.GeneratedQuestions.push({
 				questionNumber: i + 1,
 				question: this.makeRandomEquation(),
 				isAnswered: false,
 				givenAnswer: '',
-				isCorrect: false
+				isCorrect: false,
+				type:'equation'
 			});
-			this.generateAnswerForm();
 		}
-		this.IsQuizRunning = true;
+		this.generateAnswerForm();
+
 	}
 
 	generateAnswerForm() {
@@ -98,15 +106,19 @@ export class PracticeDefaultComponent implements OnInit {
 		d = this.practiceService.getRandomIntWithinRange(this.minimumDifficulty, this.maximumDifficulty);
 		c = this.practiceService.getCGivenabxd(a, b, x, d);
 		let equ = this.practiceService.makeStringGivenABCD(a, b, c, d);
-    
+
+		let answers = this.practiceService.solveEquationConfirmed(equ);
+		// answers.push(x);
 		let EquObject: QuestionInterface = {
 			parsed: equ,
-			solution: [x]
+			solution: answers
 		};
 		return EquObject;
 	}
 
-	makeRandomExpression() {}
+	makeRandomExpression() {
+
+	}
 
 	makeDifferentiationExpression() {}
 
@@ -129,6 +141,17 @@ export class PracticeDefaultComponent implements OnInit {
 		if (this.answer[number - 1].value != '') {
 			this.GeneratedQuestions[number - 1].isAnswered = true;
 			this.GeneratedQuestions[number - 1].givenAnswer = this.answer[number - 1].value;
+
+			let ans = this.GeneratedQuestions[number - 1].question.solution;
+			let givenAns1 = Number(this.answer[number - 1].value);
+			let givenAns2 = String(this.answer[number - 1].value);
+
+			if (ans.includes(givenAns2) || ans.includes(givenAns1)) {
+				this.GeneratedQuestions[number - 1].isCorrect = true;
+			} else {
+				this.GeneratedQuestions[number - 1].isCorrect = false;
+			}
+			this.countGivenAnswer();
 		} else {
 			this.sharedService.openSnackBar({
 				data: {
@@ -141,25 +164,39 @@ export class PracticeDefaultComponent implements OnInit {
 		}
 	}
 
-	finishQuiz() {
+	countGivenAnswer() {
 		let loop = this.questionNumber;
-		let correctAnswer = 0;
+		let count = 0;
 		for (let i = 0; i < loop; i++) {
-			if (
-				Number(this.GeneratedQuestions[i].givenAnswer) ==
-					Number(this.GeneratedQuestions[i].question.solution[0]) ||
-				Number(this.GeneratedQuestions[i].givenAnswer) ==
-					Number(this.GeneratedQuestions[i].question.solution[1])
-			) {
-				correctAnswer += 1;
-				this.GeneratedQuestions[i].isCorrect = true;
+			if (this.GeneratedQuestions[i].isAnswered == true) {
+				count += 1;
 			}
-
-			console.log(Number(this.GeneratedQuestions[i].givenAnswer));
-			console.log(Number(this.GeneratedQuestions[i].question.solution[0]));
-			console.log(Number(this.GeneratedQuestions[i].givenAnswer));
-			console.log(Number(this.GeneratedQuestions[i].question.solution[1]));
 		}
-		alert(correctAnswer);
+		this.solvedAnswerCount = count;
+	}
+
+	finishQuiz() {
+		this.sharedService
+			.openConfirmationDialog({
+				icon:'error_outline',
+				message: 'Are you sure to finish quiz?',
+				noButton: 'Cancel',
+				yesButton: 'Confirm'
+			})
+			.subscribe((res) => {
+				if(res){
+					let loop = this.questionNumber;
+					this.correctAnswer = 0;
+					for (let i = 0; i < loop; i++) {
+						if (this.GeneratedQuestions[i].isCorrect) {
+							this.correctAnswer += 1;
+						}
+					}
+					this.countGivenAnswer();
+					this.IsQuizRunning = false;
+					this.isQuizFinished = true;
+				}
+				
+			});
 	}
 }

@@ -42,6 +42,15 @@
 
 </form>
 
+<div *ngIf='IsQuizRunning' fxLayout="column" fxLayoutAlign="center center" class='pb-16'>
+  <div class='p-12 border-radius-10-p font-size-20 custom-border'>Answered / Total : {{solvedAnswerCount}} / {{GeneratedQuestions.length}}</div>
+</div>
+
+<div *ngIf='isQuizFinished' fxLayout="column" fxLayoutAlign="center center" class='pb-16'>
+    <div class='p-12 border-radius-10-p font-size-20 custom-border'>Score : {{correctAnswer}} / {{GeneratedQuestions.length}}</div>
+  </div>
+
+
 <div *ngIf='GeneratedQuestions' fxLayout="column" fxLayoutAlign="center center">
 
   <div *ngFor='let content of GeneratedQuestions.slice(first, last);let i=index;  '>
@@ -62,7 +71,7 @@
 
             <div>
               <mat-form-field appearance="outline">
-                <input matInput [formControl]="answer[i]" type='text' class='font-size-16'>
+                <input matInput [formControl]="answer[first+i]" type='text' class='font-size-16'>
 
               </mat-form-field>
             </div>
@@ -81,17 +90,34 @@
 
 
 
-            <div *ngIf='!content.isAnswered' class='pb-16'> <button (click)='turnInAnswer(content.questionNumber)'
+            <div *ngIf='!content.isAnswered && !isQuizFinished' class='pb-16'> <button (click)='turnInAnswer(content.questionNumber)'
                 matTooltip="Turn in current answer" mat-mini-fab color="primary"
                 class='font-size-12 accepted-color-background'><i class="material-icons">
                   get_app
                 </i></button>
             </div>
-            <div *ngIf='content.isAnswered' class='pb-16'> <button matTooltip="Turned in" mat-mini-fab color="accent"
+            <div *ngIf='content.isAnswered && !isQuizFinished' class='pb-16'> <button matTooltip="Turned in" mat-mini-fab color="accent"
                 class='font-size-12 '><i class="material-icons">
                   done_outline
                 </i></button>
             </div>
+            <div *ngIf='content.isCorrect && isQuizFinished' class='pb-16'> <button matTooltip="Turned in" mat-mini-fab 
+              class='font-size-12 accepted-color-background'><i class="material-icons">
+                done_outline
+              </i></button>
+          </div>
+          <div *ngIf='!content.isCorrect && isQuizFinished' class='pb-16'> <button matTooltip="Turned in" mat-mini-fab 
+            class='font-size-12 rejected-color-background'><i class="material-icons">
+                highlight_off
+                </i></button>
+        </div>
+          </div>
+          <div *ngIf='isQuizFinished' class='font-size-16 ' >
+            Given Answer: <span *ngIf='content.isCorrect ' class='accepted-color'>{{content.givenAnswer}} </span> <span *ngIf='!content.isCorrect ' class='rejected-color'>{{content.givenAnswer}} </span>
+           
+          </div>
+          <div *ngIf='isQuizFinished' class='font-size-16 '>
+              Correct Answers:  <span class='accepted-color'>{{content.question.solution}} </span>
           </div>
         </div>
       </div>

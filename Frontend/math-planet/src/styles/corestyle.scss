@@ -299,6 +299,10 @@ $x1: 0;
 .rejected-color {
 	color: $rejected-color !important;
 }
+.rejected-color-background{
+	background: $rejected-color !important;
+
+}
 
 .white-color-background {
 	background: $white-color !important;

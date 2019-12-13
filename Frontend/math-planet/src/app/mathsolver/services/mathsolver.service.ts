@@ -10,16 +10,21 @@ import { saveAs } from 'file-saver';
 import { first } from 'rxjs/operators';
 import { Entities } from '../../config/enums/default.enum';
 import { parse } from 'querystring';
-import {
-	atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt
-  } from 'mathjs'
+// import {
+// 	atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt,integral 
+//   } from 'mathjs';
+
+import * as math from 'mathjs';
+
+  
 @Injectable({
 	providedIn: 'root'
 })
 export class MathsolverService {
 	algebra = require('algebra.js');
-    mathsteps = require('mathsteps');
-	// maths = require('..')
+	mathsteps = require('mathsteps');
+	
+	// this.maths.import(require('mathjs-simple-integral'));
 
 	constructor(
 		private coreMutate: MutationDatabaseService,
@@ -46,7 +51,43 @@ export class MathsolverService {
 			return 'Sorry Cannot solve, try again';
 		}
 	}
+	solveEquationWithMathJs(parsed){
+		
+		var eq = this.algebra.parse(parsed);
+		if (this.checkIfEquation(eq)) {
+			return this.solveEquationMathjs(parsed);
+		} else if (this.checkIfExpression(eq)) {
+			return this.solveExpressionMathJs(parsed);
+		} else {
+			return 'Sorry Cannot solve, try again';
+		}
+		// const steps = this.mathsteps.solveEquation(equation);
+		// return steps;
+		
+	}
 
+	solveEquationMathjs(equation){
+		const steps = this.mathsteps.solveEquation(equation);
+		return steps;
+	}
+	solveExpressionMathJs(parsed){
+		const steps = this.mathsteps.simplifyExpression(parsed);
+		return steps;
+	}
+
+	solveDerivative(equation,withRespectTo){
+		let der;
+		try{
+			 der=math.derivative(equation,withRespectTo).toString();
+			
+		}
+		catch(error){
+			der=null;
+		}
+		return der;
+
+		
+	}
 	
 	solveEquation(parsed) {
 		let ansX = '',
@@ -94,6 +135,7 @@ export class MathsolverService {
 		}
 		return answer ? answer : 'No solution';
 	}
+	
 
 	solveExpression(parsed) {
 		
@@ -176,9 +218,5 @@ export class MathsolverService {
 
 
 
-	solveEquationWithMathJs(equation){
-		const steps = this.mathsteps.solveEquation(equation);
-		return steps;
-		
-	}
+	
 }

@@ -8,7 +8,7 @@ import { AuthguardService } from '../core/security-service/authguard.service';
 export const routes: Routes = [
 	{
 		path: '',
-		redirectTo: 'mathsolver',
+		redirectTo: 'tutorial',
 		pathMatch: 'full'
 	},
 	{

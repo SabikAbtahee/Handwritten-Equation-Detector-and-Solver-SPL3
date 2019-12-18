@@ -4,10 +4,17 @@ export const defaultConst = {
 	
 	sidebar: [
 		{
-			name: 'Home',
+			name: 'Tutorial',
+			url: 'tutorial',
+			icon:'help_outline',
+			mini_name:'Tutorial'
+
+		},
+		{
+			name: 'Login to Math Planet',
 			url: 'authentication/sign-in',
 			icon:'home',
-			mini_name:'Home'
+			mini_name:'Login'
 		},
 		{
 			name: 'Upload Image',
@@ -28,6 +35,11 @@ export const defaultConst = {
 			icon:'ballot',
 			mini_name:'Practice'
 		},
+		
+		
+	],
+	sidebarLoggedIn:[
+		
 		{
 			name: 'Tutorial',
 			url: 'tutorial',
@@ -35,9 +47,6 @@ export const defaultConst = {
 			mini_name:'Tutorial'
 
 		},
-		
-	],
-	sidebarLoggedIn:[
 		
 		{
 			name: 'Upload Image',
@@ -66,14 +75,7 @@ export const defaultConst = {
 			icon:'ballot',
 			mini_name:'Practice'
 
-		},
-		{
-			name: 'Tutorial',
-			url: 'tutorial',
-			icon:'help_outline',
-			mini_name:'Tutorial'
-
-		},
+		}
 	],
 	menu: {
 		

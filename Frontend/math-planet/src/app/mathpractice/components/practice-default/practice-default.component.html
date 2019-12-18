@@ -2,8 +2,8 @@
   <div fxLayout="column" fxLayoutAlign="center center" class='py-24'>
     <div class='font-size-28 pb-24 primary-text-color '>Practice Math Problems</div>
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="12px">
-      <div>
-        <mat-form-field appearance="outline">
+      <div matTooltip="Select how many questions you want to practice">
+        <mat-form-field appearance="outline" >
           <mat-label>Number of Questions</mat-label>
           <mat-select formControlName='questionNumbers'>
             <mat-option *ngFor="let num of questionNumbers" [value]="num.value">
@@ -15,7 +15,7 @@
             How many questions do you want?</mat-error>
         </mat-form-field>
       </div>
-      <div>
+      <div matTooltip="Select a difficulty">
         <mat-form-field appearance="outline">
           <mat-label>Difficulty</mat-label>
           <mat-select formControlName='difficulty'>
@@ -35,7 +35,8 @@
         QUESTIONS</button>
     </div>
     <div *ngIf='IsQuizRunning' class='pt-16'>
-      <button (click)='finishQuiz()' matTooltip="Finish Quiz and see results" mat-raised-button color='accent' class='w-220 h-40'>FINISH QUIZ</button>
+      <button (click)='finishQuiz()' matTooltip="Finish Quiz and see results" mat-raised-button color='accent'
+        class='w-220 h-40'>FINISH QUIZ</button>
     </div>
 
   </div>
@@ -43,38 +44,46 @@
 </form>
 
 <div *ngIf='IsQuizRunning' fxLayout="column" fxLayoutAlign="center center" class='pb-16'>
-  <div class='p-12 border-radius-10-p font-size-20 custom-border'>Answered / Total : {{solvedAnswerCount}} / {{GeneratedQuestions.length}}</div>
+  <div class='p-12 border-radius-10-p font-size-20 custom-border' matTooltip="Turned in answers and total question count" >Answered / Total : {{solvedAnswerCount}} /
+    {{GeneratedQuestions.length}}</div>
 </div>
 
 <div *ngIf='isQuizFinished' fxLayout="column" fxLayoutAlign="center center" class='pb-16'>
-    <div class='p-12 border-radius-10-p font-size-20 custom-border'>Score : {{correctAnswer}} / {{GeneratedQuestions.length}}</div>
-  </div>
+  <div class='p-12 border-radius-10-p font-size-20 custom-border' matTooltip="Your score">Score : {{correctAnswer}} /
+    {{GeneratedQuestions.length}}</div>
+</div>
 
 
 <div *ngIf='GeneratedQuestions' fxLayout="column" fxLayoutAlign="center center">
 
-  <div *ngFor='let content of GeneratedQuestions.slice(first, last);let i=index;  '>
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="24px">
+    <div>
+      <div *ngFor='let content of GeneratedQuestions.slice(first, last);let i=index;  '>
 
-    <mat-card [class.mat-elevation-z10]="true" class="font-size-12 w-470 mb-12">
-      <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="16px">
-        <div class='font-size-16'>
-          {{content.questionNumber}}
-        </div>
-        <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="8px">
-          <div class='font-size-16'> Solve for x for the following equation {{content.question.parsed}} </div>
-          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="54px">
+        <mat-card [class.mat-elevation-z10]="true" class="font-size-12 w-470 mb-12">
+          <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="16px">
+            <div class='font-size-16' matTooltip="Select question so that drawn solution on canvas can be set in solution">
+              <button *ngIf='selected!=content.questionNumber' (click)='selectQuestion(content.questionNumber)'
+                mat-mini-fab>{{content.questionNumber}}</button>
+              <button *ngIf='selected==content.questionNumber' mat-mini-fab
+                color='primary'>{{content.questionNumber}}</button>
 
-
-
-
-
-
-            <div>
-              <mat-form-field appearance="outline">
-                <input matInput [formControl]="answer[first+i]" type='text' class='font-size-16'>
-
-              </mat-form-field>
             </div>
+            <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="8px">
+              <div class='font-size-16'>  {{content.question.parsed}} </div>
+              <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="54px">
+
+
+
+
+
+
+                <div>
+                  <mat-form-field appearance="outline">
+                    <input matInput [formControl]="answer[first+i]" type='text' class='font-size-16'>
+
+                  </mat-form-field>
+                </div>
 
 
 
@@ -90,43 +99,94 @@
 
 
 
-            <div *ngIf='!content.isAnswered && !isQuizFinished' class='pb-16'> <button (click)='turnInAnswer(content.questionNumber)'
-                matTooltip="Turn in current answer" mat-mini-fab color="primary"
-                class='font-size-12 accepted-color-background'><i class="material-icons">
-                  get_app
-                </i></button>
+                <div *ngIf='!content.isAnswered && !isQuizFinished' class='pb-16'> <button
+                    (click)='turnInAnswer(content.questionNumber)' matTooltip="Turn in current answer" mat-mini-fab
+                    color="primary" class='font-size-12 accepted-color-background'><i class="material-icons">
+                      get_app
+                    </i></button>
+                </div>
+                <div *ngIf='content.isAnswered && !isQuizFinished' class='pb-16'> <button matTooltip="Turned in"
+                    mat-mini-fab color="accent" class='font-size-12 '><i class="material-icons">
+                      done_outline
+                    </i></button>
+                </div>
+                <div *ngIf='content.isCorrect && isQuizFinished' class='pb-16'> <button matTooltip="Turned in"
+                    mat-mini-fab class='font-size-12 accepted-color-background'><i class="material-icons">
+                      done_outline
+                    </i></button>
+                </div>
+                <div *ngIf='!content.isCorrect && isQuizFinished' class='pb-16'> <button matTooltip="Turned in"
+                    mat-mini-fab class='font-size-12 rejected-color-background'><i class="material-icons">
+                      highlight_off
+                    </i></button>
+                </div>
+              </div>
+              <div *ngIf='isQuizFinished' class='font-size-16 '>
+                Given Answer: <span *ngIf='content.isCorrect ' class='accepted-color'>{{content.givenAnswer}} </span>
+                <span *ngIf='!content.isCorrect ' class='rejected-color'>{{content.givenAnswer}} </span>
+
+              </div>
+              <div *ngIf='isQuizFinished' class='font-size-16 '>
+                Correct Answers: <span class='accepted-color'>{{content.question.solution}} </span>
+              </div>
             </div>
-            <div *ngIf='content.isAnswered && !isQuizFinished' class='pb-16'> <button matTooltip="Turned in" mat-mini-fab color="accent"
-                class='font-size-12 '><i class="material-icons">
-                  done_outline
-                </i></button>
-            </div>
-            <div *ngIf='content.isCorrect && isQuizFinished' class='pb-16'> <button matTooltip="Turned in" mat-mini-fab 
-              class='font-size-12 accepted-color-background'><i class="material-icons">
-                done_outline
-              </i></button>
           </div>
-          <div *ngIf='!content.isCorrect && isQuizFinished' class='pb-16'> <button matTooltip="Turned in" mat-mini-fab 
-            class='font-size-12 rejected-color-background'><i class="material-icons">
-                highlight_off
-                </i></button>
-        </div>
-          </div>
-          <div *ngIf='isQuizFinished' class='font-size-16 ' >
-            Given Answer: <span *ngIf='content.isCorrect ' class='accepted-color'>{{content.givenAnswer}} </span> <span *ngIf='!content.isCorrect ' class='rejected-color'>{{content.givenAnswer}} </span>
-           
-          </div>
-          <div *ngIf='isQuizFinished' class='font-size-16 '>
-              Correct Answers:  <span class='accepted-color'>{{content.question.solution}} </span>
-          </div>
+        </mat-card>
+
+
+      </div>
+    </div>
+    <!-- Canvas -->
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px">
+      <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px" class='font-size-16'>
+        <div>Drawn answer will be parsed </div>
+        <div>in the selected question</div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="12px">
+        <canvas #canvas id='myCanvas' class='mat-elevation-z8 dropzone '
+          [ngClass]="mode=='pen' ? 'crosshair' : 'rubber' "></canvas>
+
+
+        <div fxLayout="column" fxLayout.lt-md="column" fxLayoutAlign="center center" fxLayoutGap="16px" class='pb-16'>
+          <button  matTooltip="Eraser" mat-mini-fab (click)='changeMode("eraser")' class=' font-size-16 cornsilk-background'>
+
+            <i class="material-icons font-size-16 ">
+              crop_16_9
+            </i>
+
+          </button>
+          <button  matTooltip="Pencil" mat-mini-fab color="primary" (click)='changeMode("pen")' class=' black-color-background font-size-16'>
+            <i class="material-icons font-size-16 ">
+              create
+            </i>
+
+
+
+          </button>
+          <button  matTooltip="Refresh canvas" mat-mini-fab color="warn" (click)='clearCanvas()' class='  font-size-16'>
+            <i class="material-icons font-size-16 ">
+              close
+            </i>
+
+          </button>
+          <button  matTooltip="Retry parsing image" mat-mini-fab color='primary' (click)='saveImage()' class=' font-size-16 '>
+
+            <i class="material-icons font-size-16 ">
+              loop
+            </i>
+
+          </button>
+
+
+
+
         </div>
       </div>
-    </mat-card>
-
-
+    </div>
   </div>
 
-  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="48px" class='py-24'>
+  <div *ngIf='GeneratedQuestions.length>0' fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="48px"
+    class='py-24'>
     <button matTooltip="Go to previous page" mat-fab (click)='Back()'><i class="material-icons">
         keyboard_arrow_left
       </i></button>

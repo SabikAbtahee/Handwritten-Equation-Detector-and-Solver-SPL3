@@ -35,6 +35,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { ConfirmComponent } from './components/confirm/confirm.component';
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {MatTabsModule} from '@angular/material/tabs';
 @NgModule({
 	declarations: [ SnackbarComponent, DropzoneDirective, ConfirmComponent ],
 	imports: [
@@ -70,7 +71,8 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 		MatChipsModule,
 		MatSortModule,
 		VirtualScrollModule,
-		ScrollingModule
+		ScrollingModule,
+		MatTabsModule
 	],
 	exports: [
 		AngularFontAwesomeModule,
@@ -105,7 +107,8 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 		MatChipsModule,
 		MatSortModule,
 		VirtualScrollModule,
-		ScrollingModule
+		ScrollingModule,
+		MatTabsModule
 	],
 	providers: [ SharedService ],
 	entryComponents: [ SnackbarComponent,ConfirmComponent ]

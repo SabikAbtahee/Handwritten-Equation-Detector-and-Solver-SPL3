@@ -129,6 +129,7 @@ export class UploadComponent implements OnInit {
 		this.croppedImage = '';
 		this.croppedImageFile = null;
 		this.isSavable = false;
+		this.isSolved=false;
 		this.equationForm.patchValue({
 			equation: '',
 			solution: ''

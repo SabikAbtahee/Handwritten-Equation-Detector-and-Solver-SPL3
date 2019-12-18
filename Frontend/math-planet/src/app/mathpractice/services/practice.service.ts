@@ -1,3 +1,5 @@
+import { MathsolverService } from './../../mathsolver/services/mathsolver.service';
+import { MathsolverModule } from './../../mathsolver/mathsolver.module';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import {
@@ -10,7 +12,7 @@ export class PracticeService {
     mathsteps = require('mathsteps');
 	algebra = require('algebra.js');
 
-	constructor() {
+	constructor(private mathSolver:MathsolverService) {
 	}
 
 	getRandomIntWithinRange(min, max) {
@@ -78,6 +80,27 @@ export class PracticeService {
 
 		}
 		return answer;
+	}
+
+	makeExpression(a,b,c){
+		let exp=['+','-','*'];
+		if(a<0){
+			a=(-1)*a;
+		}
+		if(b<0){
+			b=(-1)*b;
+		}
+		if(c<0){
+			c=(-1)*c;
+		}
+		let i=this.getRandomIntWithinRange(0,3);
+		let j=this.getRandomIntWithinRange(0,3);
+
+
+		return String(`${a}${exp[i]}${b}${exp[j]}${c}`);
+	}
+	solveExpression(equ){
+		return	this.mathSolver.solve(equ);
 	}
 	
 }

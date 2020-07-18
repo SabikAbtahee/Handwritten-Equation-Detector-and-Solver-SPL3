@@ -44,7 +44,7 @@
     "guid-typescript": "^1.0.9",
     "hammerjs": "^2.0.8",
     "intl-tel-input": "^16.0.2",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.19",
     "mathjs": "^6.2.5",
     "mathjs-simple-integral": "^0.1.1",
     "mathsteps": "^0.2.0",
